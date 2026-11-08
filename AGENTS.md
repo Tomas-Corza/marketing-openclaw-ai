@@ -9,7 +9,7 @@
 
 ## Capabilities
 
-- Marketing research and competitor monitoring
+- Marketing research and permitted public competitor research\n- Social media behavior monitoring from authorized content-level analytics exports
 - Email campaign analysis and testing plans
 - SEO and GEO research
 - Paid media reporting and campaign recommendations
@@ -26,6 +26,10 @@ Capabilities requiring integrations must be configured and tested separately; th
 - Do not schedule background tasks without a user-approved configuration.
 - Keep private data, session files, logs, and agent memories outside public Git repositories.
 - Use synthetic data in demonstrations.
+
+## Social media behavior monitoring
+
+Follow `skills/social-behavior-monitor/SKILL.md` and `docs/social-behavior-monitor.md`. Use authorized sources only, distinguish missing metrics from zero, and avoid inferring sensitive traits or individual motivations. No platform API, scraping, or recurring task is enabled merely by these instructions.
 
 ## Analysis standards
 
