@@ -1,0 +1,25 @@
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*service-account*.json
+credentials/
+secrets/
+.secrets/
+memory/
+MEMORY.md
+USER.md
+sessions/
+logs/
+data/
+reports/
+node_modules/
+.venv/
+.venv-*/
+__pycache__/
+.DS_Store
+
+# Unreviewed original workspace code
+tools-review/
+*.log
