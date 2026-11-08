@@ -7,7 +7,7 @@ This is a public template, not a record of installed or working integrations.
 - E-commerce analytics (for example, Shopify API)
 - Email marketing analytics (for example, Klaviyo API)
 - Reporting exports (for example, Google Sheets API)
-- Public competitor and search research
+- Public competitor and search research\n- Social-platform content analytics (authorized APIs or exports; not connected by default)
 
 For each integration, document prerequisites, permissions, environment-variable names, rate limits, error handling, and data-retention policies. Put credentials only in locally managed secret storage. Never commit `.env`, service-account JSON keys, OAuth tokens, or real customer exports.
 
@@ -26,6 +26,15 @@ No integrations are enabled by this file alone.
 - Script: `tools/email_analytics.py`
 - Purpose: Analyze email campaign engagement and revenue.
 - Input: CSV containing campaign, sent, clicks, orders, revenue.
+
+### Social Media Behavior Monitor
+- Skill: `skills/social-behavior-monitor/SKILL.md`
+- Script: `tools/social_behavior_monitor.py`
+- Connector contract: `tools/social_behavior_connector.py`
+- Schema and setup: `docs/social-behavior-monitor.md`
+- Example: `examples/social_behavior_sample.csv`
+- Purpose: Summarize authorized social media engagement at the content level.
+- Input: Normalized CSV; platform-specific APIs require separately implemented and approved adapters.
 
 ## Execution Guidelines
 
