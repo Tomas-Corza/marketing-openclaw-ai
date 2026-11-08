@@ -1,19 +1,122 @@
 # Marketing OpenClaw AI
 
-A public-facing configuration example for a marketing-focused AI assistant built for the OpenClaw ecosystem.
+**A customizable AI-powered marketing assistant built on the OpenClaw ecosystem.**
 
-## Included
+**Developed by Tomas Corza | Growth Marketing & Analytics**
 
-- `IDENTITY.md` — agent identity and domain expertise
-- `SOUL.md` — behavioral guidance and marketing workflows
-- `AGENTS.md` — operating and safety instructions
-- `TOOLS.md` — optional integration documentation template
-- `HEARTBEAT.md` — inactive recurring-task template
+## Overview
 
-## Status
+Marketing OpenClaw AI is a marketing-focused AI assistant framework designed to support digital marketing analysis, reporting, experimentation, and automation.
 
-**Configuration draft only.** This archive is not yet a complete runnable application. The original system's Python tools, external skills, platform settings, and integration code have not been audited or included. No live credentials, datasets, or business information are supplied.
+The project is based on an AI assistant implementation previously used in a real-world marketing environment. Its architecture and workflows have been adapted into a reusable, public-facing project that can be configured for different businesses, marketing platforms, and analytical requirements.
 
-## Before use or publication
+The original implementation demonstrated the practical application of AI-assisted marketing workflows. This repository provides a generalized version, including agent configuration files, independently runnable Python analysis tools, and skill definitions.
 
-Confirm rights to publish the implementation; independently review or rewrite proprietary components; audit all added code and dependencies; test setup in an isolated environment using synthetic data; review source files and Git history for secrets.
+**The framework has a history of practical use, but each new implementation requires configuration, integration, and testing for its intended environment.**
+
+## Capabilities
+
+### Jobs-to-be-Done (JTBD) Marketing Analysis
+
+Analyze marketing messages based on the customer motivations they address.
+
+- Compare messaging variants across different customer jobs.
+- Calculate and rank email click-through rates.
+- Identify the highest-performing observed messaging approach.
+- Support value proposition development and marketing experimentation.
+- Distinguish observed performance differences from statistically validated conclusions.
+
+**Included:** `jtbd/analyze.py` and `skills/jtbd-analysis/SKILL.md`
+
+### Email Marketing Analytics
+
+Analyze email campaign performance using structured campaign data.
+
+- Measure campaign engagement and click-through rates.
+- Calculate revenue per email sent.
+- Compare campaign performance.
+- Report orders and revenue.
+- Summarize findings in accessible, nontechnical language.
+
+**Included:** `tools/email_analytics.py` and `skills/email-analytics/SKILL.md`
+
+### AI Agent Architecture
+
+The project includes an OpenClaw-style configuration structure for guiding an AI assistant's behavior, analytical workflows, tool usage, and operational boundaries.
+
+| File | Purpose |
+|---|---|
+| `IDENTITY.md` | Defines the assistant's identity and marketing expertise |
+| `SOUL.md` | Establishes communication principles and analytical behavior |
+| `AGENTS.md` | Documents operating instructions and safety constraints |
+| `TOOLS.md` | Describes supported tool interfaces and potential integrations |
+| `HEARTBEAT.md` | Provides a template for recurring monitoring and automation |
+| `skills/` | Contains reusable marketing skill instructions |
+| `jtbd/` | Contains Jobs-to-be-Done analysis tools |
+| `tools/` | Contains additional marketing analysis scripts |
+
+## Potential Integrations
+
+The framework can be extended to work with marketing and reporting platforms, including:
+
+- Shopify — e-commerce performance and sales analysis
+- Klaviyo — email marketing performance
+- Google Sheets — reporting and data exports
+- Google Ads and Meta Ads — campaign performance analysis
+- Public competitor research — market monitoring and competitive intelligence
+
+These integrations require separate configuration, authorized API access, and any necessary implementation work. They are not enabled by default in this repository.
+
+## Running the Included Analysis Tools
+
+The included Python scripts can run independently of an OpenClaw installation.
+
+**JTBD analysis**
+
+```bash
+python3 jtbd/analyze.py jtbd/example.csv
+```
+
+**Email marketing analysis**
+
+```bash
+python3 tools/email_analytics.py tools/example_email.csv
+```
+
+The example CSV files contain synthetic demonstration data, not actual business performance results.
+
+## Deployment and Adaptation
+
+Marketing OpenClaw AI is derived from a previously used marketing AI assistant implementation. The public version is intended to serve as a configurable foundation for new marketing applications.
+
+Before deploying the framework in a new environment, users should:
+
+1. Adapt the agent instructions and skills to the intended business and marketing objectives.
+2. Configure the required integrations and access permissions.
+3. Test compatibility with the target OpenClaw environment.
+4. Validate analytical outputs against trusted data sources.
+5. Review security, privacy, and data-handling requirements.
+
+**Previous practical use does not guarantee compatibility with every new application. Configuration and testing are required before deployment.**
+
+## Privacy and Security
+
+This public repository is intended to contain reusable configuration patterns, original or independently adapted analysis code, and synthetic demonstration data.
+
+It does not include live credentials, customer information, private business reports, or original company datasets.
+
+Users should avoid committing sensitive information and should review authorization and data-retention requirements before connecting external systems.
+
+## Project Purpose
+
+Marketing OpenClaw AI demonstrates how AI agent architecture, marketing analytics, Python automation, and Jobs-to-be-Done methodology can be combined to support data-driven marketing workflows.
+
+The project also serves as a foundation for adapting AI-assisted marketing processes to new business requirements.
+
+---
+
+**Developed by Tomas Corza**
+
+Growth Marketing & Analytics
+
+[Website](https://tomascorza.me) | [GitHub](https://github.com/Tomas-Corza)
