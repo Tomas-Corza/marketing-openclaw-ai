@@ -40,6 +40,20 @@ Analyze email campaign performance using structured campaign data.
 
 **Included:** `tools/email_analytics.py` and `skills/email-analytics/SKILL.md`
 
+### Social Media Behavior Monitor (API-ready)
+
+Analyze authorized social media content-level engagement across platforms through a normalized data model.
+
+- Summarize likes, comments, shares, saves, clicks, and impressions (when available).
+- Compare topics and content formats within each platform.
+- Handle missing metrics and show metric coverage, rather than assume zero.
+- Produce machine-readable JSON analysis for reports and downstream AI interpretation.
+- Start offline with a synthetic CSV example; add authorized platform adapters later.
+
+**Included:** `skills/social-behavior-monitor/SKILL.md`, `tools/social_behavior_monitor.py`, `tools/social_behavior_connector.py`, `docs/social-behavior-monitor.md`.
+
+**Status:** Offline analytics implemented. No live API connections, monitoring schedule, or scraping configured.
+
 ### AI Agent Architecture
 
 The project includes an OpenClaw-style configuration structure for guiding an AI assistant's behavior, analytical workflows, tool usage, and operational boundaries.
@@ -75,6 +89,13 @@ The included Python scripts can run independently of an OpenClaw installation.
 
 ```bash
 python3 jtbd/analyze.py jtbd/example.csv
+```
+
+**Social media behavior analysis**
+
+```bash
+python3 tools/social_behavior_monitor.py --input examples/social_behavior_sample.csv
+python3 -m unittest discover -s tests
 ```
 
 **Email marketing analysis**
