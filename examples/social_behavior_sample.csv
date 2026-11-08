@@ -1,0 +1,4 @@
+platform,content_id,published_at,content_type,topic,campaign,impressions,likes,comments,shares,saves,clicks,views,reach,source_url
+instagram,demo-ig-01,2026-10-01,reel,education,example,1200,80,9,22,35,12,1000,950,
+instagram,demo-ig-02,2026-10-03,carousel,promotion,example,900,40,4,5,10,18,,820,
+youtube,demo-yt-01,2026-10-05,short,education,example,2000,110,12,31,20,15,1700,,
