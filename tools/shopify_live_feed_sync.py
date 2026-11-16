@@ -14,8 +14,12 @@ import tempfile
 import time
 from pathlib import Path
 
-from tools.shopify_feed_builder import convert, save, shop_domain
-from tools.shopify_product_pages import shopify_graphql
+try:
+    from tools.shopify_feed_builder import convert, save, shop_domain
+    from tools.shopify_product_pages import shopify_graphql
+except ModuleNotFoundError:
+    from shopify_feed_builder import convert, save, shop_domain
+    from shopify_product_pages import shopify_graphql
 
 QUERY = """
 query MerchantFeedVariants($first: Int!, $after: String) {
