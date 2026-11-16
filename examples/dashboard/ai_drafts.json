@@ -1,0 +1,44 @@
+{
+  "provider": "synthetic demonstration fixture",
+  "review_required": true,
+  "items": [
+    {
+      "handle": "sample-desk-lamp",
+      "original": {
+        "title": "Adjustable Desk Lamp",
+        "existing_description": "An adjustable desk lamp for everyday task lighting."
+      },
+      "suggested_changes": {
+        "title": "Adjustable Desk Lamp",
+        "descriptionHtml": "<p>An adjustable desk lamp for everyday task lighting.</p>",
+        "seo": {
+          "title": "Adjustable Desk Lamp | Example Lighting",
+          "description": "Explore an adjustable desk lamp for everyday task lighting."
+        }
+      },
+      "jtbd_hypothesis": "Support focused tasks at a desk",
+      "review_notes": "Verify exact features against manufacturer data.",
+      "approved": false,
+      "publishable": false
+    },
+    {
+      "handle": "sample-chair",
+      "original": {
+        "title": "Accent Chair",
+        "existing_description": "A chair with a simple silhouette for living spaces."
+      },
+      "suggested_changes": {
+        "title": "Accent Chair",
+        "descriptionHtml": "<p>A chair with a simple silhouette for living spaces.</p>",
+        "seo": {
+          "title": "Accent Chair | Example Furnishings",
+          "description": "Discover an accent chair with a simple silhouette."
+        }
+      },
+      "jtbd_hypothesis": "Furnish a comfortable living space",
+      "review_notes": "Verify product information.",
+      "approved": false,
+      "publishable": false
+    }
+  ]
+}
