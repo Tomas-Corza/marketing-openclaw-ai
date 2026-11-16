@@ -19,6 +19,7 @@ Its current e-commerce toolkit includes:
 - **Streamlit e-commerce operations dashboard:** Visual catalog health, feed diagnostics, AI recommendations, local approval queues and synthetic demonstration data.
 - **AI customer inquiry assistant:** Review-only classification of product questions, order requests, quote inquiries and returns, with approved knowledge grounding, optional opt-in AI drafting and human escalation.
 - **Gmail customer inquiry drafts:** Optional authorized Gmail API integration to retrieve one selected customer email, prepare a grounded reply, and create an unsent, human-approved Gmail draft.
+- **Shopify return processing:** Offline, approval-first screening of merchant-verified return requests against policy windows, excluded tags and item condition; prepares a return request manifest and draft customer response without submitting returns or refunds.
 
 **Explore the code:** [OpenClaw skills](skills/) · [E-Commerce Operations Dashboard](dashboard/) · [Synthetic dashboard demo setup](docs/streamlit-community-cloud-deployment.md)
 
@@ -40,6 +41,7 @@ Each e-commerce capability has its own discoverable `skills/<name>/SKILL.md` ent
 | [merchant-feed-diagnostics](skills/merchant-feed-diagnostics/SKILL.md) | Feed diagnostics, Merchant API status review and local fix approval |
 | [customer-inquiry-assistant](skills/customer-inquiry-assistant/SKILL.md) | Classify inquiries and draft factual, unapproved, unsent customer responses from approved product/policy facts |
 | [gmail-customer-inquiry-drafts](skills/gmail-customer-inquiry-drafts/SKILL.md) | Read one explicitly selected authorized Gmail message and create an unsent reply draft only after human approval |
+| [shopify-return-processing](skills/shopify-return-processing/SKILL.md) | Offline return policy screening and employee-reviewed case/response proposals; no Shopify return submission or refunds |
 
 Skills do not automatically activate credentials, scheduled jobs, model API access or live store writes. Set up and test each integration separately.
 
@@ -104,6 +106,21 @@ python3 -m tools.gmail_inquiry_drafts create --message-id GMAIL_MESSAGE_ID --kno
 ```
 
 See [Gmail inquiry draft guide](docs/gmail-customer-inquiry-drafts.md) for configuration, privacy limitations and safeguards.
+
+### Shopify Return Processing (review only)
+
+Screen merchant-verified Shopify return requests against an approved return policy, checking requested quantities, delivery windows, excluded product tags, and unopened condition. Outputs an assessment, review findings, request manifest, and a draft response for staff.
+
+- Produces an SHA-256 review fingerprint and private JSON proposal; `approved`, `return_submitted`, `refund_issued` and `customer_notified` remain `false`.
+- **Does not connect to Shopify, authorize returns, issue refunds, create shipping labels, restock products, or contact customers.** Verify real order data, consumer rights and exceptions manually.
+
+**Included:** [OpenClaw skill](skills/shopify-return-processing/SKILL.md), [Python tool](tools/shopify_return_processing.py), [setup guide](docs/shopify-return-processing.md), fictional examples and offline tests.
+
+```bash
+python3 tools/shopify_return_processing.py --case examples/return_case_sample.json --policy examples/return_policy_sample.json --output /tmp/return-review-example.json
+```
+
+See [Return Processing setup](docs/shopify-return-processing.md).
 
 ### Jobs-to-be-Done (JTBD) Marketing Analysis
 

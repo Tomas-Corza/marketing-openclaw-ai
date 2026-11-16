@@ -1,0 +1,9 @@
+{
+  "name": "Fictional Sample Return Policy",
+  "window_days": 30,
+  "excluded_tags": [
+    "custom-made"
+  ],
+  "requires_unopened": true,
+  "exceptions_need_review": true
+}

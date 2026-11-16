@@ -1,0 +1,21 @@
+{
+  "case_id": "demo-return-001",
+  "order_id": "gid://shopify/Order/123456789",
+  "delivered_on": "2026-11-01",
+  "requested_on": "2026-11-10",
+  "customer_reason": "I would like to return the unused fixture.",
+  "items": [
+    {
+      "fulfillment_line_item_id": "gid://shopify/FulfillmentLineItem/987654321",
+      "title": "Example Pendant Fixture",
+      "quantity": 1,
+      "fulfilled_quantity": 1,
+      "already_returned_quantity": 0,
+      "tags": [
+        "lighting",
+        "sample"
+      ],
+      "unopened": true
+    }
+  ]
+}
