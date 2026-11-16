@@ -1,0 +1,5 @@
+Handle,Title,Body (HTML),Vendor,Type,SEO Title,SEO Description,Variant SKU
+desk-lamp,Example Desk Lamp,<p>A sample lamp with adjustable brightness.</p>,Sample Lighting,Lighting,,,LAMP-001
+desk-lamp,,,,,,,LAMP-002
+floor-lamp,Example Floor Lamp,<p>Example indoor floor lamp for living spaces.</p>,Sample Lighting,Lighting,,,LAMP-003
+chair,Example Chair,<p>Example seating product.</p>,Sample Furniture,Furniture,Example Chair | Sample Furniture,,CHAIR-001

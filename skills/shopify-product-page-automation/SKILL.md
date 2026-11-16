@@ -17,6 +17,19 @@ Use this skill for safe e-commerce product-page content reviews and Shopify cont
 7. Only after approval, run `python3 tools/shopify_product_pages.py apply --id PRODUCT_ID --proposal proposal.json --confirm`.
 8. Fetch the product again and verify the resulting content.
 
+## Bulk product feed workflow
+
+For authorized Shopify product CSV exports, use `python3 tools/shopify_bulk_feed.py analyze --input <catalog.csv> --output <report.json>`. The command groups variant rows by handle, audits product content across the feed, and returns JSON findings and conservative SEO metadata drafts. The CSV audit never writes to Shopify.
+
+For merchant-approved live batch updates:
+1. Map selected products to **verified Shopify numeric Product IDs** or Product GIDs; a CSV handle is not a Product ID.
+2. Supply those IDs in a private JSON list and execute `python3 tools/shopify_bulk_feed.py prepare --input <ids.json> --output <manifest.json>`.
+3. Review each proposed change, editing only verified, authorized content. Set `approved: true` per approved entry, removing all unapproved entries.
+4. Run `python3 tools/shopify_bulk_feed.py apply --input <manifest.json> --output <new-log.jsonl> --confirm --limit 25` only after explicit merchant authorization.
+5. Re-fetch updated products and confirm their final content. Inspect the JSONL log after partial failures.
+
+Bulk audit suggestions are deterministic, not model-generated. AI copywriting, live scheduling and automatic CSV-handle-to-ID mapping are not included. Consult `docs/shopify-bulk-feed-optimization.md`.
+
 ## Safety
 - API credentials must come from local environment or a dedicated secrets manager, never from GitHub files or prompts.
 - Review generated HTML, factual accuracy, trademark claims, regulatory statements, image references and search descriptions before applying.

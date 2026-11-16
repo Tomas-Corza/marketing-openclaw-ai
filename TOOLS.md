@@ -44,3 +44,12 @@ No integrations are enabled by this file alone.
 - Never invent marketing performance results.
 - Explain findings in clear, nontechnical language.
 - Do not modify live campaigns without approval.
+
+### Shopify Bulk Feed Optimization
+- Skill: `skills/shopify-product-page-automation/SKILL.md`
+- Script: `tools/shopify_bulk_feed.py`
+- Setup: `docs/shopify-bulk-feed-optimization.md`
+- Example: `examples/shopify_bulk_feed_sample.csv`
+- Purpose: Offline Shopify product CSV audits and explicit-approval API updates with product ID verification, per-product snapshot checks, and private audit logs.
+- Access: No credentials for CSV audit; authenticated Shopify Admin GraphQL API required for prepare/apply.
+- Publishing: Never run `apply --confirm` without explicit authorization for the exact proposed changes.

@@ -72,6 +72,25 @@ python3 tools/shopify_product_pages.py audit --input examples/shopify_product_sa
 
 See [Shopify integration setup](docs/shopify-product-page-automation.md) for API configuration and the approval-first publishing workflow.
 
+### Shopify Bulk Feed Optimization (API-ready)
+
+Extend the Shopify product-page skill across a product catalog with a Shopify CSV export.
+
+- Group Shopify variant rows into unique products.
+- Audit titles, descriptions and custom SEO fields at catalog scale.
+- Export machine-readable JSON findings and conservative metadata drafts.
+- Prepare product-ID-mapped, approval-required API update manifests.
+- Apply capped batches with stale-content checks and private JSONL audit logs.
+- No AI-written copy or unattended product publishing by default.
+
+**Included:** `tools/shopify_bulk_feed.py`, `docs/shopify-bulk-feed-optimization.md`, `tests/test_shopify_bulk_feed.py`, and `examples/shopify_bulk_feed_sample.csv`.
+
+```bash
+python3 tools/shopify_bulk_feed.py analyze --input examples/shopify_bulk_feed_sample.csv --output /tmp/shopify-audit.json
+```
+
+See [Bulk Shopify feed guide](docs/shopify-bulk-feed-optimization.md).
+
 ### AI Agent Architecture
 
 The project includes an OpenClaw-style configuration structure for guiding an AI assistant's behavior, analytical workflows, tool usage, and operational boundaries.
