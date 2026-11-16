@@ -17,6 +17,7 @@ Its current e-commerce toolkit includes:
 - **Automated Shopify feed synchronization:** GraphQL catalog extraction, opt-in daily feed generation, and optional GitHub Pages hosting.
 - **Merchant Center diagnostics:** Offline feed checks, read-only Merchant API issue analysis, AI remediation suggestions and approval-controlled local feed fixes.
 - **Streamlit e-commerce operations dashboard:** Visual catalog health, feed diagnostics, AI recommendations, local approval queues and synthetic demonstration data.
+- **AI customer inquiry assistant:** Review-only classification of product questions, order requests, quote inquiries and returns, with approved knowledge grounding, optional opt-in AI drafting and human escalation.
 
 **Explore the code:** [OpenClaw skills](skills/) · [E-Commerce Operations Dashboard](dashboard/) · [Synthetic dashboard demo setup](docs/streamlit-community-cloud-deployment.md)
 
@@ -36,6 +37,7 @@ Each e-commerce capability has its own discoverable `skills/<name>/SKILL.md` ent
 | [shopify-product-feed-builder](skills/shopify-product-feed-builder/SKILL.md) | Offline Shopify CSV to Merchant Center TSV/RSS |
 | [shopify-feed-sync](skills/shopify-feed-sync/SKILL.md) | Read-only Shopify API feed creation and opt-in scheduling |
 | [merchant-feed-diagnostics](skills/merchant-feed-diagnostics/SKILL.md) | Feed diagnostics, Merchant API status review and local fix approval |
+| [customer-inquiry-assistant](skills/customer-inquiry-assistant/SKILL.md) | Classify inquiries and draft factual, unapproved, unsent customer responses from approved product/policy facts |
 
 Skills do not automatically activate credentials, scheduled jobs, model API access or live store writes. Set up and test each integration separately.
 
@@ -61,6 +63,23 @@ streamlit run dashboard/app.py
 ```
 
 See [Dashboard setup and safety](dashboard/README.md) and [Streamlit Community Cloud public demo deployment](docs/streamlit-community-cloud-deployment.md). The public demo entrypoint is `dashboard/public_app.py` (synthetic-only; no uploads); deployment requires the owner's Streamlit account.
+
+### AI Customer Inquiry Assistant (review-only)
+
+Prepare grounded customer-service reply drafts for product questions, order status, B2B quote requests, returns and general inquiries. Uses approved local product and policy knowledge, classifies the message and flags certain sensitive topics for employee review. Optional OpenAI Responses API drafting is **opt-in** and requires authorization to share inquiry data externally.
+
+- Offline template mode requires no API keys or internet connection.
+- Outputs proposed reply, evidence IDs, missing information, category and review/escalation flags.
+- Always records `approved: false` and `sent: false`; **no automatic email, SMS, Shopify lookup, CRM connection, or customer messaging** is implemented.
+- Customer data and private drafts must not be committed to the public repository.
+
+**Included:** [Skill instructions](skills/customer-inquiry-assistant/SKILL.md), [Python implementation](tools/customer_inquiry_assistant.py), [setup guide](docs/customer-inquiry-assistant.md), fictional fixtures and mocked offline tests.
+
+```bash
+python3 -m tools.customer_inquiry_assistant --inquiry examples/customer_inquiry_sample.json --knowledge examples/customer_inquiry_knowledge_sample.json --output /tmp/customer-inquiry-draft.json
+```
+
+See [Customer Inquiry Assistant setup](docs/customer-inquiry-assistant.md). Real inbox/Shopify integrations and sending workflows require separate authorization, development, security review and testing.
 
 ### Jobs-to-be-Done (JTBD) Marketing Analysis
 
