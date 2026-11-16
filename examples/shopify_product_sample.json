@@ -1,0 +1,11 @@
+{
+  "id": "gid://shopify/Product/123456789",
+  "title": "Example Desk Lamp",
+  "descriptionHtml": "<p>A sample lamp.</p>",
+  "vendor": "Example Manufacturer",
+  "productType": "Lighting",
+  "seo": {
+    "title": "",
+    "description": ""
+  }
+}

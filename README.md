@@ -54,6 +54,24 @@ Analyze authorized social media content-level engagement across platforms throug
 
 **Status:** Offline analytics implemented. No live API connections, monitoring schedule, or scraping configured.
 
+### Shopify Product Page Automation (API-ready)
+
+Audit product-page content, fetch authorized Shopify product records through the GraphQL Admin API, preview proposed changes, and apply explicitly approved product title, HTML description, and SEO metadata updates.
+
+- Offline audit with synthetic product JSON.
+- Authorized Shopify read and write integration with environment-provided credentials.
+- Read-before-write preview; explicit confirmation required to update.
+- OpenClaw skill instructions for fact-checked, JTBD-informed content proposals.
+- No live Shopify credentials, autonomous text generation, or scheduled publishing included.
+
+**Included:** `tools/shopify_product_pages.py`, `skills/shopify-product-page-automation/SKILL.md`, `docs/shopify-product-page-automation.md`, and synthetic examples.
+
+```bash
+python3 tools/shopify_product_pages.py audit --input examples/shopify_product_sample.json
+```
+
+See [Shopify integration setup](docs/shopify-product-page-automation.md) for API configuration and the approval-first publishing workflow.
+
 ### AI Agent Architecture
 
 The project includes an OpenClaw-style configuration structure for guiding an AI assistant's behavior, analytical workflows, tool usage, and operational boundaries.
