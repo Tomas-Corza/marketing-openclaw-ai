@@ -15,6 +15,17 @@ Use for **one Shopify product at a time**. Run commands from the repository root
 5. Run `python3 -m tools.shopify_product_create create --input /private/new-product.json --approve-sha256 APPROVED_PREVIEW_SHA --confirm` **once**. This creates one Shopify product with status `DRAFT`; it does not publish or configure variants, prices, inventory, or sales channels.
 6. Inspect the new product in Shopify before any separate variant/pricing/publishing workflow. If a request times out, check Shopify before retrying to avoid duplicates.
 
+## Create many new draft products from CSV
+1. Obtain merchant authorization to create products and verify each title, SKU, variant option and price.
+2. Prepare a CSV using the exact columns in `examples/shopify_bulk_product_create_sample.csv`. Each row is a variant; rows with the same handle become one product.
+3. Run `python3 -m tools.shopify_bulk_product_create preview --input /private/catalog.csv` and inspect every proposed product, option, SKU and price.
+4. Get explicit approval for the exact CSV, target Shopify store and preview SHA-256 fingerprint.
+5. Run `python3 -m tools.shopify_bulk_product_create create --input /private/catalog.csv --approve-sha256 APPROVED_SHA --confirm --journal /private/import-log.jsonl --max-products 10` only after approval.
+6. Inspect newly created **DRAFT** products in Shopify. The importer never publishes, adjusts inventory, or updates existing handles.
+7. If a request fails or times out, STOP. Review the private journal and Shopify Admin before any manual retry. Do not rerun the whole CSV automatically.
+
+See `docs/shopify-bulk-product-create.md` for the file format, safety limits and tests.
+
 ## Update an existing product
 
 1. Confirm merchant authorization for the store and product. Configure `SHOPIFY_SHOP_DOMAIN` and `SHOPIFY_ACCESS_TOKEN` privately with required scopes.
@@ -27,6 +38,9 @@ Use for **one Shopify product at a time**. Run commands from the repository root
 8. Fetch again and verify the result. Retain authorized records of changes.
 
 ## Guardrails
+- Bulk draft creation is a live write; the matching preview hash and confirmation flag do not constitute merchant authorization.
+- No automatic publishing, duplicate SKU lookup against an existing store, or guaranteed retry safety. Only approved verified product data may be imported.
+
 - Draft creation is a live Shopify write, requires authorization and only creates an unpublished `DRAFT` product.
 - Draft creation never sets prices, variants, inventory or sales-channel publication; do not imply it creates a fully launch-ready store.
 - A hash match and `--confirm` are technical checks, not a substitute for actual merchant consent.
