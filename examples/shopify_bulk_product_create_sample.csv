@@ -1,0 +1,4 @@
+handle,title,description_html,vendor,product_type,seo_title,seo_description,tags,option1_name,option1_value,option2_name,option2_value,option3_name,option3_value,sku,price
+example-pendant,Example Pendant,<p>Fictional lighting fixture</p>,Example Lighting,Pendant,Example Pendant,Fictional product,demo|lighting,Finish,Black,,,,,PENDANT-BLACK,120.00
+example-pendant,Example Pendant,<p>Fictional lighting fixture</p>,Example Lighting,Pendant,Example Pendant,Fictional product,demo|lighting,Finish,White,,,,,PENDANT-WHITE,129.50
+example-sconce,Example Wall Sconce,<p>Fictional wall sconce</p>,Example Lighting,Sconce,Example Sconce,Fictional product,demo|lighting,Finish,Bronze,,,,,SCONCE-BRONZE,99.00
