@@ -119,7 +119,7 @@ with overview:
 with products:
     st.subheader("Shopify catalog audit")
     st.caption("Powered by the existing Shopify bulk feed audit module.")
-    st.dataframe(catalog["audit"], hide_index=True, use_container_width=True)
+    st.dataframe(catalog["audit"], hide_index=True, width="stretch")
     st.download_button("Export Shopify audit", json_bytes(catalog),
                        "shopify-catalog-audit.json", "application/json")
     st.divider()
@@ -146,7 +146,7 @@ with feed_health:
                               default=["critical", "high", "medium", "low"])
     filtered = [item for item in diagnostics["issues"] if item["priority"] in severity]
     if filtered:
-        st.dataframe(filtered, hide_index=True, use_container_width=True)
+        st.dataframe(filtered, hide_index=True, width="stretch")
     else:
         st.info("No matching issues from these offline checks. Approval by Merchant Center is not guaranteed.")
     st.download_button("Export diagnostics", json_bytes(diagnostics),
@@ -225,7 +225,7 @@ with history:
     st.subheader("Activity in this browser session")
     st.caption("This is not persistent audit storage or live automation execution history.")
     if st.session_state["event_log"]:
-        st.dataframe(list(reversed(st.session_state["event_log"])), hide_index=True, use_container_width=True)
+        st.dataframe(list(reversed(st.session_state["event_log"])), hide_index=True, width="stretch")
         st.download_button("Export session event log", json_bytes(st.session_state["event_log"]),
                            "session-activity.json", "application/json")
     else:
@@ -233,8 +233,8 @@ with history:
     st.subheader("Other automation modules")
     st.markdown("""
     **Existing repository commands** (not executed automatically by this dashboard):
-    - Shopify bulk content audit: \`tools/shopify_bulk_feed.py\`
-    - AI product copy generation: \`tools/shopify_ai_copy.py\`
-    - Product feed builder and sync: \`tools/shopify_feed_builder.py\`, \`tools/shopify_live_feed_sync.py\`
-    - Merchant diagnostics and API connector: \`tools/merchant_feed_diagnostics.py\`, \`tools/merchant_api_connector.py\`
+    - Shopify bulk content audit: `tools/shopify_bulk_feed.py`
+    - AI product copy generation: `tools/shopify_ai_copy.py`
+    - Product feed builder and sync: `tools/shopify_feed_builder.py`, `tools/shopify_live_feed_sync.py`
+    - Merchant diagnostics and API connector: `tools/merchant_feed_diagnostics.py`, `tools/merchant_api_connector.py`
     """)
