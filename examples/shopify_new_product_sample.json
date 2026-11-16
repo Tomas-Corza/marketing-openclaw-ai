@@ -1,0 +1,15 @@
+{
+  "title": "Example Architectural Pendant",
+  "descriptionHtml": "<p>A fictional pendant fixture for testing. Verify real product claims before use.</p>",
+  "vendor": "Example Lighting",
+  "productType": "Pendant",
+  "handle": "example-architectural-pendant",
+  "seo": {
+    "title": "Example Architectural Pendant",
+    "description": "Fictional product for demonstrating a reviewed Shopify draft."
+  },
+  "tags": ["sample", "pendant"],
+  "images": [
+    {"url": "https://example.com/sample-pendant.jpg", "alt": "Sample pendant fixture"}
+  ]
+}

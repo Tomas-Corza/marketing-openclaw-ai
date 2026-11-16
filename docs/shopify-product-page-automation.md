@@ -47,3 +47,19 @@ python3 tools/shopify_product_pages.py apply --id 123456789 --proposal examples/
 Avoid asserting unsupported specifications, compliance, shipping promises, certifications or marketing results. Product page optimization is not proof of improved conversion.
 
 Shopify reference: https://shopify.dev/docs/api/admin-graphql/2026-10/mutations/productUpdate
+
+## Create a new Shopify product draft (approval required)
+
+The new `tools/shopify_product_create.py` utility creates **one new Shopify DRAFT** from merchant-verified JSON. Use `examples/shopify_new_product_sample.json` as a fictional schema reference and copy it outside the repository for real catalog data.
+
+```bash
+python3 -m tools.shopify_product_create preview --input /private/new-product.json
+# Review the displayed product fields, images and input_sha256; obtain merchant approval.
+python3 -m tools.shopify_product_create create --input /private/new-product.json --approve-sha256 THE_EXACT_PREVIEW_SHA --confirm
+```
+
+The script validates the supplied title, description HTML, vendor, product type, handle, SEO fields, tags and up to ten HTTPS image URLs. It sends Shopify GraphQL `productCreate` with an explicit `status: DRAFT`, displays the resulting Shopify product ID and does **not** publish the product. Shopify requires the `write_products` scope and product-creation permission. Image processing may still be pending after creation.
+
+**Limits:** One product per command. No auto-generated AI copy, catalog CSV import, SKU, variants, price, inventory, duplicate detection or online-store publishing. Review and configure those separately. Re-running after an uncertain network failure can create duplicates; inspect the Shopify admin before retrying. The hash detects changed input, but does not itself verify merchant identity or permission. An authorized development-store end-to-end test is still required before production use.
+
+Shopify docs: https://shopify.dev/docs/api/admin-graphql/2026-10/mutations/productCreate
