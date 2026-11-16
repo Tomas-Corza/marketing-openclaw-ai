@@ -138,6 +138,24 @@ Generate Google Merchant Center-style RSS/TSV feeds directly from Shopify GraphQ
 
 See [Live Shopify feed setup](docs/shopify-live-feed-sync.md).
 
+### AI Product Feed Diagnostics & Optimization Agent (API-ready)
+
+Inspect Merchant Center-style TSV/RSS catalog feeds, compare offline issues with authorized Google Merchant API processed-product issues, and prioritize corrections.
+
+- Offline validation for required feed attributes, GTIN checksums, IDs, prices, availability and URLs.
+- Read-only Google Merchant API v1 `accounts.products.list` adapter for item issues and disapproval statuses.
+- Optional AI-based issue explanations and prioritized remediation tasks (OpenAI Responses API).
+- Explicitly approved, SHA-256 snapshot-checked **local-only** correction exports; no Shopify or Merchant API writes.
+- Synthetic test fixtures, mocked tests and GitHub Actions CI.
+
+**Included:** `tools/merchant_feed_diagnostics.py`, `tools/merchant_api_connector.py`, `tools/merchant_feed_ai_triage.py`, `skills/merchant-feed-diagnostics/SKILL.md`, `docs/merchant-feed-diagnostics.md`.
+
+```bash
+python3 tools/merchant_feed_diagnostics.py audit --feed /private/merchant-feed.tsv --output /private/merchant-diagnostics.json
+```
+
+See [Merchant feed diagnostics guide](docs/merchant-feed-diagnostics.md). No account connection is active by default.
+
 ### AI Agent Architecture
 
 The project includes an OpenClaw-style configuration structure for guiding an AI assistant's behavior, analytical workflows, tool usage, and operational boundaries.
