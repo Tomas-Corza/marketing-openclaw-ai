@@ -8,6 +8,7 @@ No live API writes and no background jobs are initiated by this dashboard.
 from __future__ import annotations
 
 import json
+import os
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
@@ -24,15 +25,18 @@ from dashboard.logic import (
 )
 
 DEMO = ROOT / "examples" / "dashboard"
+PUBLIC_DEMO = os.getenv("OPENCLAW_PUBLIC_DEMO", "").strip() == "1"
 
 st.set_page_config(page_title="Marketing OpenClaw | E-Commerce Operations", page_icon="📦", layout="wide")
 st.title("E-Commerce Operations")
 st.caption("Marketing OpenClaw AI · Shopify product analysis, feed diagnostics and controlled reviews")
+if PUBLIC_DEMO:
+    st.info("Public portfolio demo · All products, issues, and AI drafts are synthetic. No real store or account is connected.")
 
 with st.sidebar:
     st.header("Workspace")
-    demo_mode = st.toggle("Synthetic demonstration data", value=True)
-    st.caption("No store account is connected by this application.")
+    demo_mode = True if PUBLIC_DEMO else st.toggle("Synthetic demonstration data", value=True)
+    st.caption("Public synthetic-only mode · uploads disabled." if PUBLIC_DEMO else "No store account is connected by this application.")
     if demo_mode:
         catalog_bytes = (DEMO / "shopify_catalog.csv").read_bytes()
         feed_bytes = (DEMO / "merchant_feed.tsv").read_bytes()
@@ -54,7 +58,9 @@ with st.sidebar:
         ai_bytes = ai_upload.getvalue() if ai_upload else None
         merchant_bytes = merchant_upload.getvalue() if merchant_upload else None
     st.divider()
-    st.warning("Local review only — no Shopify, Merchant Center, or AI API calls.", icon="🔒")
+    st.warning("Demo-only local previews — no Shopify, Merchant Center, or AI API calls.", icon="🔒")
+    if PUBLIC_DEMO:
+        st.markdown("[View source code](https://github.com/Tomas-Corza/marketing-openclaw-ai) · [Portfolio](https://tomascorza.me/ai-marketing-analytics)")
 
 try:
     catalog = parse_catalog(catalog_bytes)
