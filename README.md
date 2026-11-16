@@ -16,6 +16,21 @@ The original implementation demonstrated the practical application of AI-assiste
 
 ## Capabilities
 
+### OpenClaw Skill Directory
+
+Each Shopify capability has its own discoverable `skills/<name>/SKILL.md` entry. The skill files are instructions, while runnable shared Python modules stay in `tools/`.
+
+| Skill | Primary responsibility |
+| --- | --- |
+| [shopify-product-page-automation](skills/shopify-product-page-automation/SKILL.md) | Single-product preview and authorized content updates |
+| [shopify-bulk-optimization](skills/shopify-bulk-optimization/SKILL.md) | Catalog-wide content audits and reviewed batch updates |
+| [shopify-ai-copy-generation](skills/shopify-ai-copy-generation/SKILL.md) | Review-only AI copy drafts and JTBD hypotheses |
+| [shopify-product-feed-builder](skills/shopify-product-feed-builder/SKILL.md) | Offline Shopify CSV to Merchant Center TSV/RSS |
+| [shopify-feed-sync](skills/shopify-feed-sync/SKILL.md) | Read-only Shopify API feed creation and opt-in scheduling |
+| [merchant-feed-diagnostics](skills/merchant-feed-diagnostics/SKILL.md) | Feed diagnostics, Merchant API status review and local fix approval |
+
+Skills do not automatically activate credentials, scheduled jobs, model API access or live store writes. Set up and test each integration separately.
+
 ### Jobs-to-be-Done (JTBD) Marketing Analysis
 
 Analyze marketing messages based on the customer motivations they address.
@@ -83,7 +98,7 @@ Extend the Shopify product-page skill across a product catalog with a Shopify CS
 - Apply capped batches with stale-content checks and private JSONL audit logs.
 - No AI-written copy or unattended product publishing by default.
 
-**Included:** `tools/shopify_bulk_feed.py`, `docs/shopify-bulk-feed-optimization.md`, `tests/test_shopify_bulk_feed.py`, and `examples/shopify_bulk_feed_sample.csv`.
+**Included:** `skills/shopify-bulk-optimization/SKILL.md`, `tools/shopify_bulk_feed.py`, `docs/shopify-bulk-feed-optimization.md`, `tests/test_shopify_bulk_feed.py`, and `examples/shopify_bulk_feed_sample.csv`.
 
 ```bash
 python3 tools/shopify_bulk_feed.py analyze --input examples/shopify_bulk_feed_sample.csv --output /tmp/shopify-audit.json
@@ -99,7 +114,7 @@ Generate proposed product-page titles, descriptions and SEO metadata at catalog 
 - No live Shopify writes: human review and explicit approvals remain mandatory.
 - Generated claims require independent verification against product facts.
 
-**Included:** `tools/shopify_ai_copy.py`, `tests/test_shopify_ai_copy.py`, `docs/shopify-ai-copy-generation.md`.
+**Included:** `skills/shopify-ai-copy-generation/SKILL.md`, `tools/shopify_ai_copy.py`, `tests/test_shopify_ai_copy.py`, `docs/shopify-ai-copy-generation.md`.
 
 ```bash
 python3 tools/shopify_ai_copy.py --input examples/shopify_bulk_feed_sample.csv --output /tmp/shopify-ai-review.json --max-products 10
@@ -116,7 +131,7 @@ Generate Google Merchant Center-style product feeds offline from authorized Shop
 - Reject incomplete products and export a separate machine-readable validation report.
 - Support repeatable generation from fresh exports (an automated Shopify export and hosted feed are separate deployment tasks).
 
-**Included:** `tools/shopify_feed_builder.py`, `docs/shopify-product-feed-builder.md`, `examples/shopify_merchant_feed_sample.csv`, and offline tests.
+**Included:** `skills/shopify-product-feed-builder/SKILL.md`, `tools/shopify_feed_builder.py`, `docs/shopify-product-feed-builder.md`, `examples/shopify_merchant_feed_sample.csv`, and offline tests.
 
 ```bash
 python3 tools/shopify_feed_builder.py --input examples/shopify_merchant_feed_sample.csv --store-url https://example.com --output /tmp/merchant-feed.tsv --rejects /tmp/merchant-feed-errors.json
@@ -134,7 +149,7 @@ Generate Google Merchant Center-style RSS/TSV feeds directly from Shopify GraphQ
 - Repository secrets for store credentials; **scheduled sync and public Pages publishing remain disabled until explicitly enabled**.
 - No Shopify product edits or automatic Google Merchant Center submissions.
 
-**Included:** `tools/shopify_live_feed_sync.py`, `docs/shopify-live-feed-sync.md`, `.github/workflows/shopify-live-feed.yml`, and offline unit tests.
+**Included:** `skills/shopify-feed-sync/SKILL.md`, `tools/shopify_live_feed_sync.py`, `docs/shopify-live-feed-sync.md`, `.github/workflows/shopify-live-feed.yml`, and offline unit tests.
 
 See [Live Shopify feed setup](docs/shopify-live-feed-sync.md).
 
