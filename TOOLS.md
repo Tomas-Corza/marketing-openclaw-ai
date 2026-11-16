@@ -36,6 +36,12 @@ No integrations are enabled by this file alone.
 - Purpose: Summarize authorized social media engagement at the content level.
 - Input: Normalized CSV; platform-specific APIs require separately implemented and approved adapters.
 
+### Shopify Individual Product Pages
+- Skill: `skills/shopify-product-page-automation/SKILL.md`
+- Script: `tools/shopify_product_pages.py`
+- Purpose: Product-specific fetch, audit, preview and approved edits.
+- Guide: `docs/shopify-product-page-automation.md`
+
 ## Execution Guidelines
 
 - Run scripts from the project root directory.
@@ -46,7 +52,7 @@ No integrations are enabled by this file alone.
 - Do not modify live campaigns without approval.
 
 ### Shopify Bulk Feed Optimization
-- Skill: `skills/shopify-product-page-automation/SKILL.md`
+- Skill: `skills/shopify-bulk-optimization/SKILL.md`
 - Script: `tools/shopify_bulk_feed.py`
 - Setup: `docs/shopify-bulk-feed-optimization.md`
 - Example: `examples/shopify_bulk_feed_sample.csv`
@@ -55,7 +61,7 @@ No integrations are enabled by this file alone.
 - Publishing: Never run `apply --confirm` without explicit authorization for the exact proposed changes.
 
 ### AI Shopify Product Copy Generator
-- Skill: `skills/shopify-product-page-automation/SKILL.md`
+- Skill: `skills/shopify-ai-copy-generation/SKILL.md`
 - Script: `tools/shopify_ai_copy.py`
 - Guide: `docs/shopify-ai-copy-generation.md`
 - Input: Authorized Shopify CSV product export; source title, vendor, type and existing description only.
@@ -64,6 +70,7 @@ No integrations are enabled by this file alone.
 - No automatic Shopify publishing; require independently verified product IDs and merchant approval.
 
 ### Shopify Product Feed Builder
+- Skill: `skills/shopify-product-feed-builder/SKILL.md`
 - Script: `tools/shopify_feed_builder.py`
 - Guide: `docs/shopify-product-feed-builder.md`
 - Input: authorized Shopify product CSV export with variant SKU, price, inventory and product assets.
@@ -73,7 +80,7 @@ No integrations are enabled by this file alone.
 
 ### Scheduled Shopify Merchant Feed Sync
 - Script: `tools/shopify_live_feed_sync.py`
-- Skill: `skills/shopify-product-page-automation/SKILL.md`
+- Skill: `skills/shopify-feed-sync/SKILL.md`
 - Setup: `docs/shopify-live-feed-sync.md`
 - Workflow: `.github/workflows/shopify-live-feed.yml`
 - Access: authorized Shopify GraphQL Admin API credentials in secrets; product catalog read-only.
