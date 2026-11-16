@@ -25,9 +25,13 @@ Its current e-commerce toolkit includes:
 
 The architecture is adapted from an AI-assisted marketing implementation previously used in practice and is published as a reusable portfolio and development project. **Capabilities differ in readiness:** offline analysis and synthetic demonstrations are available in source; integrations require authorized credentials, configuration and end-to-end testing. No live merchant account, scheduled deployment or hosted Streamlit URL is enabled by simply cloning this repository.
 
-## Deploy on a Fresh Mac Mini
+## Fresh Mac Mini Installation & Deployment
 
-This repository includes a **macOS setup kit** for a new OpenClaw installation. Clone the repo, run the interactive installer, and configure OpenClaw and your authorized business integrations.
+Marketing OpenClaw AI now includes a **fresh-machine deployment kit**. It can install the official OpenClaw CLI (with your confirmation), then copy this repository's custom skills and shared Python tools into an OpenClaw workspace. This is a repeatable setup workflow, **not** a fully configured production agent or a substitute for OpenClaw onboarding.
+
+### Start from a new Mac
+
+**Prerequisites:** macOS, Git, Python 3.10+, internet access, and authorization to install software. If Git or Python is missing, install those prerequisites first. Review the installation script and the official [OpenClaw setup instructions](https://docs.openclaw.ai/start/getting-started) before running an external installer.
 
 ```bash
 git clone https://github.com/Tomas-Corza/marketing-openclaw-ai.git
@@ -35,9 +39,47 @@ cd marketing-openclaw-ai
 bash install.sh
 ```
 
-The script requests permission before using the **official OpenClaw installer**, then deploys all **12 discoverable skill folders** (nine e-commerce/customer-operation skills plus three broader marketing skills) and their shared Python tools into the OpenClaw workspace. It checks for existing files rather than overwriting them. Model onboarding, Gateway readiness, merchant authorization, OAuth and production verification require separate steps.
+The installer:
 
-**[Fresh Mac setup guide](docs/fresh-mac-install.md)** · [Installer](install.sh) · [Workspace deployer](setup_skills.py) · [Installation verifier](verify_installation.py)
+1. Checks macOS, Python and file conflicts **before copying workspace files**.
+2. Detects an existing OpenClaw CLI. If one is not found, asks before downloading and executing the [official OpenClaw installer](https://openclaw.ai/install.sh).
+3. Copies **12 OpenClaw skill folders** and shared `tools/`, `docs/`, and `examples/` into `~/.openclaw/workspace`: nine e-commerce/customer-operations skills plus JTBD analysis, email analytics and social behavior monitoring.
+4. Runs read-only checks for skill files, representative Python tools and OpenClaw CLI availability.
+
+**Already have OpenClaw?** Install only the project files:
+
+```bash
+bash install.sh --skip-openclaw
+```
+
+For an OpenClaw agent configured with a different workspace, supply `--workspace=/absolute/path`. The destination must match the agent's actual workspace.
+
+### Installation files
+
+| File | What it does |
+| --- | --- |
+| [`install.sh`](install.sh) | Interactive macOS bootstrap; invokes the official OpenClaw installer only after confirmation |
+| [`setup_skills.py`](setup_skills.py) | Copies skill definitions and shared Python tools without overwriting differing existing files |
+| [`verify_installation.py`](verify_installation.py) | Checks deployed skill files, key tools and optional OpenClaw CLI presence |
+| [`requirements.txt`](requirements.txt) | Documents core Python standard-library requirements; the Streamlit dashboard has separate dependencies |
+| [`.env.example`](.env.example) | Lists optional integration variable names without supplying credentials |
+| [`tests/test_fresh_install.py`](tests/test_fresh_install.py) | Offline tests for dry runs, repeat installation, collisions and skill discovery |
+| [Fresh Mac installation guide](docs/fresh-mac-install.md) | Prerequisites, onboarding, verification, troubleshooting and security considerations |
+
+Run a read-only installation check or the deployment tests from the cloned repository:
+
+```bash
+python3 verify_installation.py
+python3 -m unittest discover -s tests -p 'test_fresh_install.py' -v
+```
+
+### After the files are installed
+
+Complete **OpenClaw model-provider onboarding and Gateway setup**, verify that OpenClaw discovers the skills, and test each intended workflow with authorized sample or development-account data. Business access is separate: Shopify credentials and scopes, Gmail OAuth, AI API keys and any approved external data processing must be configured individually. No automatic refunds, customer email sending, scheduled jobs or live merchant access are enabled by this installation.
+
+The deployment script does **not** overwrite agent identity/configuration files, credentials, sessions or memories. It stops rather than replacing differing existing skill/tool files. The skills generally expect their shared Python scripts to be run from the **workspace root**; the installer does not install them as global Python packages.
+
+**Verification status:** GitHub Actions validated the deployment scripts and skill metadata using offline tests. A clean-install trial on a physical Mac mini and end-to-end testing with authorized business accounts are still required before claiming production readiness.
 
 ## Capabilities
 
