@@ -42,6 +42,8 @@ python -m compileall -q dashboard
 
 CI: \`.github/workflows/operations-dashboard-tests.yml\`.
 
-## Deploying
+## Deploying a synthetic-only public demo
 
-This repository ships Streamlit source code, **not a hosted dashboard**. You can run it locally or deploy to a private Streamlit-compatible host. Keep demo mode enabled for portfolio demonstrations. Live store connections, persistent role-based approvals and job-history ingestion would require a separately reviewed implementation.
+This repository ships Streamlit source code, **not a hosted dashboard**. Use `dashboard/public_app.py` as the main file path in Streamlit Community Cloud. That entrypoint forces synthetic demonstration data and removes merchant upload controls; use `dashboard/app.py` only for local authorized uploads. See [Streamlit deployment instructions](../docs/streamlit-community-cloud-deployment.md).
+
+Public deployment requires an authorized Streamlit account and a real verified app URL. Live store connections, persistent role-based approvals and job-history ingestion would require a separately reviewed implementation.

@@ -48,7 +48,7 @@ python -m pip install -r dashboard/requirements.txt
 streamlit run dashboard/app.py
 ```
 
-See [Dashboard setup and safety](dashboard/README.md).
+See [Dashboard setup and safety](dashboard/README.md) and [Streamlit Community Cloud public demo deployment](docs/streamlit-community-cloud-deployment.md). The public demo entrypoint is `dashboard/public_app.py` (synthetic-only; no uploads); deployment requires the owner's Streamlit account.
 
 ### Jobs-to-be-Done (JTBD) Marketing Analysis
 
