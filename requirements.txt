@@ -1,0 +1,2 @@
+# Python 3.10+ standard library is sufficient for the core skills and setup scripts.
+# For the optional Streamlit dashboard see dashboard/requirements.txt.
