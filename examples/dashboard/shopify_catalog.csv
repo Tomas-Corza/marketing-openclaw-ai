@@ -1,0 +1,6 @@
+Handle,Title,Body (HTML),Vendor,Type,SEO Title,SEO Description,Variant SKU
+sample-desk-lamp,Adjustable Desk Lamp,<p>An adjustable desk lamp for everyday task lighting.</p>,Example Lighting,Lighting,,,LAMP-001
+sample-desk-lamp,,,,,,,LAMP-002
+sample-floor-light,Floor Light,<p>A tall lamp.</p>,Example Lighting,Lighting,Floor Light | Example Lighting,,LAMP-003
+sample-chair,Accent Chair,<p>A chair with a simple silhouette for living spaces.</p>,Example Furnishings,Furniture,,,CHAIR-001
+sample-table,Side Table,,Example Furnishings,Furniture,,,TABLE-001

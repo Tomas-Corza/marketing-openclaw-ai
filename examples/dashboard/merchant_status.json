@@ -1,0 +1,40 @@
+{
+  "products": [
+    {
+      "offerId": "LAMP-003",
+      "productStatus": {
+        "destinationStatuses": [
+          {
+            "disapprovedCountries": [
+              "US"
+            ]
+          }
+        ],
+        "itemLevelIssues": [
+          {
+            "code": "image_link_unavailable",
+            "severity": "DISAPPROVED",
+            "attribute": "image_link",
+            "description": "Synthetic example of an image issue",
+            "applicableCountries": [
+              "US"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "offerId": "LAMP-001",
+      "productStatus": {
+        "destinationStatuses": [
+          {
+            "approvedCountries": [
+              "US"
+            ]
+          }
+        ],
+        "itemLevelIssues": []
+      }
+    }
+  ]
+}

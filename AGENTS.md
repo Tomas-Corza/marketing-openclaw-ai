@@ -59,3 +59,7 @@ Use the narrowest dedicated skill before running a Shopify workflow:
 - Merchant feed issue triage: `skills/merchant-feed-diagnostics/SKILL.md`
 
 The skills share Python implementations under `tools/` and must be executed from the repository root. A skill definition does not install credentials or imply permission to execute live writes, public deployments, or scheduled jobs. Require documented merchant approval before those actions.
+
+## E-Commerce operations dashboard
+
+For a read-only Streamlit portfolio and review workspace, launch `streamlit run dashboard/app.py` from the repository root. See `dashboard/README.md`. The dashboard invokes existing offline Shopify catalog auditing and Merchant feed diagnostics functions, and displays optional AI draft files. Never interpret a local approval queue action as authorization for live Shopify, Merchant Center, ad account, or feed-hosting writes. Sensitive merchant uploads should only be handled in appropriately secured deployments.
