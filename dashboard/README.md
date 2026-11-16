@@ -36,7 +36,7 @@ The synthetic demonstration dataset loads automatically. No API credentials are 
 ## Offline tests
 
 ```bash
-python -m unittest tests.test_operations_dashboard
+python -m unittest discover -s tests -p 'test_operations_dashboard.py'
 python -m compileall -q dashboard
 ```
 
