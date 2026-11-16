@@ -1,0 +1,21 @@
+{
+  "products": [
+    {
+      "id": "fixture-001",
+      "name": "Example Pendant",
+      "facts": {
+        "Finish": "Matte black",
+        "Voltage": "120V",
+        "Mounting": "Ceiling fixture"
+      },
+      "url": "https://example.com/products/example-pendant"
+    }
+  ],
+  "policies": [
+    {
+      "id": "return-review",
+      "category": "returns",
+      "text": "Our support team reviews return requests against the customer's order and applicable policy."
+    }
+  ]
+}
