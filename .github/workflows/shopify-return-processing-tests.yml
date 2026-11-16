@@ -1,0 +1,25 @@
+name: Shopify Return Processing Tests
+on:
+  pull_request:
+    paths:
+      - 'tools/shopify_return_processing.py'
+      - 'tests/test_shopify_return_processing.py'
+      - '.github/workflows/shopify-return-processing-tests.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'tools/shopify_return_processing.py'
+      - 'tests/test_shopify_return_processing.py'
+      - '.github/workflows/shopify-return-processing-tests.yml'
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run offline return-processing tests
+        run: python -m unittest discover -s tests -p 'test_shopify_return_processing.py' -v
+      - name: Compile return tool
+        run: python -m compileall -q tools/shopify_return_processing.py
