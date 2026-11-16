@@ -1,0 +1,27 @@
+name: Shopify Bulk Draft Import Tests
+on:
+  pull_request:
+    paths:
+      - 'tools/shopify_bulk_product_create.py'
+      - 'tools/shopify_product_pages.py'
+      - 'tests/test_shopify_bulk_product_create.py'
+      - '.github/workflows/shopify-bulk-draft-import-tests.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'tools/shopify_bulk_product_create.py'
+      - 'tools/shopify_product_pages.py'
+      - 'tests/test_shopify_bulk_product_create.py'
+      - '.github/workflows/shopify-bulk-draft-import-tests.yml'
+jobs:
+  offline-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Test CSV validation and mocked draft creation
+        run: python -m unittest discover -s tests -p 'test_shopify_bulk_product_create.py' -v
+      - name: Compile importer
+        run: python -m compileall -q tools/shopify_bulk_product_create.py
