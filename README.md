@@ -10,7 +10,7 @@
 
 Its current e-commerce toolkit includes:
 
-- **Shopify product-page automation:** Approval-controlled creation of unpublished Shopify product drafts, plus single-product SEO/content audits and edits through the Shopify Admin GraphQL API.
+- **Shopify product-page automation:** Approval-controlled creation of unpublished Shopify product drafts, including bulk CSV imports with SKUs, prices and variants, plus single-product SEO/content audits and edits through the Shopify Admin GraphQL API.
 - **Shopify bulk optimization:** CSV catalog audits, metadata recommendations, and approval-gated batch update manifests.
 - **AI product copy generation:** Review-only titles, HTML descriptions, SEO metadata and JTBD messaging hypotheses via the OpenAI Responses API.
 - **Product feed builder:** Shopify CSV to Merchant Center-style TSV/RSS feeds, with inventory, pricing and identifier validation.
@@ -105,19 +105,20 @@ Analyze authorized social media content-level engagement across platforms throug
 Create one new unpublished Shopify product draft from verified JSON with hash-matched approval, or audit existing product-page content, preview proposed changes, and apply explicitly approved title, HTML description and SEO metadata updates.
 
 - New product draft creation: validate merchant-verified title, HTML description, vendor, type, SEO metadata, tags and HTTPS image URLs; approve exact preview before writing a Shopify DRAFT.
+- Bulk CSV creation: group variant rows by product, validate SKUs/prices/options, require fingerprint-matched merchant review, create DRAFT products in bounded batches and write a private per-product journal.
 - Offline audit with synthetic product JSON.
 - Authorized Shopify read and write integration with environment-provided credentials.
 - Read-before-write preview; explicit confirmation required to update.
 - OpenClaw skill instructions for fact-checked, JTBD-informed content proposals.
 - No live Shopify credentials, autonomous text generation, or scheduled publishing included.
 
-**Included:** `tools/shopify_product_pages.py`, `tools/shopify_product_create.py`, `skills/shopify-product-page-automation/SKILL.md`, `docs/shopify-product-page-automation.md`, offline tests and synthetic examples.
+**Included:** `tools/shopify_product_pages.py`, `tools/shopify_product_create.py`, `tools/shopify_bulk_product_create.py`, `skills/shopify-product-page-automation/SKILL.md`, `docs/shopify-product-page-automation.md`, offline tests and synthetic examples.
 
 ```bash
 python3 tools/shopify_product_pages.py audit --input examples/shopify_product_sample.json
 ```
 
-See [Shopify integration setup](docs/shopify-product-page-automation.md) for API configuration and the approval-first publishing workflow.
+See [Shopify integration setup](docs/shopify-product-page-automation.md) and [Bulk CSV draft creation](docs/shopify-bulk-product-create.md) for approval-controlled creation and updates.
 
 ### Shopify Bulk Feed Optimization (API-ready)
 
