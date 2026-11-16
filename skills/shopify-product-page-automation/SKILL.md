@@ -54,6 +54,12 @@ Support `--format rss` for XML feeds. Before publication, review rejects, verify
 
 This script builds local files only: it does not fetch Shopify inventory, host feeds, create schedules or submit feeds to Merchant Center. Use `docs/shopify-product-feed-builder.md` for source requirements and repeatable runs.
 
+## Live Shopify product feed sync (optional)
+
+The catalog can be read directly via Shopify GraphQL product-variant pagination using `tools/shopify_live_feed_sync.py`. It produces a validatable RSS/TSV feed and a JSON reject report from authorized catalog records. It does not edit Shopify products or submit data to Merchant Center.
+
+For recurring builds, the opt-in GitHub Actions workflow `.github/workflows/shopify-live-feed.yml` can generate feeds daily and optionally deploy publicly with GitHub Pages. Only enable the Shopify schedule and public deployment after merchant authorization and verification of feed contents and landing page policies. Consult `docs/shopify-live-feed-sync.md` for settings, permissions and limitations.
+
 ## Safety
 - API credentials must come from local environment or a dedicated secrets manager, never from GitHub files or prompts.
 - Review generated HTML, factual accuracy, trademark claims, regulatory statements, image references and search descriptions before applying.

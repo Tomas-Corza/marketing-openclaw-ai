@@ -124,6 +124,20 @@ python3 tools/shopify_feed_builder.py --input examples/shopify_merchant_feed_sam
 
 See [Feed creation guide](docs/shopify-product-feed-builder.md).
 
+### Scheduled Shopify API Feed Sync (opt-in)
+
+Generate Google Merchant Center-style RSS/TSV feeds directly from Shopify GraphQL product and variant data, without manual CSV exports. A GitHub Actions workflow can regenerate the feed daily and optionally deploy approved public catalog information to GitHub Pages.
+
+- Shopify Admin GraphQL cursor pagination and variant-aware catalog extraction.
+- Validation of publication status, identifiers, prices, inventory, product assets, and feed fields.
+- Strict rejection of invalid feed entries by default; private error reports.
+- Repository secrets for store credentials; **scheduled sync and public Pages publishing remain disabled until explicitly enabled**.
+- No Shopify product edits or automatic Google Merchant Center submissions.
+
+**Included:** `tools/shopify_live_feed_sync.py`, `docs/shopify-live-feed-sync.md`, `.github/workflows/shopify-live-feed.yml`, and offline unit tests.
+
+See [Live Shopify feed setup](docs/shopify-live-feed-sync.md).
+
 ### AI Agent Architecture
 
 The project includes an OpenClaw-style configuration structure for guiding an AI assistant's behavior, analytical workflows, tool usage, and operational boundaries.

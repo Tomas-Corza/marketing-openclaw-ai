@@ -1,0 +1,69 @@
+name: Scheduled Shopify Merchant Feed
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 10 * * *'
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    if: vars.ENABLE_SHOPIFY_FEED_SYNC == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      SHOPIFY_SHOP_DOMAIN: ${{ secrets.SHOPIFY_SHOP_DOMAIN }}
+      SHOPIFY_ACCESS_TOKEN: ${{ secrets.SHOPIFY_ACCESS_TOKEN }}
+      STOREFRONT_URL: ${{ vars.SHOPIFY_STOREFRONT_URL }}
+      FEED_CURRENCY: ${{ vars.SHOPIFY_FEED_CURRENCY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Validate authorized configuration
+        shell: bash
+        run: |
+          test -n "$SHOPIFY_SHOP_DOMAIN" || { echo 'Missing SHOPIFY_SHOP_DOMAIN secret'; exit 1; }
+          test -n "$SHOPIFY_ACCESS_TOKEN" || { echo 'Missing SHOPIFY_ACCESS_TOKEN secret'; exit 1; }
+          test -n "$STOREFRONT_URL" || { echo 'Missing SHOPIFY_STOREFRONT_URL variable'; exit 1; }
+          test -n "$FEED_CURRENCY" || { echo 'Missing SHOPIFY_FEED_CURRENCY variable'; exit 1; }
+      - name: Generate validated feed
+        shell: bash
+        run: |
+          mkdir -p public private
+          python3 tools/shopify_live_feed_sync.py \
+            --store-url "$STOREFRONT_URL" \
+            --currency "$FEED_CURRENCY" \
+            --format rss \
+            --output public/merchant-feed.xml \
+            --rejects private/rejected-items.json
+      - name: Upload build report (restricted workflow artifact)
+        uses: actions/upload-artifact@v4
+        with:
+          name: shopify-merchant-feed-build
+          path: |
+            public/merchant-feed.xml
+            private/rejected-items.json
+          retention-days: 7
+      - name: Upload Pages artifact (optional)
+        if: vars.ENABLE_PUBLIC_FEED_PAGES == 'true'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: public
+
+  deploy_pages:
+    if: vars.ENABLE_SHOPIFY_FEED_SYNC == 'true' && vars.ENABLE_PUBLIC_FEED_PAGES == 'true'
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - name: Deploy validated public feed to GitHub Pages
+        id: deploy
+        uses: actions/deploy-pages@v4

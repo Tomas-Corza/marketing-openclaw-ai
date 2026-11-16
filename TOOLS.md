@@ -70,3 +70,12 @@ No integrations are enabled by this file alone.
 - Output: TSV or RSS XML Merchant Center-style feed and JSON rejected-item report.
 - Access: offline; no Shopify credentials, Merchant Center publishing or scheduled sync included.
 - Guardrails: validate source facts, prices, shipping, landing pages and Merchant Center policy before submission.
+
+### Scheduled Shopify Merchant Feed Sync
+- Script: `tools/shopify_live_feed_sync.py`
+- Skill: `skills/shopify-product-page-automation/SKILL.md`
+- Setup: `docs/shopify-live-feed-sync.md`
+- Workflow: `.github/workflows/shopify-live-feed.yml`
+- Access: authorized Shopify GraphQL Admin API credentials in secrets; product catalog read-only.
+- Guardrails: schedule disabled until `ENABLE_SHOPIFY_FEED_SYNC=true`; public Pages deployment independently disabled until `ENABLE_PUBLIC_FEED_PAGES=true`.
+- Validation: reject invalid products, verify Merchant Center requirements and price/availability landing-page alignment before publishing.
