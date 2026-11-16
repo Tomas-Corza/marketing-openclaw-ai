@@ -1,0 +1,25 @@
+name: Customer Inquiry Assistant Tests
+on:
+  pull_request:
+    paths:
+      - 'tools/customer_inquiry_assistant.py'
+      - 'tests/test_customer_inquiry_assistant.py'
+      - '.github/workflows/customer-inquiry-assistant-tests.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'tools/customer_inquiry_assistant.py'
+      - 'tests/test_customer_inquiry_assistant.py'
+      - '.github/workflows/customer-inquiry-assistant-tests.yml'
+jobs:
+  offline-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Test inquiry drafting with fictional data
+        run: python -m unittest discover -s tests -p 'test_customer_inquiry_assistant.py' -v
+      - name: Compile assistant
+        run: python -m compileall -q tools/customer_inquiry_assistant.py
