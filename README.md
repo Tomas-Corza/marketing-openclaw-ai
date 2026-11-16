@@ -18,6 +18,7 @@ Its current e-commerce toolkit includes:
 - **Merchant Center diagnostics:** Offline feed checks, read-only Merchant API issue analysis, AI remediation suggestions and approval-controlled local feed fixes.
 - **Streamlit e-commerce operations dashboard:** Visual catalog health, feed diagnostics, AI recommendations, local approval queues and synthetic demonstration data.
 - **AI customer inquiry assistant:** Review-only classification of product questions, order requests, quote inquiries and returns, with approved knowledge grounding, optional opt-in AI drafting and human escalation.
+- **Gmail customer inquiry drafts:** Optional authorized Gmail API integration to retrieve one selected customer email, prepare a grounded reply, and create an unsent, human-approved Gmail draft.
 
 **Explore the code:** [OpenClaw skills](skills/) · [E-Commerce Operations Dashboard](dashboard/) · [Synthetic dashboard demo setup](docs/streamlit-community-cloud-deployment.md)
 
@@ -38,6 +39,7 @@ Each e-commerce capability has its own discoverable `skills/<name>/SKILL.md` ent
 | [shopify-feed-sync](skills/shopify-feed-sync/SKILL.md) | Read-only Shopify API feed creation and opt-in scheduling |
 | [merchant-feed-diagnostics](skills/merchant-feed-diagnostics/SKILL.md) | Feed diagnostics, Merchant API status review and local fix approval |
 | [customer-inquiry-assistant](skills/customer-inquiry-assistant/SKILL.md) | Classify inquiries and draft factual, unapproved, unsent customer responses from approved product/policy facts |
+| [gmail-customer-inquiry-drafts](skills/gmail-customer-inquiry-drafts/SKILL.md) | Read one explicitly selected authorized Gmail message and create an unsent reply draft only after human approval |
 
 Skills do not automatically activate credentials, scheduled jobs, model API access or live store writes. Set up and test each integration separately.
 
@@ -80,6 +82,28 @@ python3 -m tools.customer_inquiry_assistant --inquiry examples/customer_inquiry_
 ```
 
 See [Customer Inquiry Assistant setup](docs/customer-inquiry-assistant.md). Real inbox/Shopify integrations and sending workflows require separate authorization, development, security review and testing.
+
+### Gmail Customer Inquiry Draft Integration (API-ready)
+
+Extend the [AI Customer Inquiry Assistant](skills/customer-inquiry-assistant/SKILL.md) to process **one authorized Gmail message at a time** and prepare a reply inside the original email thread. The connector classifies the selected question, uses a separately approved product/policy knowledge JSON and generates a review-only reply. A matching SHA-256 fingerprint and explicit confirmation are required before creating a **Gmail draft**.
+
+- Uses Gmail API `users.messages.get` for a selected message and `users.drafts.create` for approved replies. **Never sends email.**
+- Supports offline template replies or optional OpenAI drafting only with permission to share the inquiry externally.
+- Excludes certain automated/list emails, spam and sensitive inquiries.
+- Requires a merchant-authorized OAuth token with suitable Gmail read and compose scopes; no credentials or live mailbox are provided by the repository.
+- No inbox monitoring, auto-sending, live order lookup, recurring polling or multi-message processing. Production use requires privacy review and authorized end-to-end testing.
+
+**Included:** [OpenClaw skill](skills/gmail-customer-inquiry-drafts/SKILL.md), [Python Gmail connector](tools/gmail_inquiry_drafts.py), [setup guide](docs/gmail-customer-inquiry-drafts.md), and mocked tests.
+
+```bash
+# With authorized GMAIL_ACCESS_TOKEN configured privately:
+python3 -m tools.gmail_inquiry_drafts preview --message-id GMAIL_MESSAGE_ID --knowledge /private/approved-knowledge.json
+
+# Only after human approval of the exact recipient and reply:
+python3 -m tools.gmail_inquiry_drafts create --message-id GMAIL_MESSAGE_ID --knowledge /private/approved-knowledge.json --approve-sha256 APPROVED_PREVIEW_HASH --confirm
+```
+
+See [Gmail inquiry draft guide](docs/gmail-customer-inquiry-drafts.md) for configuration, privacy limitations and safeguards.
 
 ### Jobs-to-be-Done (JTBD) Marketing Analysis
 
