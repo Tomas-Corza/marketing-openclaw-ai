@@ -1,0 +1,27 @@
+name: Gmail Inquiry Draft Integration Tests
+on:
+  pull_request:
+    paths:
+      - 'tools/gmail_inquiry_drafts.py'
+      - 'tools/customer_inquiry_assistant.py'
+      - 'tests/test_gmail_inquiry_drafts.py'
+      - '.github/workflows/gmail-inquiry-drafts-tests.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'tools/gmail_inquiry_drafts.py'
+      - 'tools/customer_inquiry_assistant.py'
+      - 'tests/test_gmail_inquiry_drafts.py'
+      - '.github/workflows/gmail-inquiry-drafts-tests.yml'
+jobs:
+  offline-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Test Gmail inbox-to-draft workflow with mocked requests
+        run: python -m unittest discover -s tests -p 'test_gmail_inquiry_drafts.py' -v
+      - name: Compile Gmail connector
+        run: python -m compileall -q tools/gmail_inquiry_drafts.py
