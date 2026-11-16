@@ -42,6 +42,18 @@ Requires a locally managed `OPENAI_API_KEY`. It produces drafts of product title
 
 The AI draft report is never a publish manifest. Verify IDs and create current-snapshot manifests through `tools/shopify_bulk_feed.py prepare`, manually transfer individually approved changes and use `apply --confirm` only with explicit merchant authorization. Do not upload confidential merchant data without permission. See `docs/shopify-ai-copy-generation.md`.
 
+## Product feed creation workflow
+
+For authorized product CSV exports, convert validated catalog data into a Merchant Center-style feed:
+
+```bash
+python3 tools/shopify_feed_builder.py --input examples/shopify_merchant_feed_sample.csv --store-url https://example.com --output /tmp/merchant-feed.tsv --rejects /tmp/merchant-errors.json
+```
+
+Support `--format rss` for XML feeds. Before publication, review rejects, verify item IDs, active publication status, variant landing URLs, target-market requirements, price and shipping accuracy, inventory availability and item identifier policies. Do not treat untracked or oversold inventory as in stock without merchant verification.
+
+This script builds local files only: it does not fetch Shopify inventory, host feeds, create schedules or submit feeds to Merchant Center. Use `docs/shopify-product-feed-builder.md` for source requirements and repeatable runs.
+
 ## Safety
 - API credentials must come from local environment or a dedicated secrets manager, never from GitHub files or prompts.
 - Review generated HTML, factual accuracy, trademark claims, regulatory statements, image references and search descriptions before applying.

@@ -62,3 +62,11 @@ No integrations are enabled by this file alone.
 - Output: Review-only AI title, HTML description, SEO metadata, JTBD messaging hypothesis and review notes.
 - Credentials: Locally managed `OPENAI_API_KEY` and optional `OPENAI_MODEL`; requests go to the OpenAI Responses API.
 - No automatic Shopify publishing; require independently verified product IDs and merchant approval.
+
+### Shopify Product Feed Builder
+- Script: `tools/shopify_feed_builder.py`
+- Guide: `docs/shopify-product-feed-builder.md`
+- Input: authorized Shopify product CSV export with variant SKU, price, inventory and product assets.
+- Output: TSV or RSS XML Merchant Center-style feed and JSON rejected-item report.
+- Access: offline; no Shopify credentials, Merchant Center publishing or scheduled sync included.
+- Guardrails: validate source facts, prices, shipping, landing pages and Merchant Center policy before submission.

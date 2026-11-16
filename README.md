@@ -107,6 +107,23 @@ python3 tools/shopify_ai_copy.py --input examples/shopify_bulk_feed_sample.csv -
 
 See [AI product copy setup](docs/shopify-ai-copy-generation.md).
 
+### Shopify Product Feed Creation (CSV → Merchant Center TSV / RSS)
+
+Generate Google Merchant Center-style product feeds offline from authorized Shopify CSV exports.
+
+- Convert variant-level catalog rows to stable SKU-based feed item IDs.
+- Export tab-delimited TSV or RSS XML with title, description, price, inventory availability, image, product URL and identifiers.
+- Reject incomplete products and export a separate machine-readable validation report.
+- Support repeatable generation from fresh exports (an automated Shopify export and hosted feed are separate deployment tasks).
+
+**Included:** `tools/shopify_feed_builder.py`, `docs/shopify-product-feed-builder.md`, `examples/shopify_merchant_feed_sample.csv`, and offline tests.
+
+```bash
+python3 tools/shopify_feed_builder.py --input examples/shopify_merchant_feed_sample.csv --store-url https://example.com --output /tmp/merchant-feed.tsv --rejects /tmp/merchant-feed-errors.json
+```
+
+See [Feed creation guide](docs/shopify-product-feed-builder.md).
+
 ### AI Agent Architecture
 
 The project includes an OpenClaw-style configuration structure for guiding an AI assistant's behavior, analytical workflows, tool usage, and operational boundaries.

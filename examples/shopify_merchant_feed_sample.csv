@@ -1,0 +1,4 @@
+Handle,Title,Body (HTML),Vendor,Variant SKU,Variant Price,Variant Inventory Tracker,Variant Inventory Qty,Variant Inventory Policy,Variant Barcode,Image Src,Option1 Value
+desk-lamp,Example Desk Lamp,<p>Example adjustable indoor desk lamp.</p>,Sample Lighting,LAMP-001,39.99,shopify,12,deny,012345678905,https://cdn.example.com/lamp.jpg,Standard
+desk-lamp,,,,LAMP-002,49.99,shopify,5,deny,012345678906,,Large
+floor-lamp,Example Floor Lamp,<p>Example floor lamp for indoor use.</p>,Sample Lighting,LAMP-003,89.99,shopify,2,deny,012345678907,https://cdn.example.com/floor-lamp.jpg,Default Title
