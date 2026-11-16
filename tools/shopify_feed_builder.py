@@ -104,6 +104,12 @@ def iter_catalog(path: str):
 def build_item(handle: str, row: dict, parent: dict, store: str,
                currency: str, condition: str, allow_untracked: bool) -> dict:
     ident = variant_key(row)
+    status = (row.get("Status") or "").strip().lower()
+    published = (row.get("Published") or "").strip().lower()
+    if status and status != "active":
+        raise ValueError("Product is not active")
+    if published in ("false", "no", "0"):
+        raise ValueError("Product is not published")
     title = parent["Title"].strip()
     if not title:
         raise ValueError("Missing product title")
