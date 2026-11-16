@@ -79,3 +79,12 @@ No integrations are enabled by this file alone.
 - Access: authorized Shopify GraphQL Admin API credentials in secrets; product catalog read-only.
 - Guardrails: schedule disabled until `ENABLE_SHOPIFY_FEED_SYNC=true`; public Pages deployment independently disabled until `ENABLE_PUBLIC_FEED_PAGES=true`.
 - Validation: reject invalid products, verify Merchant Center requirements and price/availability landing-page alignment before publishing.
+
+### Merchant Feed Diagnostics Agent
+- Skill: `skills/merchant-feed-diagnostics/SKILL.md`
+- Offline validator: `tools/merchant_feed_diagnostics.py`
+- Google Merchant API read adapter: `tools/merchant_api_connector.py`
+- Optional AI triage: `tools/merchant_feed_ai_triage.py`
+- Setup: `docs/merchant-feed-diagnostics.md`
+- Access: read-only Merchant API v1 processed products via account-authorized OAuth token `MERCHANT_API_ACCESS_TOKEN`; optional AI API key `OPENAI_API_KEY`.
+- Modification rules: only approved local feed text edits, snapshot-checking and no live writes.
