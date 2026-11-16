@@ -1,0 +1,44 @@
+{
+  "products": [
+    {
+      "offerId": "lamp-1",
+      "name": "accounts/123/products/en~US~lamp-1",
+      "productStatus": {
+        "destinationStatuses": [
+          {
+            "reportingContext": "SHOPPING_ADS",
+            "disapprovedCountries": [
+              "US"
+            ]
+          }
+        ],
+        "itemLevelIssues": [
+          {
+            "code": "invalid_gtin",
+            "severity": "DISAPPROVED",
+            "attribute": "gtins",
+            "description": "Invalid GTIN",
+            "applicableCountries": [
+              "US"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "offerId": "lamp-2",
+      "name": "accounts/123/products/en~US~lamp-2",
+      "productStatus": {
+        "destinationStatuses": [
+          {
+            "reportingContext": "SHOPPING_ADS",
+            "approvedCountries": [
+              "US"
+            ]
+          }
+        ],
+        "itemLevelIssues": []
+      }
+    }
+  ]
+}
