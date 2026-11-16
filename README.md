@@ -91,6 +91,22 @@ python3 tools/shopify_bulk_feed.py analyze --input examples/shopify_bulk_feed_sa
 
 See [Bulk Shopify feed guide](docs/shopify-bulk-feed-optimization.md).
 
+### AI-Powered Shopify Catalog Copy Generation (review-only)
+
+Generate proposed product-page titles, descriptions and SEO metadata at catalog scale using the OpenAI Responses API and verified merchant source fields. The agent produces a Jobs-to-be-Done messaging hypothesis and review notes for each product. API access and merchant authorization are required; these are **drafts only**, not autonomous publishing.
+
+- Strict JSON output, escaped HTML, per-product errors and rate/cost caps.
+- No live Shopify writes: human review and explicit approvals remain mandatory.
+- Generated claims require independent verification against product facts.
+
+**Included:** `tools/shopify_ai_copy.py`, `tests/test_shopify_ai_copy.py`, `docs/shopify-ai-copy-generation.md`.
+
+```bash
+python3 tools/shopify_ai_copy.py --input examples/shopify_bulk_feed_sample.csv --output /tmp/shopify-ai-review.json --max-products 10
+```
+
+See [AI product copy setup](docs/shopify-ai-copy-generation.md).
+
 ### AI Agent Architecture
 
 The project includes an OpenClaw-style configuration structure for guiding an AI assistant's behavior, analytical workflows, tool usage, and operational boundaries.

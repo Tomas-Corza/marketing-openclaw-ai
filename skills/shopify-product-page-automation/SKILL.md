@@ -30,6 +30,18 @@ For merchant-approved live batch updates:
 
 Bulk audit suggestions are deterministic, not model-generated. AI copywriting, live scheduling and automatic CSV-handle-to-ID mapping are not included. Consult `docs/shopify-bulk-feed-optimization.md`.
 
+## AI-generated catalog copy (optional)
+
+For merchant-authorized catalog content, use the OpenAI Responses API-backed helper to generate structured drafts:
+
+```bash
+python3 tools/shopify_ai_copy.py --input examples/shopify_bulk_feed_sample.csv --output /private/ai-drafts.json --max-products 10
+```
+
+Requires a locally managed `OPENAI_API_KEY`. It produces drafts of product titles, escaped HTML descriptions, SEO metadata, JTBD hypotheses, and review notes. Inputs are untrusted product data, and the model must not invent product facts. **All drafts require factual and legal review; model instructions do not guarantee accuracy.**
+
+The AI draft report is never a publish manifest. Verify IDs and create current-snapshot manifests through `tools/shopify_bulk_feed.py prepare`, manually transfer individually approved changes and use `apply --confirm` only with explicit merchant authorization. Do not upload confidential merchant data without permission. See `docs/shopify-ai-copy-generation.md`.
+
 ## Safety
 - API credentials must come from local environment or a dedicated secrets manager, never from GitHub files or prompts.
 - Review generated HTML, factual accuracy, trademark claims, regulatory statements, image references and search descriptions before applying.
