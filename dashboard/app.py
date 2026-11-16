@@ -68,6 +68,10 @@ except (ValueError, OSError, json.JSONDecodeError, UnicodeError) as exc:
 
 fingerprint = source_fingerprint(catalog_bytes, feed_bytes, ai_bytes or b"", merchant_bytes or b"")
 if st.session_state.get("input_fingerprint") != fingerprint:
+    # Stale approvals must never carry over to a different catalog/feed snapshot.
+    for widget_key in list(st.session_state.keys()):
+        if widget_key.startswith("review_"):
+            del st.session_state[widget_key]
     st.session_state["input_fingerprint"] = fingerprint
     st.session_state["staged_edits"] = {}
     st.session_state["approved_offer_ids"] = set()
