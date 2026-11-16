@@ -53,3 +53,12 @@ No integrations are enabled by this file alone.
 - Purpose: Offline Shopify product CSV audits and explicit-approval API updates with product ID verification, per-product snapshot checks, and private audit logs.
 - Access: No credentials for CSV audit; authenticated Shopify Admin GraphQL API required for prepare/apply.
 - Publishing: Never run `apply --confirm` without explicit authorization for the exact proposed changes.
+
+### AI Shopify Product Copy Generator
+- Skill: `skills/shopify-product-page-automation/SKILL.md`
+- Script: `tools/shopify_ai_copy.py`
+- Guide: `docs/shopify-ai-copy-generation.md`
+- Input: Authorized Shopify CSV product export; source title, vendor, type and existing description only.
+- Output: Review-only AI title, HTML description, SEO metadata, JTBD messaging hypothesis and review notes.
+- Credentials: Locally managed `OPENAI_API_KEY` and optional `OPENAI_MODEL`; requests go to the OpenAI Responses API.
+- No automatic Shopify publishing; require independently verified product IDs and merchant approval.
