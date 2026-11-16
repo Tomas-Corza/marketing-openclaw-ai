@@ -30,7 +30,7 @@ Each e-commerce capability has its own discoverable `skills/<name>/SKILL.md` ent
 
 | Skill | Primary responsibility |
 | --- | --- |
-| [shopify-product-page-automation](skills/shopify-product-page-automation/SKILL.md) | Single-product preview and authorized content updates |
+| [shopify-product-page-automation](skills/shopify-product-page-automation/SKILL.md) | Create approved unpublished products individually from JSON or in CSV batches with SKUs, prices and variants; audit and update existing product-page content |
 | [shopify-bulk-optimization](skills/shopify-bulk-optimization/SKILL.md) | Catalog-wide content audits and reviewed batch updates |
 | [shopify-ai-copy-generation](skills/shopify-ai-copy-generation/SKILL.md) | Review-only AI copy drafts and JTBD hypotheses |
 | [shopify-product-feed-builder](skills/shopify-product-feed-builder/SKILL.md) | Offline Shopify CSV to Merchant Center TSV/RSS |
@@ -102,7 +102,7 @@ Analyze authorized social media content-level engagement across platforms throug
 
 ### Shopify Product Page Automation & Draft Creation (API-ready)
 
-Create one new unpublished Shopify product draft from verified JSON with hash-matched approval, or audit existing product-page content, preview proposed changes, and apply explicitly approved title, HTML description and SEO metadata updates.
+Create new unpublished Shopify product drafts individually from verified JSON or in reviewed CSV batches with SKUs, prices and variants. The skill also audits existing product pages, previews proposed changes, and applies explicitly approved title, HTML description and SEO metadata updates.
 
 - New product draft creation: validate merchant-verified title, HTML description, vendor, type, SEO metadata, tags and HTTPS image URLs; approve exact preview before writing a Shopify DRAFT.
 - Bulk CSV creation: group variant rows by product, validate SKUs/prices/options, require fingerprint-matched merchant review, create DRAFT products in bounded batches and write a private per-product journal.
@@ -112,13 +112,50 @@ Create one new unpublished Shopify product draft from verified JSON with hash-ma
 - OpenClaw skill instructions for fact-checked, JTBD-informed content proposals.
 - No live Shopify credentials, autonomous text generation, or scheduled publishing included.
 
-**Included:** `tools/shopify_product_pages.py`, `tools/shopify_product_create.py`, `tools/shopify_bulk_product_create.py`, `skills/shopify-product-page-automation/SKILL.md`, `docs/shopify-product-page-automation.md`, offline tests and synthetic examples.
+**Included:** `tools/shopify_product_pages.py`, `tools/shopify_product_create.py`, `tools/shopify_bulk_product_create.py`, `skills/shopify-product-page-automation/SKILL.md`, setup guides, mocked offline tests and synthetic examples.
+
+#### Preview Shopify product creation (no credentials required)
+
+**Single product from JSON:**
+
+```bash
+python3 -m tools.shopify_product_create preview --input examples/shopify_new_product_sample.json
+```
+
+**Multiple products and variants from CSV:**
+
+```bash
+python3 -m tools.shopify_bulk_product_create preview --input examples/shopify_bulk_product_create_sample.csv
+```
+
+The bulk CSV accepts product handles, names, descriptions, SEO fields, SKUs, prices, tags and up to three named variant options (such as size, finish or color). Rows sharing a handle are grouped into one product. A preview validates the file and displays a SHA-256 fingerprint identifying the exact data being reviewed.
+
+#### Create drafts with merchant approval
+
+After configuring an authorized Shopify app and obtaining explicit merchant approval for the exact content and target store:
+
+```bash
+# One approved unpublished draft:
+python3 -m tools.shopify_product_create create --input /private/new-product.json --approve-sha256 APPROVED_PREVIEW_SHA --confirm
+
+# A reviewed CSV batch (defaults to at most 10 products per run):
+python3 -m tools.shopify_bulk_product_create create --input /private/catalog.csv --approve-sha256 APPROVED_PREVIEW_SHA --confirm --journal /private/new-import-log.jsonl --max-products 10
+```
+
+- Both workflows create **DRAFT** products and do not publish them.
+- Bulk imports check existing product handles and stop rather than updating an existing product; they record attempted and successful creations in a private journal.
+- Bulk SKU uniqueness is checked **within the CSV**, not against all existing store SKUs. Bulk import batches are limited to 25 products per approved run.
+- The single-product JSON workflow supports image URLs, but the bulk CSV workflow **does not** import images.
+- The bulk importer does not set inventory quantities, tax/shipping settings, or publish products. Review those separately in Shopify.
+- Shopify API permissions, authorized credentials and end-to-end tests with a development store are required before production use. Offline mocked tests alone do not verify live-store behavior.
+
+**Existing product content audit:**
 
 ```bash
 python3 tools/shopify_product_pages.py audit --input examples/shopify_product_sample.json
 ```
 
-See [Shopify integration setup](docs/shopify-product-page-automation.md) and [Bulk CSV draft creation](docs/shopify-bulk-product-create.md) for approval-controlled creation and updates.
+See [single-product setup](docs/shopify-product-page-automation.md), [bulk CSV creation guide](docs/shopify-bulk-product-create.md), and [Skill #1 instructions](skills/shopify-product-page-automation/SKILL.md) for complete steps, permissions and safeguards.
 
 ### Shopify Bulk Feed Optimization (API-ready)
 
