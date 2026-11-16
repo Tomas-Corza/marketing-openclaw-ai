@@ -1,0 +1,28 @@
+name: E-Commerce dashboard offline tests
+on:
+  push:
+    paths:
+      - 'dashboard/**'
+      - 'tests/test_operations_dashboard.py'
+      - 'examples/dashboard/**'
+      - '.github/workflows/operations-dashboard-tests.yml'
+  pull_request:
+    paths:
+      - 'dashboard/**'
+      - 'tests/test_operations_dashboard.py'
+      - 'examples/dashboard/**'
+      - '.github/workflows/operations-dashboard-tests.yml'
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run offline dashboard tests
+        run: python -m unittest tests.test_operations_dashboard
+      - name: Compile dashboard scripts
+        run: python -m compileall -q dashboard
