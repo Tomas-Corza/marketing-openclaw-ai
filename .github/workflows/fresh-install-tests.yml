@@ -1,0 +1,31 @@
+name: Fresh Mac Install Kit Tests
+on:
+  pull_request:
+    paths:
+      - 'install.sh'
+      - 'setup_skills.py'
+      - 'verify_installation.py'
+      - 'tests/test_fresh_install.py'
+      - '.github/workflows/fresh-install-tests.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'install.sh'
+      - 'setup_skills.py'
+      - 'verify_installation.py'
+      - 'tests/test_fresh_install.py'
+      - '.github/workflows/fresh-install-tests.yml'
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run installer tests
+        run: python -m unittest discover -s tests -p 'test_fresh_install.py' -v
+      - name: Compile scripts
+        run: python -m compileall -q setup_skills.py verify_installation.py
+      - name: Validate shell syntax
+        run: bash -n install.sh

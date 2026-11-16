@@ -25,6 +25,20 @@ Its current e-commerce toolkit includes:
 
 The architecture is adapted from an AI-assisted marketing implementation previously used in practice and is published as a reusable portfolio and development project. **Capabilities differ in readiness:** offline analysis and synthetic demonstrations are available in source; integrations require authorized credentials, configuration and end-to-end testing. No live merchant account, scheduled deployment or hosted Streamlit URL is enabled by simply cloning this repository.
 
+## Deploy on a Fresh Mac Mini
+
+This repository includes a **macOS setup kit** for a new OpenClaw installation. Clone the repo, run the interactive installer, and configure OpenClaw and your authorized business integrations.
+
+```bash
+git clone https://github.com/Tomas-Corza/marketing-openclaw-ai.git
+cd marketing-openclaw-ai
+bash install.sh
+```
+
+The script requests permission before using the **official OpenClaw installer**, then deploys all **12 discoverable skill folders** (nine e-commerce/customer-operation skills plus three broader marketing skills) and their shared Python tools into the OpenClaw workspace. It checks for existing files rather than overwriting them. Model onboarding, Gateway readiness, merchant authorization, OAuth and production verification require separate steps.
+
+**[Fresh Mac setup guide](docs/fresh-mac-install.md)** · [Installer](install.sh) · [Workspace deployer](setup_skills.py) · [Installation verifier](verify_installation.py)
+
 ## Capabilities
 
 ### OpenClaw Skill Directory
