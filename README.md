@@ -4,21 +4,29 @@
 
 **Developed by Tomas Corza | Growth Marketing & Analytics**
 
-## Overview
+## About This Project
 
-Marketing OpenClaw AI is a marketing-focused AI assistant framework designed to support digital marketing analysis, reporting, experimentation, and automation.
+**Marketing OpenClaw AI** is a modular, Python-based marketing automation and analytics framework with **dedicated OpenClaw skills for Shopify e-commerce operations, AI product-content optimization, and Google Merchant Center feed management**, alongside Jobs-to-be-Done (JTBD), email analytics and social engagement analysis.
 
-The project is based on an AI assistant implementation previously used in a real-world marketing environment. Its architecture and workflows have been adapted into a reusable, public-facing project that can be configured for different businesses, marketing platforms, and analytical requirements.
+Its current e-commerce toolkit includes:
 
-The original implementation demonstrated the practical application of AI-assisted marketing workflows. This repository provides a generalized version, including agent configuration files, independently runnable Python analysis tools, and skill definitions.
+- **Shopify product-page automation:** Single-product SEO/content audits and explicitly approved edits through the Shopify Admin GraphQL API.
+- **Shopify bulk optimization:** CSV catalog audits, metadata recommendations, and approval-gated batch update manifests.
+- **AI product copy generation:** Review-only titles, HTML descriptions, SEO metadata and JTBD messaging hypotheses via the OpenAI Responses API.
+- **Product feed builder:** Shopify CSV to Merchant Center-style TSV/RSS feeds, with inventory, pricing and identifier validation.
+- **Automated Shopify feed synchronization:** GraphQL catalog extraction, opt-in daily feed generation, and optional GitHub Pages hosting.
+- **Merchant Center diagnostics:** Offline feed checks, read-only Merchant API issue analysis, AI remediation suggestions and approval-controlled local feed fixes.
+- **Streamlit e-commerce operations dashboard:** Visual catalog health, feed diagnostics, AI recommendations, local approval queues and synthetic demonstration data.
 
-**The framework has a history of practical use, but each new implementation requires configuration, integration, and testing for its intended environment.**
+**Explore the code:** [OpenClaw skills](skills/) · [E-Commerce Operations Dashboard](dashboard/) · [Synthetic dashboard demo setup](docs/streamlit-community-cloud-deployment.md)
+
+The architecture is adapted from an AI-assisted marketing implementation previously used in practice and is published as a reusable portfolio and development project. **Capabilities differ in readiness:** offline analysis and synthetic demonstrations are available in source; integrations require authorized credentials, configuration and end-to-end testing. No live merchant account, scheduled deployment or hosted Streamlit URL is enabled by simply cloning this repository.
 
 ## Capabilities
 
 ### OpenClaw Skill Directory
 
-Each Shopify capability has its own discoverable `skills/<name>/SKILL.md` entry. The skill files are instructions, while runnable shared Python modules stay in `tools/`.
+Each e-commerce capability has its own discoverable `skills/<name>/SKILL.md` entry. Skill files describe when and how to run tools; reusable Python implementations remain in `tools/`. Other skills cover JTBD analysis, email analytics and social behavior monitoring.
 
 | Skill | Primary responsibility |
 | --- | --- |
@@ -30,6 +38,10 @@ Each Shopify capability has its own discoverable `skills/<name>/SKILL.md` entry.
 | [merchant-feed-diagnostics](skills/merchant-feed-diagnostics/SKILL.md) | Feed diagnostics, Merchant API status review and local fix approval |
 
 Skills do not automatically activate credentials, scheduled jobs, model API access or live store writes. Set up and test each integration separately.
+
+**Additional marketing skills:** [JTBD Analysis](skills/jtbd-analysis/SKILL.md) · [Email Analytics](skills/email-analytics/SKILL.md) · [Social Behavior Monitor](skills/social-behavior-monitor/SKILL.md).
+
+**Featured application:** [AI E-Commerce Operations Dashboard](dashboard/README.md) — the public demonstration entrypoint is `dashboard/public_app.py`, using synthetic data without uploads or live API connections.
 
 ### AI E-Commerce Operations Dashboard (Streamlit)
 
