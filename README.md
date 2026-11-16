@@ -31,6 +31,25 @@ Each Shopify capability has its own discoverable `skills/<name>/SKILL.md` entry.
 
 Skills do not automatically activate credentials, scheduled jobs, model API access or live store writes. Set up and test each integration separately.
 
+### AI E-Commerce Operations Dashboard (Streamlit)
+
+A local-first Streamlit control center combining existing Shopify catalog analysis, Google Merchant product-feed diagnostics, synthetic demonstrations, previously generated AI content drafts, approval-controlled **local** feed corrections, and session-only activity history.
+
+- Five views: Overview, Product Optimization, Merchant Feed Health, Approval Queue, Activity.
+- Reuses existing `tools.shopify_bulk_feed` and `tools.merchant_feed_diagnostics` functions rather than duplicating calculation rules.
+- Read-only imports for merchant catalog and AI reports; hash-verified, human-approved downloadable feed changes.
+- Synthetic fixtures allow a portfolio demo without credentials or external API calls.
+- No automatic Shopify writes, live Merchant Center changes, job execution or hosted deployment.
+
+**Included:** `dashboard/app.py`, `dashboard/logic.py`, `dashboard/requirements.txt`, `dashboard/README.md`, synthetic examples and offline tests.
+
+```bash
+python -m pip install -r dashboard/requirements.txt
+streamlit run dashboard/app.py
+```
+
+See [Dashboard setup and safety](dashboard/README.md).
+
 ### Jobs-to-be-Done (JTBD) Marketing Analysis
 
 Analyze marketing messages based on the customer motivations they address.
