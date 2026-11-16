@@ -1,0 +1,5 @@
+id	title	description	link	image_link	availability	price	condition	brand	gtin	mpn	item_group_id
+LAMP-001	Adjustable Desk Lamp	An adjustable desk lamp for everyday task lighting.	https://demo.example/products/sample-desk-lamp	https://demo.example/media/lamp.jpg	in_stock	39.99 USD	new	Example Lighting			
+LAMP-003	Floor Light	A tall lamp.	https://demo.example/products/sample-floor-light	http://demo.example/media/floor-light.jpg	in_stock	89.99 USD	new	Example Lighting			
+CHAIR-001	Accent Chair	A simple silhouette for living spaces.	https://demo.example/products/sample-chair	https://demo.example/media/chair.jpg	in_stock	129.00 USD	new	Example Furnishings			
+TABLE-001	Side Table	A compact side table.	https://demo.example/products/sample-table	https://demo.example/media/table.jpg	unknown	79.00 USD	new	Example Furnishings			
