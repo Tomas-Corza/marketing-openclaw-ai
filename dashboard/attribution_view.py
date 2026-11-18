@@ -13,8 +13,8 @@ from pathlib import Path
 from tools.shopify_ga4_pipeline import prepare
 
 ROOT = Path(__file__).resolve().parents[1]
-EVENTS = ROOT / "examples" / "ga4_bigquery_events.csv"
-ORDERS = ROOT / "examples" / "shopify_attribution_orders.csv"
+EVENTS = ROOT / "examples" / "dashboard" / "attribution_events.csv"
+ORDERS = ROOT / "examples" / "dashboard" / "attribution_orders.csv"
 MODELS = {
     "Linear": "linear",
     "First touch": "first_touch",
@@ -63,6 +63,8 @@ def render_attribution_tab(st) -> None:
     audit = report["pipeline_audit"]
     totals = report["totals"]
 
+    st.markdown("**Example channels:** Meta Ads · Google Ads · Microsoft Ads (Bing) · Etsy Referral · Amazon Referral · ChatGPT Referral · Google Organic")
+    st.caption("Etsy, Amazon and ChatGPT are modeled as observed referrer/source events on the Shopify storefront, not marketplace-sales APIs or ChatGPT account integrations. GA4 provides event inputs and Shopify provides orders.")
     st.markdown("#### Shopify → GA4 → attribution")
     cols = st.columns(4)
     cols[0].metric("Shopify orders", audit["total_shopify_orders"])
