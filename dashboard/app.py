@@ -18,6 +18,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 import streamlit as st
+from dashboard.attribution_view import render_attribution_tab
 from dashboard.logic import (
     EDITABLE_FIELDS, approval_manifest, json_bytes, locally_reviewed_preview,
     parse_catalog, parse_feed, queue_change, read_optional_json,
@@ -27,11 +28,11 @@ from dashboard.logic import (
 DEMO = ROOT / "examples" / "dashboard"
 PUBLIC_DEMO = os.getenv("OPENCLAW_PUBLIC_DEMO", "").strip() == "1"
 
-st.set_page_config(page_title="Marketing OpenClaw | E-Commerce Operations", page_icon="📦", layout="wide")
-st.title("E-Commerce Operations")
-st.caption("Marketing OpenClaw AI · Shopify product analysis, feed diagnostics and controlled reviews")
+st.set_page_config(page_title="Marketing OpenClaw | E-Commerce & Attribution", page_icon="📊", layout="wide")
+st.title("E-Commerce Operations & Attribution")
+st.caption("Marketing OpenClaw AI · Shopify operations, feed diagnostics and customer-journey attribution")
 if PUBLIC_DEMO:
-    st.info("Public portfolio demo · All products, issues, and AI drafts are synthetic. No real store or account is connected.")
+    st.info("Public portfolio demo · All products, AI drafts, marketing touchpoints and order revenue are synthetic. No real store or ad account is connected.")
 
 with st.sidebar:
     st.header("Workspace")
@@ -90,8 +91,8 @@ def event(label: str, detail: str):
         "detail": detail,
     })
 
-overview, products, feed_health, queue, history = st.tabs([
-    "Overview", "Product Optimization", "Merchant Feed Health", "Approval Queue", "Activity",
+overview, products, feed_health, attribution, queue, history = st.tabs([
+    "Overview", "Product Optimization", "Merchant Feed Health", "Ad Attribution", "Approval Queue", "Activity",
 ])
 
 with overview:
@@ -151,6 +152,9 @@ with feed_health:
         st.info("No matching issues from these offline checks. Approval by Merchant Center is not guaranteed.")
     st.download_button("Export diagnostics", json_bytes(diagnostics),
                        "merchant-diagnostics.json", "application/json")
+
+with attribution:
+    render_attribution_tab(st)
 
 with queue:
     st.subheader("Approval queue — downloadable feed fixes")
@@ -237,4 +241,5 @@ with history:
     - AI product copy generation: `tools/shopify_ai_copy.py`
     - Product feed builder and sync: `tools/shopify_feed_builder.py`, `tools/shopify_live_feed_sync.py`
     - Merchant diagnostics and API connector: `tools/merchant_feed_diagnostics.py`, `tools/merchant_api_connector.py`
+    - Shopify/GA4 attribution: `tools/shopify_ga4_pipeline.py`, `tools/multi_touch_attribution.py`
     """)
