@@ -10,7 +10,11 @@ from collections import defaultdict
 from datetime import timedelta
 from decimal import Decimal
 from pathlib import Path
-from tools.multi_touch_attribution import attribute, parse_time, parse_revenue
+try:
+    from tools.multi_touch_attribution import attribute, parse_time, parse_revenue
+except ModuleNotFoundError:
+    # Direct invocation: python3 tools/shopify_ga4_pipeline.py
+    from multi_touch_attribution import attribute, parse_time, parse_revenue
 
 GA4 = {"event_id","user_pseudo_id","event_name","occurred_at","channel","transaction_id","analytics_storage"}
 ORDERS = {"order_id","converted_at","revenue","currency"}
