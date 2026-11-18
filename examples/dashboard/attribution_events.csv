@@ -1,0 +1,25 @@
+event_id,user_pseudo_id,event_name,occurred_at,channel,transaction_id,analytics_storage
+demo-visit-1,synthetic-browser-a,page_view,2026-10-01T10:00:00Z,Meta Ads,,Yes
+demo-visit-2,synthetic-browser-a,page_view,2026-10-04T10:00:00Z,Google Ads,,Yes
+demo-purchase-a,synthetic-browser-a,purchase,2026-10-05T10:00:00Z,,demo-order-101,Yes
+demo-visit-3,synthetic-browser-b,page_view,2026-10-02T10:00:00Z,Microsoft Ads (Bing),,Yes
+demo-visit-4,synthetic-browser-b,page_view,2026-10-07T10:00:00Z,Google Organic,,Yes
+demo-purchase-b,synthetic-browser-b,purchase,2026-10-08T10:00:00Z,,demo-order-102,Yes
+demo-visit-5,synthetic-browser-c,page_view,2026-10-02T10:00:00Z,Etsy Referral,,Yes
+demo-visit-6,synthetic-browser-c,page_view,2026-10-06T10:00:00Z,Meta Ads,,Yes
+demo-purchase-c,synthetic-browser-c,purchase,2026-10-09T10:00:00Z,,demo-order-103,Yes
+demo-visit-7,synthetic-browser-d,page_view,2026-10-03T10:00:00Z,Amazon Referral,,Yes
+demo-visit-8,synthetic-browser-d,page_view,2026-10-07T10:00:00Z,Google Ads,,Yes
+demo-purchase-d,synthetic-browser-d,purchase,2026-10-10T10:00:00Z,,demo-order-104,Yes
+demo-visit-9,synthetic-browser-e,page_view,2026-10-04T10:00:00Z,ChatGPT Referral,,Yes
+demo-visit-10,synthetic-browser-e,page_view,2026-10-09T10:00:00Z,Google Organic,,Yes
+demo-purchase-e,synthetic-browser-e,purchase,2026-10-11T10:00:00Z,,demo-order-105,Yes
+demo-visit-11,synthetic-browser-f,page_view,2026-10-03T10:00:00Z,Google Organic,,Yes
+demo-visit-12,synthetic-browser-f,page_view,2026-10-10T10:00:00Z,Microsoft Ads (Bing),,Yes
+demo-visit-13,synthetic-browser-f,page_view,2026-10-11T10:00:00Z,ChatGPT Referral,,Yes
+demo-purchase-f,synthetic-browser-f,purchase,2026-10-12T10:00:00Z,,demo-order-106,Yes
+demo-visit-14,synthetic-browser-g,page_view,2026-10-05T10:00:00Z,Meta Ads,,Yes
+demo-visit-15,synthetic-browser-g,page_view,2026-10-08T10:00:00Z,Etsy Referral,,Yes
+demo-visit-16,synthetic-browser-g,page_view,2026-10-12T10:00:00Z,Amazon Referral,,Yes
+demo-purchase-g,synthetic-browser-g,purchase,2026-10-13T10:00:00Z,,demo-order-107,Yes
+demo-denied,synthetic-browser-no-consent,page_view,2026-10-12T10:00:00Z,Meta Ads,,No
