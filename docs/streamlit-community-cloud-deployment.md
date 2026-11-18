@@ -1,56 +1,107 @@
-# Deploy the synthetic E-Commerce Operations Dashboard to Streamlit Community Cloud
+# Streamlit Dashboard — Deployment & Maintenance
 
-This guide deploys a **public, synthetic-only** portfolio showcase. The deployed entrypoint forces demonstration mode and does not render file upload controls, access Shopify, submit Google Merchant API requests, or execute the agent's command-line tools.
+This is the **maintainer/developer guide** for the existing public Marketing OpenClaw AI dashboard, not copy for the portfolio landing page.
 
-## Repository already prepared
+**Live app:** https://marketing-openclaw-ai-ecommerce-operations-dashboard.streamlit.app/  
+**GitHub repository:** https://github.com/Tomas-Corza/marketing-openclaw-ai
 
-- Repository: `Tomas-Corza/marketing-openclaw-ai`
-- Branch: `main`
-- **Main file path:** `dashboard/public_app.py`
-- Requirements: `dashboard/requirements.txt`
-- Example product data: `examples/dashboard/`
-- Local authorized-upload alternative: `dashboard/app.py` (do **not** use this as the public entrypoint).
+The public app uses **fictional, synthetic-only data**. No live Shopify store, GA4 property, Google Merchant Center, ad account, inbox, or marketplace account is connected.
 
-## Publish from your Streamlit account
+## Current configuration
 
-1. Sign in at https://share.streamlit.io with GitHub and authorize access to this repository.
-2. Click **Create app**, then choose the option to deploy an existing GitHub app.
-3. Select repository `Tomas-Corza/marketing-openclaw-ai`, branch `main` and file path **`dashboard/public_app.py`**.
-4. Optionally choose an available subdomain, such as `marketing-openclaw-demo`. Streamlit decides if the name is available; do not assume it is yours.
-5. Click **Deploy**. Verify the Overview and four remaining tabs, synthetic-only banner, and absence of file upload controls.
-6. Copy the **actual deployed URL** shown by Streamlit before putting it on your portfolio. Do not guess the URL.
+| Setting | Configuration |
+| --- | --- |
+| Repository | `Tomas-Corza/marketing-openclaw-ai` |
+| Deployment branch | `main` |
+| Public entrypoint | `dashboard/public_app.py` |
+| Dependencies | `dashboard/requirements.txt` |
+| Synthetic catalog and attribution fixtures | `examples/dashboard/` |
+| Local development entrypoint | `dashboard/app.py` — **do not use for the public deployment** |
 
-You must complete the Streamlit account authorization and deployment in its interface. This repository alone **does not** create a live hosted app.
+The public entrypoint sets `OPENCLAW_PUBLIC_DEMO=1` before running the dashboard, keeping merchant upload controls disabled.
 
-## Local preview of public mode
+## Public dashboard features
+
+The six views are **Overview**, **Product Optimization**, **Merchant Feed Health**, **Ad Attribution**, **Approval Queue**, and **Activity**.
+
+The attribution view uses fictional GA4 event observations matched to fictional Shopify orders and lets visitors compare five rule-based attribution models: first touch, last touch, linear, position-based, and time decay. It shows credited revenue, unmatched orders, and observable journeys.
+
+### Example attribution channels
+
+| Example input | Meaning in the demo |
+| --- | --- |
+| Meta Ads | Fictional paid social visits |
+| Google Ads | Fictional paid search visits |
+| Microsoft Ads (Bing) | Fictional Bing paid search visits |
+| Etsy Referral | Fictional referrals from Etsy to Shopify, **not Etsy order data** |
+| Amazon Referral | Fictional referrals from Amazon to Shopify, **not Amazon order data** |
+| ChatGPT Referral | Fictional observed website referrals, **not ChatGPT user-account data** |
+| Google Organic | Fictional organic Google search visits |
+
+The dashboard does **not** read live ad platform APIs. Attribution credit is descriptive, not a causal advertising-effectiveness estimate or complete cross-device tracking.
+
+For setup details, see [example channels and credential management](example-attribution-channels-and-credentials.md), [Shopify + GA4 pipeline](shopify-ga4-bigquery-pipeline.md), and [dashboard development guide](../dashboard/README.md).
+
+## Updating the existing deployment
+
+1. Make changes on a GitHub branch and run the relevant tests.
+2. Open and review a pull request; merge approved changes into `main` after required checks pass.
+3. Streamlit Community Cloud usually redeploys when the configured branch changes.
+4. Open the [live dashboard](https://marketing-openclaw-ai-ecommerce-operations-dashboard.streamlit.app/) and confirm all six tabs load, the synthetic-data notice appears, and no upload controls are present.
+5. If updates are missing or the app fails to start, sign in at [Streamlit Community Cloud](https://share.streamlit.io/), inspect the existing app's deployment settings and logs, verify `main` and `dashboard/public_app.py`, then reboot the app if necessary.
+
+Do **not** create a second Streamlit application just to publish code changes. A successful GitHub Actions run or merged pull request does not by itself verify the hosted app is functioning.
+
+## Preview and test locally
+
+From the cloned repository root:
 
 ```bash
 python3 -m pip install -r dashboard/requirements.txt
 streamlit run dashboard/public_app.py
 ```
 
-To use authorized merchant uploads *locally* instead, run `streamlit run dashboard/app.py`; never use that general upload entrypoint as your public portfolio deployment.
+Run automated checks:
 
-## Portfolio CTA
+```bash
+python3 -m unittest discover -s tests -p 'test_operations_dashboard.py' -v
+python3 -m unittest discover -s tests -p 'test_attribution_dashboard.py' -v
+python3 -m unittest discover -s tests -p 'test_multi_touch_attribution.py' -v
+python3 -m unittest discover -s tests -p 'test_shopify_ga4_pipeline.py' -v
+python3 -m compileall -q dashboard
+```
 
-Once Streamlit returns the live app URL, add this link to the AI Marketing Analytics page at https://tomascorza.me/ai-marketing-analytics:
+To process merchant-authorized catalog/feed uploads **locally**, use `streamlit run dashboard/app.py` and select the appropriate non-demo mode. Do not publish the upload-enabled entrypoint as the public app.
+
+## Change example attribution channels
+
+Edit `examples/dashboard/attribution_events.csv` to add, remove, or rename fictional channel events. Each event needs a unique ID, an appropriate pseudonymous browser identifier, and an ISO-8601 timestamp with timezone. To show attributed purchases, GA4 purchase transaction IDs must match `order_id` in `examples/dashboard/attribution_orders.csv`; maintain matching consent and timeline examples.
+
+Run the attribution tests again, and update any assertions tied to the original seven channels.
+
+**No API keys are needed for the synthetic demo.** To enable a live reporting source, a separately implemented connector must be authorized, tested and configured with secure credentials. See [channel and credential configuration](example-attribution-channels-and-credentials.md). Adding a token does not automatically connect an ad platform.
+
+## Portfolio link
+
+Use the actual existing dashboard URL:
 
 ```html
-<a href="REPLACE_WITH_VERIFIED_STREAMLIT_URL" target="_blank" rel="noopener noreferrer">
-  Explore the AI E-Commerce Operations Dashboard
+<a href="https://marketing-openclaw-ai-ecommerce-operations-dashboard.streamlit.app/"
+   target="_blank" rel="noopener noreferrer">
+  Explore the Marketing OpenClaw AI Demo
 </a>
 ```
 
-Suggested description: "Explore a synthetic demonstration of Shopify catalog optimization, Merchant Center diagnostics, and approval-controlled feed changes using Marketing OpenClaw AI."
+Suggested description: “Explore a synthetic demonstration of Shopify operations, product-feed diagnostics, and customer-journey attribution across seven example marketing channels.”
 
-## Boundaries
+## Security and operating limits
 
-- Public mode is intentionally **synthetic-only**. Approvals are temporary demonstrations and never publish to a store or Merchant Center.
-- No API credentials should be configured in the public demo; the source repository is public.
-- The public app contains no real account data; its fake product URLs are illustrative, not merchant landing pages.
-- Upload support and integration credentials belong only in separately authenticated deployments.
-- Deployment requires your Streamlit account approval. A successfully merged GitHub pull request does not prove deployment or uptime.
+- No live Shopify, GA4, BigQuery, Meta Ads, Google Ads, Microsoft Ads, Gmail, Merchant Center, Etsy, Amazon, or ChatGPT account connections are performed by the public dashboard.
+- The demonstration does not accept uploads of customer data. Any local feed approvals affect only a downloadable preview; they cannot publish changes or refunds.
+- Never commit real API secrets, visitor-level exports, or customer information to the public GitHub repository. Any real deployment requires authentication, provider permissions, privacy controls and secure data storage.
+- Attribution cannot infer unobserved activity, identify visitors across devices, or prove causal advertising lift. Unmatched conversions are kept unmatched.
 
-Official references:
-- https://docs.streamlit.io/deploy/streamlit-community-cloud/deploy-your-app/deploy
-- https://docs.streamlit.io/deploy/streamlit-community-cloud/deploy-your-app/file-organization
+## Official Streamlit documentation
+
+- [Deploy your app](https://docs.streamlit.io/deploy/streamlit-community-cloud/deploy-your-app/deploy)
+- [File organization](https://docs.streamlit.io/deploy/streamlit-community-cloud/deploy-your-app/file-organization)
