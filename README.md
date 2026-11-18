@@ -4,6 +4,34 @@
 
 **Developed by Tomas Corza | Growth Marketing & Analytics**
 
+## Seven-Channel Attribution Dashboard Demo and API Setup
+
+The public Streamlit dashboard's **Ad Attribution** tab now models seven fictional marketing acquisition channels, with GA4 event data matched against Shopify orders:
+
+| Example channel | Synthetic input | Live API status |
+| --- | --- | --- |
+| Meta Ads | Paid social visits | No live API connection |
+| Google Ads | Paid search visits | No live API connection |
+| Microsoft Ads (Bing) | Paid search visits | No live API connection |
+| Etsy Referral | Referral traffic to Shopify | No Etsy orders or API connection |
+| Amazon Referral | Referral traffic to Shopify | No Amazon orders or API connection |
+| ChatGPT Referral | Observable referrals to Shopify | No ChatGPT account or user-level API connection |
+| Google Organic | Organic Google search visits | No Search Console or direct API connection |
+
+**GA4 supplies fictional consented visit/purchase events; Shopify supplies fictional orders.** Only accurately matched GA4 purchase IDs and Shopify order IDs contribute conversion credit. This demonstration does not claim to ingest Meta/Google/Microsoft/Amazon/Etsy ad platform reporting or reconstruct user journeys from those platform APIs.
+
+**[Full channel setup, API credentials and add/remove instructions](docs/example-attribution-channels-and-credentials.md)** explains each source, which services require OAuth, and how to maintain, revoke or remove credentials **when an authorized connector is separately implemented**. The current attribution code accepts CSVs, not ad-platform API keys. Adding an API key alone does not enable a channel.
+
+To run the seven-channel demo locally:
+
+```bash
+python3 -m pip install -r dashboard/requirements.txt
+streamlit run dashboard/app.py
+# Open the "Ad Attribution" tab; synthetic data is included.
+```
+
+To add/remove a **synthetic** channel without API credentials, edit `examples/dashboard/attribution_events.csv` and follow the guide. For actual supported inputs, start with `tools/shopify_ga4_pipeline.py` and the [GA4 + Shopify implementation guide](docs/shopify-ga4-bigquery-pipeline.md). No real data is sent to a third-party service by the dashboard.
+
 ## Customer-Journey Multi-Touch Attribution (New: Offline, Rule-Based)
 
 **This repository now includes a working deterministic attribution engine** for *observed, identity-linked customer journeys*, separate from the previously documented cross-platform reporting and revenue-reconciliation case study.
@@ -166,13 +194,13 @@ Skills do not automatically activate credentials, scheduled jobs, model API acce
 
 A local-first Streamlit control center combining existing Shopify catalog analysis, Google Merchant product-feed diagnostics, synthetic demonstrations, previously generated AI content drafts, approval-controlled **local** feed corrections, and session-only activity history.
 
-- Five views: Overview, Product Optimization, Merchant Feed Health, Approval Queue, Activity.
+- Six views: Overview, Product Optimization, Merchant Feed Health, **Ad Attribution**, Approval Queue, Activity.
 - Reuses existing `tools.shopify_bulk_feed` and `tools.merchant_feed_diagnostics` functions rather than duplicating calculation rules.
 - Read-only imports for merchant catalog and AI reports; hash-verified, human-approved downloadable feed changes.
-- Synthetic fixtures allow a portfolio demo without credentials or external API calls.
+- Synthetic fixtures allow a portfolio demo without credentials or external API calls, including seven example attribution channels and five switchable credit-allocation models.
 - No automatic Shopify writes, live Merchant Center changes, job execution or hosted deployment.
 
-**Included:** `dashboard/app.py`, `dashboard/logic.py`, `dashboard/requirements.txt`, `dashboard/README.md`, synthetic examples and offline tests.
+**Included:** `dashboard/app.py`, `dashboard/attribution_view.py`, `dashboard/logic.py`, `dashboard/requirements.txt`, `dashboard/README.md`, synthetic examples and offline tests.
 
 ```bash
 python -m pip install -r dashboard/requirements.txt
