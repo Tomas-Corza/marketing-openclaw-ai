@@ -1,0 +1,5 @@
+touchpoint_id,customer_id,channel,occurred_at
+demo-t1,demo-customer-1,Paid Search,2026-01-01T09:00:00Z
+demo-t2,demo-customer-1,Email,2026-01-03T15:00:00Z
+demo-t3,demo-customer-1,Paid Social,2026-01-05T10:00:00Z
+demo-t4,demo-customer-2,Organic Search,2026-01-02T10:00:00Z

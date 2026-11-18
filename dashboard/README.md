@@ -13,7 +13,7 @@ streamlit run dashboard/app.py
 
 The synthetic demonstration dataset loads automatically. No API credentials are needed.
 
-## Five dashboard views
+## Six dashboard views
 
 | View | Integrations |
 | --- | --- |
@@ -21,11 +21,13 @@ The synthetic demonstration dataset loads automatically. No API credentials are 
 | Product Optimization | Calls existing \`tools.shopify_bulk_feed.analyze_feed\` for Shopify catalog audits and displays optional review-only AI reports produced by \`tools/shopify_ai_copy.py\` |
 | Merchant Feed Health | Calls existing \`tools.merchant_feed_diagnostics.audit\` and optional \`normalize_merchant_products\` with an uploaded processed-product status JSON |
 | Approval Queue | Stages only approved **local feed text fields** with verified input, per-product approval, hash-based source checks, downloadable approval manifest and corrected TSV preview |
+| Ad Attribution | Interactive synthetic GA4 + Shopify customer-journey matching with five rule-based attribution models, order audit, model comparison, channel credit, and downloadable synthetic JSON. Requires matched event and order IDs; no live API access. |
 | Activity | Current Streamlit session staging/approval history, plus references to existing CLI tools; not a persistent log or live scheduler |
 
 ## Safety
 
-- No live Shopify or Merchant API writes, AI inference, paid API calls, or background scheduling are performed inside the dashboard.
+- No live Shopify, GA4, BigQuery, Merchant or advertising API calls, Shopify writes, AI inference, paid API calls, or background scheduling are performed inside the dashboard.
+- The public attribution tab is **synthetic-only**, with no customer uploads. Rule-based credit allocation is not a claim of causal advertising impact or complete cross-device coverage.
 - Staged changes are restricted to title, description, link, image_link, brand, gtin, and mpn — not price, availability, product IDs or stock.
 - Downloadable corrected feeds require every staged record to be explicitly approved; approvals reset on a changed source input. Neither a downloaded file nor an approval checkbox authorizes publication.
 - AI copy remains review-only and cannot directly be published to Shopify from this interface; any live Shopify writes must follow the separate approved Shopify skill workflow.
@@ -33,10 +35,19 @@ The synthetic demonstration dataset loads automatically. No API credentials are 
 - Maximum uploaded file size: 5 MB per file; maximum 5,000 feed items or products. For larger catalogs, use CLI tools.
 - The synthetic product names, offers, issues and Merchant API statuses are fictional.
 
+## Synthetic advertising attribution walkthrough
+
+Choose the **Ad Attribution** tab. Switch between first-touch, last-touch, linear, position-based, and time-decay credit models, change the lookback window, compare credited revenue by channel, inspect a matched order's journey, and download the synthetic JSON report.
+
+The new tab uses `dashboard/attribution_view.py` and the same `tools/shopify_ga4_pipeline.py` and `tools/multi_touch_attribution.py` code as the offline CLI. The test fixtures in `examples/ga4_bigquery_events.csv` and `examples/shopify_attribution_orders.csv` are fictional, and the tab does not accept real customer datasets.
+
+See [Shopify–GA4 BigQuery setup](../docs/shopify-ga4-bigquery-pipeline.md) and [Multi-touch data requirements](../docs/multi-touch-attribution.md). A real deployment requires permissioned event collection, accurate order-ID matching, and privacy controls; nothing is connected automatically.
+
 ## Offline tests
 
 ```bash
 python -m unittest discover -s tests -p 'test_operations_dashboard.py'
+python -m unittest discover -s tests -p 'test_attribution_dashboard.py'
 python -m compileall -q dashboard
 ```
 
