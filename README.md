@@ -16,6 +16,7 @@ I used Marketing OpenClaw AI to centralize data from Meta Ads, Google Ads, Klavi
 
 Its current e-commerce toolkit includes:
 
+- **AI marketing analytics & attribution reporting (case study):** Built an OpenClaw-driven workflow integrating Meta Ads, Google Ads, Klaviyo, and Shopify data to automate cross-channel attribution reports and reconcile platform-reported revenue with store transactions. [Read the case study](docs/ai-marketing-attribution-case-study.md). The complete integration is not included in this public repository.
 - **Shopify product-page automation:** Approval-controlled creation of unpublished Shopify product drafts, including bulk CSV imports with SKUs, prices and variants, plus single-product SEO/content audits and edits through the Shopify Admin GraphQL API.
 - **Shopify bulk optimization:** CSV catalog audits, metadata recommendations, and approval-gated batch update manifests.
 - **AI product copy generation:** Review-only titles, HTML descriptions, SEO metadata and JTBD messaging hypotheses via the OpenAI Responses API.
