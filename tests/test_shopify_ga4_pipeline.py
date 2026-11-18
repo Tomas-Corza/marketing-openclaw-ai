@@ -43,7 +43,7 @@ class ShopifyGA4Tests(unittest.TestCase):
         with self.assertRaises(ValueError):
             prepare([],[order(),order()])
     def test_purchase_without_touch_is_unattributed(self):
-        r=prepare([event("p",name="purchase",tx="1001")],[order()])
+        r=prepare([event("p",name="purchase",when="2026-01-04T00:00:00Z",tx="1001")],[order()])
         self.assertEqual(r["pipeline_audit"]["matched_orders_without_eligible_touchpoints"],1)
         self.assertEqual(r["totals"]["unattributed_conversions"],1)
 
