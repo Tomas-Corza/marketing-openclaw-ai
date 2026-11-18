@@ -1,0 +1,7 @@
+event_id,user_pseudo_id,event_name,occurred_at,channel,transaction_id,analytics_storage
+visit-1,synthetic-browser-a,page_view,2026-01-01T10:00:00Z,Paid Search,,Yes
+visit-2,synthetic-browser-a,page_view,2026-01-03T10:00:00Z,Email,,Yes
+purchase-1,synthetic-browser-a,purchase,2026-01-04T10:00:00Z,,demo-order-1,Yes
+visit-3,synthetic-browser-b,page_view,2026-01-02T10:00:00Z,Organic Search,,Yes
+purchase-2,synthetic-browser-b,purchase,2026-01-05T10:00:00Z,,demo-order-2,Yes
+denied-1,synthetic-browser-c,page_view,2026-01-05T10:00:00Z,Paid Social,,No
