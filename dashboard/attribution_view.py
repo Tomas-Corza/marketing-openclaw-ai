@@ -135,8 +135,8 @@ def render_attribution_tab(st) -> None:
             "The pipeline doesn't discover cross-device identities, infer unobserved touches, or measure causal lift."
         )
         st.markdown(
-            "[Source and setup guide](https://github.com/Tomas-Corza/marketing-openclaw-ai/blob/feature/customer-journey-multi-touch-attribution/docs/shopify-ga4-bigquery-pipeline.md) "
-            "· [Attribution engine](https://github.com/Tomas-Corza/marketing-openclaw-ai/blob/feature/customer-journey-multi-touch-attribution/tools/multi_touch_attribution.py)"
+            "[Source and setup guide](https://github.com/Tomas-Corza/marketing-openclaw-ai/blob/main/docs/shopify-ga4-bigquery-pipeline.md) "
+            "· [Attribution engine](https://github.com/Tomas-Corza/marketing-openclaw-ai/blob/main/tools/multi_touch_attribution.py)"
         )
     st.info(
         "Portfolio demonstration only. All touchpoints, customers and revenue shown here are synthetic. "

@@ -15,11 +15,11 @@ The synthetic demonstration dataset loads automatically. No API credentials are 
 
 ## Six dashboard views
 
-| View | Integrations |
+| View | Capabilities |
 | --- | --- |
 | Overview | Catalog/feed KPI cards, counts of issues and pending work |
-| Product Optimization | Calls existing \`tools.shopify_bulk_feed.analyze_feed\` for Shopify catalog audits and displays optional review-only AI reports produced by \`tools/shopify_ai_copy.py\` |
-| Merchant Feed Health | Calls existing \`tools.merchant_feed_diagnostics.audit\` and optional \`normalize_merchant_products\` with an uploaded processed-product status JSON |
+| Product Optimization | Calls existing `tools.shopify_bulk_feed.analyze_feed` for Shopify catalog audits and displays optional review-only AI reports produced by `tools/shopify_ai_copy.py` |
+| Merchant Feed Health | Calls existing `tools.merchant_feed_diagnostics.audit` and optional `normalize_merchant_products` with an uploaded processed-product status JSON |
 | Approval Queue | Stages only approved **local feed text fields** with verified input, per-product approval, hash-based source checks, downloadable approval manifest and corrected TSV preview |
 | Ad Attribution | Interactive synthetic GA4 + Shopify customer-journey matching with five rule-based attribution models, order audit, model comparison, channel credit, and downloadable synthetic JSON. Requires matched event and order IDs; no live API access. |
 | Activity | Current Streamlit session staging/approval history, plus references to existing CLI tools; not a persistent log or live scheduler |
@@ -53,10 +53,12 @@ python -m unittest discover -s tests -p 'test_attribution_dashboard.py'
 python -m compileall -q dashboard
 ```
 
-CI: \`.github/workflows/operations-dashboard-tests.yml\`.
+CI: `.github/workflows/operations-dashboard-tests.yml`.
 
-## Deploying a synthetic-only public demo
+## Public Streamlit dashboard
 
-This repository ships Streamlit source code, **not a hosted dashboard**. Use `dashboard/public_app.py` as the main file path in Streamlit Community Cloud. That entrypoint forces synthetic demonstration data and removes merchant upload controls; use `dashboard/app.py` only for local authorized uploads. See [Streamlit deployment instructions](../docs/streamlit-community-cloud-deployment.md).
+The public, synthetic-only showcase has been deployed at [Marketing OpenClaw AI E-Commerce Operations Dashboard](https://marketing-openclaw-ai-ecommerce-operations-dashboard.streamlit.app/). The GitHub deployment target is `main` with `dashboard/public_app.py` as the entrypoint. This entrypoint forces synthetic demonstration data and disables merchant uploads. Do **not** use the upload-enabled `dashboard/app.py` for public deployment.
 
-Public deployment requires an authorized Streamlit account and a real verified app URL. Live store connections, persistent role-based approvals and job-history ingestion would require a separately reviewed implementation.
+See [Deployment & Maintenance](../docs/streamlit-community-cloud-deployment.md) for updating or troubleshooting this existing app. A GitHub merge does not itself confirm a successful Streamlit redeployment. Actual deployment settings and uptime must be checked in Streamlit Community Cloud.
+
+Live store connections, secure data uploads, persistent role-based approvals and job-history ingestion would require a separately reviewed implementation.
