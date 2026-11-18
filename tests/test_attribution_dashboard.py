@@ -14,22 +14,29 @@ class AttributionDashboardTests(unittest.TestCase):
 
     def test_demo_matches_orders_without_inventing_credit(self):
         result = run_demo("linear", 30, 7)
-        self.assertEqual(result["pipeline_audit"]["total_shopify_orders"], 3)
-        self.assertEqual(result["pipeline_audit"]["ga4_matched_orders"], 2)
-        self.assertEqual(result["pipeline_audit"]["attributed_orders"], 2)
+        self.assertEqual(result["pipeline_audit"]["total_shopify_orders"], 8)
+        self.assertEqual(result["pipeline_audit"]["ga4_matched_orders"], 7)
+        self.assertEqual(result["pipeline_audit"]["attributed_orders"], 7)
         self.assertEqual(result["pipeline_audit"]["orders_without_verified_purchase_match"], 1)
-        self.assertEqual(result["totals"]["attributed_revenue"], "178.99")
+        self.assertEqual(result["totals"]["attributed_revenue"], "1318.69")
 
     def test_all_models_preserve_total_eligible_revenue(self):
         for model in MODELS.values():
             with self.subTest(model=model):
                 result = run_demo(model, 30, 7)
-                self.assertEqual(result["totals"]["attributed_revenue"], "178.99")
+                self.assertEqual(result["totals"]["attributed_revenue"], "1318.69")
 
     def test_short_lookback_removes_old_touchpoints(self):
         result = run_demo("linear", 1, 7)
-        self.assertEqual(result["pipeline_audit"]["matched_orders_without_eligible_touchpoints"], 1)
-        self.assertEqual(result["totals"]["attributed_revenue"], "129.99")
+        self.assertEqual(result["pipeline_audit"]["matched_orders_without_eligible_touchpoints"], 3)
+        self.assertEqual(result["totals"]["attributed_revenue"], "743.49")
+
+    def test_all_seven_channels_appear(self):
+        result = run_demo("linear", 30, 7)
+        self.assertEqual({row["channel"] for row in result["channels"]}, {
+            "Meta Ads", "Google Ads", "Microsoft Ads (Bing)", "Etsy Referral",
+            "Amazon Referral", "ChatGPT Referral", "Google Organic",
+        })
 
     def test_model_comparison_has_separate_channels(self):
         rows = comparison_rows(30, 7)
