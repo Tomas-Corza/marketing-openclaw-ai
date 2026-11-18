@@ -11,7 +11,7 @@ python -m pip install -r dashboard/requirements.txt
 streamlit run dashboard/app.py
 ```
 
-The synthetic demonstration dataset loads automatically. No API credentials are needed.
+The synthetic demonstration dataset loads automatically. No API credentials are needed. The attribution demo includes Meta Ads, Google Ads, Microsoft Ads (Bing), Etsy Referral, Amazon Referral, ChatGPT Referral, and Google Organic, represented as fictional GA4 storefront visits.
 
 ## Six dashboard views
 
@@ -39,9 +39,9 @@ The synthetic demonstration dataset loads automatically. No API credentials are 
 
 Choose the **Ad Attribution** tab. Switch between first-touch, last-touch, linear, position-based, and time-decay credit models, change the lookback window, compare credited revenue by channel, inspect a matched order's journey, and download the synthetic JSON report.
 
-The new tab uses `dashboard/attribution_view.py` and the same `tools/shopify_ga4_pipeline.py` and `tools/multi_touch_attribution.py` code as the offline CLI. The test fixtures in `examples/ga4_bigquery_events.csv` and `examples/shopify_attribution_orders.csv` are fictional, and the tab does not accept real customer datasets.
+The new tab uses `dashboard/attribution_view.py` and the same `tools/shopify_ga4_pipeline.py` and `tools/multi_touch_attribution.py` code as the offline CLI. The dashboard fixtures in `examples/dashboard/attribution_events.csv` and `examples/dashboard/attribution_orders.csv` are fictional, and the tab does not accept real customer datasets.
 
-See [Shopify–GA4 BigQuery setup](../docs/shopify-ga4-bigquery-pipeline.md) and [Multi-touch data requirements](../docs/multi-touch-attribution.md). A real deployment requires permissioned event collection, accurate order-ID matching, and privacy controls; nothing is connected automatically.
+To add or remove synthetic channels, edit the dashboard attribution events CSV. To learn how future *authorized* API credentials could be configured or revoked, consult [Example channels and credential setup](../docs/example-attribution-channels-and-credentials.md); the current dashboard does not read API keys.\n\nSee [Shopify–GA4 BigQuery setup](../docs/shopify-ga4-bigquery-pipeline.md) and [Multi-touch data requirements](../docs/multi-touch-attribution.md). A real deployment requires permissioned event collection, accurate order-ID matching, and privacy controls; nothing is connected automatically.
 
 ## Offline tests
 
