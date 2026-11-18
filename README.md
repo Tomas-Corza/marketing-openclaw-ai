@@ -4,6 +4,12 @@
 
 **Developed by Tomas Corza | Growth Marketing & Analytics**
 
+## Featured case study: AI-powered marketing attribution
+
+I used Marketing OpenClaw AI to centralize data from Meta Ads, Google Ads, Klaviyo, and Shopify and automate cross-channel attribution reporting. Read the [AI Marketing Analytics case study](docs/ai-marketing-attribution-case-study.md) for the problem, approach, and business value.
+
+**Scope note:** The case study documents an implementation; the complete four-platform reporting pipeline is not published in this repository. Existing code and integrations have their own readiness limitations described below.
+
 ## About This Project
 
 **Marketing OpenClaw AI** is a modular, Python-based marketing automation and analytics framework with **dedicated OpenClaw skills for Shopify e-commerce operations, AI product-content optimization, and Google Merchant Center feed management**, alongside Jobs-to-be-Done (JTBD), email analytics and social engagement analysis.
