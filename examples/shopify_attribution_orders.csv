@@ -1,0 +1,4 @@
+order_id,converted_at,revenue,currency
+demo-order-1,2026-01-04T10:00:00Z,129.99,USD
+demo-order-2,2026-01-05T10:00:00Z,49.00,USD
+demo-order-unmatched,2026-01-05T12:00:00Z,20.00,USD
