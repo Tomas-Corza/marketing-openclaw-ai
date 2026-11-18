@@ -4,6 +4,11 @@ on:
     paths:
       - 'tools/multi_touch_attribution.py'
       - 'tools/shopify_ga4_pipeline.py'
+      - 'dashboard/attribution_view.py'
+      - 'dashboard/app.py'
+      - 'tests/test_attribution_dashboard.py'
+      - 'examples/ga4_bigquery_events.csv'
+      - 'examples/shopify_attribution_orders.csv'
       - 'tests/test_multi_touch_attribution.py'
       - 'tests/test_shopify_ga4_pipeline.py'
       - '.github/workflows/attribution-tests.yml'
@@ -12,6 +17,11 @@ on:
     paths:
       - 'tools/multi_touch_attribution.py'
       - 'tools/shopify_ga4_pipeline.py'
+      - 'dashboard/attribution_view.py'
+      - 'dashboard/app.py'
+      - 'tests/test_attribution_dashboard.py'
+      - 'examples/ga4_bigquery_events.csv'
+      - 'examples/shopify_attribution_orders.csv'
       - 'tests/test_multi_touch_attribution.py'
       - 'tests/test_shopify_ga4_pipeline.py'
       - '.github/workflows/attribution-tests.yml'
@@ -25,6 +35,8 @@ jobs:
           python-version: '3.11'
       - run: python3 -m unittest discover -s tests -p 'test_multi_touch_attribution.py' -v
       - run: python3 -m unittest discover -s tests -p 'test_shopify_ga4_pipeline.py' -v
+      - run: python3 -m unittest discover -s tests -p 'test_attribution_dashboard.py' -v
+      - run: python3 -m compileall -q dashboard
       - run: |
           python3 tools/shopify_ga4_pipeline.py \
             --ga4-events examples/ga4_bigquery_events.csv \
