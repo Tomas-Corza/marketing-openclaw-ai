@@ -1,0 +1,4 @@
+conversion_id,customer_id,converted_at,revenue
+demo-order-1,demo-customer-1,2026-01-06T10:00:00Z,129.99
+demo-order-2,demo-customer-2,2026-01-08T10:00:00Z,49.00
+demo-order-3,demo-customer-3,2026-01-08T12:00:00Z,20.00
