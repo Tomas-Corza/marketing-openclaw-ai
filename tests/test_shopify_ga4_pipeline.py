@@ -24,7 +24,8 @@ class ShopifyGA4Tests(unittest.TestCase):
         e=[event("a",consent="No"),event("p",name="purchase",tx="1001",consent="No")]
         self.assertEqual(prepare(e,[order()])["pipeline_audit"]["ga4_matched_orders"],0)
     def test_ambiguous_purchase_ids(self):
-        e=[event("p",name="purchase",tx="1001"),event("p2",uid="browser2",name="purchase",tx="1001")]
+        e=[event("p",name="purchase",when="2026-01-04T00:00:00Z",tx="1001"),
+           event("p2",uid="browser2",name="purchase",when="2026-01-04T00:00:00Z",tx="1001")]
         r=prepare(e,[order()])
         self.assertEqual(r["pipeline_audit"]["ambiguous_order_count"],1)
         self.assertEqual(r["totals"]["attributed_revenue"],"0.00")
