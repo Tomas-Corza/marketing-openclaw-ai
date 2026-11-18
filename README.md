@@ -34,6 +34,26 @@ python3 -m unittest discover -s tests -p 'test_multi_touch_attribution.py' -v
 
 The sample inputs are **synthetic**. Read the [full attribution input schema, models, validation, and limitations](docs/multi-touch-attribution.md) and [source code](tools/multi_touch_attribution.py). This module is not evidence that live integrations already supply complete customer journeys.
 
+### Shopify + GA4 BigQuery observed-journey pipeline (new)
+
+The project now includes an offline bridge between **consented GA4 event-level BigQuery exports** and **Shopify order exports**, feeding the rule-based multi-touch attribution engine. Unlike comparing aggregated ad reports, it requires an actual event-level GA4 `purchase` with a `transaction_id` matching the Shopify order ID and a consistent GA4 browser identifier connecting earlier touchpoints.
+
+**Required inputs**
+- **GA4 event CSV (from BigQuery):** `event_id`, `user_pseudo_id`, `event_name`, `occurred_at`, `channel`, `transaction_id`, `analytics_storage`.
+- **Shopify order CSV:** `order_id`, `converted_at`, `revenue`, `currency`.
+- **Prerequisites:** Authorized store/GA4/BigQuery access; verified matching GA4 purchase and Shopify order identifiers; event collection and consent setup; appropriately captured marketing source/medium data; consistent timestamps, currency and order revenue rules; secure export handling.
+
+```bash
+python3 tools/shopify_ga4_pipeline.py \
+  --ga4-events examples/ga4_bigquery_events.csv \
+  --shopify-orders examples/shopify_attribution_orders.csv \
+  --model linear --lookback-days 30 \
+  --output /tmp/shopify-ga4-attribution.json
+python3 -m unittest discover -s tests -p 'test_shopify_ga4_pipeline.py' -v
+```
+
+See [Shopify + GA4 pipeline setup and limitations](docs/shopify-ga4-bigquery-pipeline.md), [BigQuery SQL export template](docs/ga4_bigquery_export.sql), and [pipeline implementation](tools/shopify_ga4_pipeline.py). The fixtures are synthetic. **This is not an out-of-the-box live connection or comprehensive cross-device attribution system**: orders without a reliable, consented GA4 purchase match are reported as unmatched, not assigned invented credit. This provides rule-based attribution for observed journeys, not causal proof of advertising effectiveness.
+
 ## Featured case study: AI-powered marketing attribution
 
 I used Marketing OpenClaw AI to centralize data from Meta Ads, Google Ads, Klaviyo, and Shopify and automate cross-channel attribution reporting. Read the [AI Marketing Analytics case study](docs/ai-marketing-attribution-case-study.md) for the problem, approach, and business value.
