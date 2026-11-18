@@ -533,3 +533,10 @@ The project also serves as a foundation for adapting AI-assisted marketing proce
 Growth Marketing & Analytics
 
 [Website](https://tomascorza.me) | [GitHub](https://github.com/Tomas-Corza)
+
+
+## Portable, company-neutral setup
+
+This repository is designed for evaluation using fictional fixtures. The checked-in dashboard examples do not require access to any merchant account. For a different authorized organization, configure its own credentials outside Git, review each integration's required scopes, and validate the source schema before processing data. Do not reuse credentials, exports, store domains, or internal operating procedures from another organization. Live integrations must be independently authorized and tested; the public demonstration does not establish production readiness.
+
+**Review boundary:** Generalizing names and examples does not determine ownership of pre-existing code. Retain development records and review any applicable third-party or employment rights before reuse or commercial deployment.
