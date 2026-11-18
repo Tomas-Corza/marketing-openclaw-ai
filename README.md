@@ -4,6 +4,36 @@
 
 **Developed by Tomas Corza | Growth Marketing & Analytics**
 
+## Customer-Journey Multi-Touch Attribution (New: Offline, Rule-Based)
+
+**This repository now includes a working deterministic attribution engine** for *observed, identity-linked customer journeys*, separate from the previously documented cross-platform reporting and revenue-reconciliation case study.
+
+- **Models:** first-touch, last-touch, linear, position-based (40/20/40), and configurable time decay.
+- **Output:** per-conversion touchpoint credit and attributed revenue, channel summaries, and explicit unmatched conversions.
+- **Safeguards:** conversion ID uniqueness, timezone checks, lookback windows, reproducible attribution rules, and revenue-preserving cent rounding.
+- **Scope:** offline calculation on authorized input CSVs. It does **not** automatically retrieve Shopify/Meta/Google/Klaviyo customer journeys or turn aggregated platform reports into genuine multi-touch data. It is not incrementality measurement.
+
+### Required data inputs
+
+| Input | Required fields | Why |
+| --- | --- | --- |
+| Customer touchpoints CSV | `touchpoint_id`, `customer_id`, `channel`, `occurred_at` | Individually observed, time-stamped interactions with a consistent pseudonymous identifier |
+| Conversions CSV | `conversion_id`, `customer_id`, `converted_at`, `revenue` | Unique order/conversion tied to the *same* pseudonymous identifier and a monetary amount |
+
+**For genuinely defensible attribution**, upstream systems must capture and lawfully link the customer-level interactions to the order (via consented first-party identity/login mappings or another authorized method); maintain consistent event timestamps, IDs, channel taxonomy and conversion definitions; handle duplicates, refunds, privacy choices and missing/cross-device touchpoints; and document the lookback window and credit model. All timestamps must include a timezone. Revenue uses two-decimal amounts and one reporting currency. **Aggregated Google Ads, Meta Ads, Klaviyo, and Shopify campaign reports alone are insufficient to construct customer-level multi-touch journeys.** Do not commit customer PII or private datasets.
+
+```bash
+python3 tools/multi_touch_attribution.py \
+  --touchpoints examples/attribution_touchpoints.csv \
+  --conversions examples/attribution_conversions.csv \
+  --model linear --lookback-days 30 \
+  --output /tmp/multi_touch_report.json
+
+python3 -m unittest discover -s tests -p 'test_multi_touch_attribution.py' -v
+```
+
+The sample inputs are **synthetic**. Read the [full attribution input schema, models, validation, and limitations](docs/multi-touch-attribution.md) and [source code](tools/multi_touch_attribution.py). This module is not evidence that live integrations already supply complete customer journeys.
+
 ## Featured case study: AI-powered marketing attribution
 
 I used Marketing OpenClaw AI to centralize data from Meta Ads, Google Ads, Klaviyo, and Shopify and automate cross-channel attribution reporting. Read the [AI Marketing Analytics case study](docs/ai-marketing-attribution-case-study.md) for the problem, approach, and business value.
