@@ -6,7 +6,7 @@ Marketing OpenClaw AI is a modular Python-based framework **built for OpenClaw A
 
 **Created by Tomas Corza** · [Portfolio](https://tomascorza.me) · [Other GitHub projects](https://github.com/Tomas-Corza)
 
-> **Explore the work:** This is a public-facing portfolio and development repository with working offline tools, example workflows, and synthetic demonstrations. Some integrations require authorized setup and end-to-end testing before use with real business systems.
+> **Explore the work:** This is a portfolio and development repository with working offline tools, example workflows, and synthetic demonstrations. 
 
 ## The business value
 
