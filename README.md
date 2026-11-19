@@ -31,6 +31,8 @@ The listed capabilities do not imply that live third-party accounts are connecte
 
 ## Featured: Finance Automation Control Center
 
+**[Explore the full Finance Automation capabilities README](finance/README.md)** — exact supported workflows, current implementation status, setup and limitations.
+
 The [Finance Automation Control Center](finance/dashboard.py) explores how OpenClaw-based workflows can support accounting teams through a unified operational view. Its synthetic prototype includes:
 
 - Accounts receivable and payable review
