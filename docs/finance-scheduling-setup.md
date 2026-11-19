@@ -12,6 +12,10 @@ python3 -m finance.automation_runner --source synthetic --output-dir ./var/finan
 
 Results are written with restricted permissions to `var/finance/latest.json` and `var/finance/runs.jsonl`. Keep these out of Git and restrict host access. The runner uses an exclusive process lock and atomic latest-result replacement.
 
+## Scheduling is optional and use-case-specific
+
+The repository has **no built-in recurring cron schedule**. The weekday 8 AM expression below is merely an example, not the default or a requirement for running this prototype. During local setup, the temporary weekday schedule was removed. Choose task frequency only after documenting the business process, data freshness, required approvals, and host availability. See the [local prototype guide](local-finance-prototype-guide.md).
+
 ## Cron configuration
 
 Check the absolute repository path and Python interpreter (`command -v python3`). Edit your crontab using `crontab -e` and add, for example:

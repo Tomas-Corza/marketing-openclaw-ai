@@ -4,6 +4,11 @@
 
 **Developed by Tomas Corza | Growth Marketing & Analytics**
 
+## Current prototype setup and repository maintenance
+
+- [Local finance prototype: installation, validation, demonstration, and API-readiness](docs/local-finance-prototype-guide.md)
+- [Branch inventory and synchronization audit](docs/branch-inventory-audit.md) — 30 branches reviewed; diverged histories are preserved for review rather than overwritten.
+
 ## Scheduled Finance Automation (synthetic, read-only)
 
 The finance module includes a cron-compatible Python runner with atomic report output, a single-run lock and JSONL execution records. It runs existing deterministic finance checks on fictional data without requiring Streamlit.
