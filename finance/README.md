@@ -20,6 +20,7 @@ Instead of manually comparing every invoice, bank transaction, and employee time
 | **Accounts payable** | Checks bills from suppliers, finds duplicate invoice numbers, and helps identify records that need attention before payment. |
 | **Invoice matching** | Compares vendor bills with purchase orders, checking supplier names, PO numbers, and amounts. Highlights differences instead of approving a questionable bill. |
 | **Bank reconciliation** | Compares bank transactions with bookkeeping entries to suggest matches and identify missing, duplicated, or unexpected transactions. |
+| **QuickBooks Online payroll preparation** | Includes a read-only API client for permitted employee and time-activity records, plus a payroll-period review tool that works with separately supplied raw shift data. Does not approve, calculate, or submit payroll. |
 | **Employee timekeeping** | Checks clock-in/out information, missing breaks, overlapping shifts, unusual hours, missing job IDs, and missing recorded supervisor approvals. |
 | **Payroll preparation** | Creates a downloadable list of hours that passed the configured checks, ready for further payroll-team review. |
 | **Job tracking** | Cross-checks job IDs on invoices and timesheets against a sample CRM/job list. |
@@ -108,6 +109,18 @@ Bookkeeping records (authorized access)
        (future integration only)
 ```
 
+## QuickBooks Online payroll integration (assumed platform)
+
+The project now contains a **read-only QuickBooks Online Accounting API adapter**. When an authorized business completes an Intuit OAuth 2.0 connection in a future secure deployment, the adapter can request permitted employee and time-activity records and summarize hours by employee and workday.
+
+**Two data sources matter:** QuickBooks Online's `TimeActivity` records generally describe *durations*. They do not necessarily contain raw clock-in and clock-out events. For missed-punch detection, the business must additionally provide approved raw punches from its actual timeclock source, such as an appropriate QuickBooks Time/Workforce integration or export. The shift-checking module then flags missing endpoints and conflicting shifts.
+
+The code also prepares a **review-only list of checked hours** for a selected pay period. It does not calculate tax-compliant pay, post hours to QuickBooks, authorize payroll, or initiate direct deposits. A payroll manager must complete the final review and run payroll through QuickBooks.
+
+**Still needed for live use:** Intuit OAuth consent, secure token refresh/storage, verified API access, raw punch ingestion, integration testing, and an authenticated reviewer interface. Premium payroll API access is not assumed.
+
+[QuickBooks Online connection and payroll design](../docs/quickbooks-online-payroll.md) · [Read-only adapter](quickbooks_online.py).
+
 ## How timekeeping works
 
 The timekeeping tool reviews structured employee shift records and checks whether the recorded times make sense.
@@ -160,6 +173,7 @@ This creates a local JSON summary and audit/run history based on the **original 
 | Live bank authorization and transaction synchronization | **Requires secure setup and additional development** |
 | Direct bank-issued API key support | **Bank-specific; not implemented as a general connector** |
 | Dedicated bank user integration | **Bank-specific; not implemented** |
+| QuickBooks Online read-only client | **API methods added; not connected** |
 | QuickBooks, CRM, and payroll integrations | **Not connected** |
 | Verified live approvals or automatic posting | **Not implemented** |
 
@@ -176,6 +190,8 @@ The first production stage should compare records **without changing anything**.
 - [Bank reconciliation matching](bank_reconciliation.py)
 - [Plaid connection adapter](plaid_connector.py)
 - [Employee timekeeping](timekeeping.py)
+- [QuickBooks Online read-only payroll review](quickbooks_online.py)
+- [QuickBooks payroll integration guide](../docs/quickbooks-online-payroll.md)
 - [Local automation runner](automation_runner.py)
 - [Finance OpenClaw skill](../skills/finance-operations/SKILL.md)
 - [Bank reconciliation OpenClaw skill](../skills/bank-reconciliation-review/SKILL.md)
