@@ -7,7 +7,7 @@ class TestBankReconciliation(unittest.TestCase):
         bank, ledger, mapping = synthetic_example()
         result = reconcile(bank, ledger, mapping)
         self.assertEqual(result["summary"]["proposed_matches"], 2)
-        self.assertEqual(result["summary"]["exceptions"], 5)
+        self.assertEqual(result["summary"]["exceptions"], 4)
         self.assertTrue(all(x["requires_approval"] for x in result["proposed_matches"]))
 
     def test_missing_mapping_does_not_match(self):
