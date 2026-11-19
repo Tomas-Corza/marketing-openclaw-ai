@@ -37,6 +37,7 @@ The [Finance Automation Control Center](finance/dashboard.py) explores how OpenC
 - Invoice and purchase-order verification
 - Bank and ledger reconciliation checks
 - CRM job references and time/payroll review
+- Shift-level timekeeping checks (clock-in/out, breaks, overlapping entries, duplicate IDs, approval checks) with an exception-gated CSV of reviewed hours
 - Exception routing, audit records, and reporting
 - A scheduled Python runner for deterministic checks
 
@@ -82,6 +83,7 @@ Each reusable skill defines a business task and its operating boundaries. Python
 | [Email analytics](skills/email-analytics/SKILL.md) | Summarize campaign engagement, orders, and revenue |
 | [Social behavior monitor](skills/social-behavior-monitor/SKILL.md) | Analyze structured engagement data |
 | [Finance operations](skills/finance-operations/SKILL.md) | Demonstrate accounting checks, reviews, and exception workflows |
+| [Timekeeping review](skills/timekeeping-review/SKILL.md) | Review fictional shift records, flag invalid or overlapping time, and prepare approved-hours CSV exports |
 
 ## Try the project
 
