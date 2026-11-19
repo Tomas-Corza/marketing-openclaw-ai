@@ -31,6 +31,8 @@ The listed capabilities do not imply that live third-party accounts are connecte
 
 ## Featured: Finance Automation Control Center
 
+**[Finance capabilities and setup guide](finance/README.md)** — business-facing explanation of implemented checks, integration options, and limitations.
+
 The [Finance Automation Control Center](finance/dashboard.py) explores how OpenClaw-based workflows can support accounting teams through a unified operational view. Its synthetic prototype includes:
 
 - Accounts receivable and payable review
@@ -38,6 +40,7 @@ The [Finance Automation Control Center](finance/dashboard.py) explores how OpenC
 - Bank and ledger reconciliation checks
 - An optional server-side Plaid transaction adapter (requires separate authorized setup) and synthetic bank-to-ledger reconciliation review
 - CRM job references and time/payroll review
+- QuickBooks Online read-only Employee and TimeActivity API client, and review-only payroll preparation (requires authorized OAuth integration)
 - Shift-level timekeeping checks (clock-in/out, breaks, overlapping entries, duplicate IDs, approval checks) with an exception-gated CSV of reviewed hours
 - Exception routing, audit records, and reporting
 - A scheduled Python runner for deterministic checks
@@ -85,6 +88,7 @@ Each reusable skill defines a business task and its operating boundaries. Python
 | [Social behavior monitor](skills/social-behavior-monitor/SKILL.md) | Analyze structured engagement data |
 | [Finance operations](skills/finance-operations/SKILL.md) | Demonstrate accounting checks, reviews, and exception workflows |
 | [Timekeeping review](skills/timekeeping-review/SKILL.md) | Review fictional shift records, flag invalid or overlapping time, and prepare approved-hours CSV exports |
+| [QuickBooks Online payroll review](skills/quickbooks-online-payroll-review/SKILL.md) | Review permitted employee and time records without payroll writes |
 | [Bank reconciliation review](skills/bank-reconciliation-review/SKILL.md) | Propose bank-to-ledger matches and flag exceptions; optional server-side Plaid adapter |
 
 ## Try the project
