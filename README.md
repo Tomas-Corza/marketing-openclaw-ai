@@ -36,14 +36,15 @@ The [Finance Automation Control Center](finance/dashboard.py) explores how OpenC
 - Accounts receivable and payable review
 - Invoice and purchase-order verification
 - Bank and ledger reconciliation checks
+- An optional server-side Plaid transaction adapter (requires separate authorized setup) and synthetic bank-to-ledger reconciliation review
 - CRM job references and time/payroll review
 - Shift-level timekeeping checks (clock-in/out, breaks, overlapping entries, duplicate IDs, approval checks) with an exception-gated CSV of reviewed hours
 - Exception routing, audit records, and reporting
 - A scheduled Python runner for deterministic checks
 
-This demonstration processes **fictional financial records**. It does not connect to live QuickBooks, banks, payroll, or CRM accounts, execute model-driven financial agents, or perform production financial writes. These would require separately authorized implementation and testing.
+This demonstration processes **fictional financial records**. It does not connect to live QuickBooks, banks, payroll, or CRM accounts, execute model-driven financial agents, or perform production financial writes. A separately configured Plaid backend adapter supports bank-data API requests but the public dashboard remains disconnected, and Link UI, secure token storage, durable sync, and production accounting integrations still require implementation. These would require separately authorized implementation and testing.
 
-**Explore:** [Dashboard code](finance/dashboard.py) · [OpenClaw finance skill](skills/finance-operations/SKILL.md) · [Finance demonstration overview](docs/finance-automation-demo.md) · [Production integration architecture](docs/production-integration-architecture.md)
+**Explore:** [Dashboard code](finance/dashboard.py) · [Bank connection architecture](docs/plaid-bank-reconciliation.md) · [OpenClaw finance skill](skills/finance-operations/SKILL.md) · [Finance demonstration overview](docs/finance-automation-demo.md) · [Production integration architecture](docs/production-integration-architecture.md)
 
 ## Featured: AI E-Commerce Operations Dashboard
 
@@ -84,6 +85,7 @@ Each reusable skill defines a business task and its operating boundaries. Python
 | [Social behavior monitor](skills/social-behavior-monitor/SKILL.md) | Analyze structured engagement data |
 | [Finance operations](skills/finance-operations/SKILL.md) | Demonstrate accounting checks, reviews, and exception workflows |
 | [Timekeeping review](skills/timekeeping-review/SKILL.md) | Review fictional shift records, flag invalid or overlapping time, and prepare approved-hours CSV exports |
+| [Bank reconciliation review](skills/bank-reconciliation-review/SKILL.md) | Propose bank-to-ledger matches and flag exceptions; optional server-side Plaid adapter |
 
 ## Try the project
 
