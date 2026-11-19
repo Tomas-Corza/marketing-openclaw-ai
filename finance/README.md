@@ -8,9 +8,19 @@ The Finance Automation Control Center helps demonstrate how a business can use a
 
 Instead of manually comparing every invoice, bank transaction, and employee timesheet, the system applies consistent checks and prepares a list of potential problems to review.
 
-**What works today:** A runnable dashboard, synthetic accounting checks, bank-to-ledger matching, employee shift validation, exception reports, and downloadable review files. The project also includes **read-only connection code for Plaid and QuickBooks Online**. Those connection components are not wired into the public dashboard or a live business account.
+## Connect it to the systems your business already uses
 
-**What is not connected yet:** Real bank accounts, QuickBooks Online, payroll, timeclock, and CRM services. The public dashboard uses fictional data. The software does not pay employees, approve payroll, move money, change accounting records, or run a connected AI model.
+The Finance Automation Control Center is designed to work alongside your existing business software. With the company's permission and a secure connection, it can bring information from different systems together, check for discrepancies, and show employees what needs attention.
+
+- **Business bank accounts:** Connect through an approved, read-only bank service such as Plaid, a bank-supported connection, or authorized statement exports. Compare deposits and withdrawals with bookkeeping records to find transactions that may be missing or duplicated.
+- **QuickBooks Online:** Connect with the company's authorization to review available employee time records and, with additional accounting integration, compare invoices, expenses, and payroll-related transactions. Payroll remains under the control of authorized staff.
+- **Employee time clocks and timesheets:** Connect an approved timekeeping system or export to check for missing clock-ins or clock-outs, overlapping shifts, unusual hours, and timesheets that need supervisor review.
+- **Payroll systems:** Prepare verified hours for an authorized payroll manager to review before employees are paid through the company's payroll provider.
+- **Customer and job management software:** Connect job, customer, and purchase-order information so invoices, expenses, and employee hours can be checked against the correct projects.
+
+**How connections work:** An authorized company representative approves access through the service's supported connection method. Wherever possible, the system uses **view-only permission**, meaning it can read the information needed for checks without making payments or changing records. Available connections depend on the software and its permissions.
+
+**Demonstration and deployment:** The public dashboard uses fictional business records to show these workflows. Live connections require secure setup, the company's authorization, and testing before the automation can work with actual financial or employee information.
 
 ## What can it do?
 
