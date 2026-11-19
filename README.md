@@ -76,6 +76,7 @@ Each reusable skill defines a business task and its operating boundaries. Python
 | [Merchant feed diagnostics](skills/merchant-feed-diagnostics/SKILL.md) | Detect feed issues and recommend local corrections |
 | [Customer inquiry assistant](skills/customer-inquiry-assistant/SKILL.md) | Classify questions and prepare factual draft responses |
 | [Gmail inquiry drafts](skills/gmail-customer-inquiry-drafts/SKILL.md) | Prepare unsent replies to selected authorized messages |
+| [Gmail approved sending](skills/gmail-approved-send/SKILL.md) | Preview and send one exact human-approved email with separately authorized Gmail OAuth |
 | [Shopify return processing](skills/shopify-return-processing/SKILL.md) | Screen verified requests and prepare proposals for review |
 | [JTBD analysis](skills/jtbd-analysis/SKILL.md) | Analyze messaging against customer motivations |
 | [Email analytics](skills/email-analytics/SKILL.md) | Summarize campaign engagement, orders, and revenue |
@@ -130,7 +131,7 @@ A real business deployment starts by identifying repetitive tasks and selecting 
 
 **Available in this repository:** Offline Python analysis and validation, reusable skill definitions, dashboards, synthetic example data, approval-gated workflow components, and selected optional API-capable tools.
 
-**Requires separate configuration or development:** Live third-party integrations, credentials and permissions, financial-system adapters, operational schedules, secure production deployment, and end-to-end validation. Installing this repository does not automatically send customer messages, issue refunds, publish products, or change accounting records.
+**Requires separate configuration or development:** Live third-party integrations, credentials and permissions, financial-system adapters, operational schedules, secure production deployment, and end-to-end validation. Installing this repository does not automatically send customer messages, issue refunds, publish products, or change accounting records. The [Gmail approved-send adapter](docs/gmail-approved-send.md) can send a single approved plain-text email **only after separate Gmail OAuth configuration and explicit per-message approval**; the existing customer inquiry workflow remains draft-only.
 
 ## Repository guide
 
