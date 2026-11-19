@@ -1,180 +1,187 @@
 # Finance Automation Control Center
 
-**Review-first financial operations automation, built for OpenClaw AI agents.**
+**Less manual accounting work. Faster reviews. Clear records of what needs attention.**
 
-Part of [Marketing OpenClaw AI](../README.md) · Developed by **Tomas Corza** · [Portfolio](https://tomascorza.me)
+Part of [Marketing OpenClaw AI](../README.md) · Built for OpenClaw AI agents · Created by **Tomas Corza** · [Portfolio](https://tomascorza.me)
 
-The Finance Automation Control Center is a modular Python prototype that demonstrates how a business can standardize accounting checks, identify discrepancies, and prepare evidence-backed review queues across receivables, payables, bank reconciliation, job tracking, and employee timekeeping.
+The Finance Automation Control Center helps demonstrate how a business can use automation to check financial records, spot mistakes, and organize the work that needs an accountant's attention.
 
-> **Current status:** Runnable, **synthetic-data-only** dashboard and deterministic Python analysis tools, plus an **optional server-side Plaid API client** that requires separate authorization and infrastructure. This is **not** a live bank, QuickBooks, CRM, or payroll deployment; it does not execute financial writes or model-driven AI decisions.
+Instead of manually comparing every invoice, bank transaction, and employee timesheet, the system applies consistent checks and prepares a list of potential problems to review.
 
-## What the system actually does
+**What works today:** A runnable dashboard, Python validation tools, fictional sample records, downloadable reports, timekeeping checks, and bank-to-ledger matching suggestions. The code also includes a **Plaid bank-data API adapter** that can form part of a real bank connection.
 
-| Business workflow | Implemented capability | Output / boundary |
+**What is not connected yet:** Real bank accounts, QuickBooks, payroll, timeclock, and CRM services. The public dashboard uses fictional data. It does not send payments, change accounting records, or run a connected AI model.
+
+## What can it do?
+
+| Capability | What it does for a business |
+| --- | --- |
+| **Accounts receivable** | Shows how much customers owe, which invoices are overdue, and how long balances have been outstanding. Flags unusual payments and missing job references. |
+| **Accounts payable** | Checks bills from suppliers, finds duplicate invoice numbers, and helps identify records that need attention before payment. |
+| **Invoice matching** | Compares vendor bills with purchase orders, checking supplier names, PO numbers, and amounts. Highlights differences instead of approving a questionable bill. |
+| **Bank reconciliation** | Compares bank transactions with bookkeeping entries to suggest matches and identify missing, duplicated, or unexpected transactions. |
+| **Employee timekeeping** | Checks clock-in/out information, missing breaks, overlapping shifts, unusual hours, missing job IDs, and missing recorded supervisor approvals. |
+| **Payroll preparation** | Creates a downloadable list of hours that passed the configured checks, ready for further payroll-team review. |
+| **Job tracking** | Cross-checks job IDs on invoices and timesheets against a sample CRM/job list. |
+| **Exception monitoring** | Creates an easy-to-review list explaining what went wrong, which record triggered it, and what an employee should check next. |
+| **Reports and audit history** | Displays key figures and exceptions in a dashboard, with downloadable review reports and rule-decision records. |
+
+These features run on the included **sample data**. Actual business data requires approved system connections and additional testing.
+
+## How a bank account can be connected securely
+
+A business does **not** need to give this automation unrestricted control of its money. The intended connection is **read-only**: the system can retrieve permitted transaction information so it can compare those transactions with accounting records, but it cannot initiate payments or transfers.
+
+There are several possible ways to grant that access. **Which one is available depends on the bank, account type, and its security policies.**
+
+### Option 1: A read-only banking API (preferred when supported)
+
+Some banks provide business banking APIs or an approved third-party integration service with restricted permissions.
+
+1. The business asks its bank whether it offers **read-only transaction access** through an API or approved data provider.
+2. The bank or provider authorizes the connection and issues scoped credentials, such as a token or API key **if that institution supports them**.
+3. The credentials are stored in a private, encrypted server-side secrets system—not in GitHub, an AI prompt, or the dashboard.
+4. The integration retrieves transactions and passes them to the reconciliation tool.
+5. The tool suggests matching bookkeeping entries and flags anything that needs human review.
+
+**Important:** Not all banks issue a simple read-only API key. Many use OAuth, access tokens, customer consent, or an approved provider instead. Bank-specific API integration and credential storage still need to be configured.
+
+### Option 2: A dedicated, read-only business banking user
+
+Some business banking platforms let an administrator create another **named user** with limited access.
+
+1. An authorized administrator creates a dedicated user in the bank's official business banking system, **if the bank supports restricted users**.
+2. The administrator gives that user only the permissions needed to view transactions or download statements.
+3. Payment initiation, transfers, beneficiary management, account administration, and approval permissions remain disabled.
+4. Where supported, the integration uses the bank's **official API, OAuth/consent flow, or approved export mechanism** with this restricted identity.
+5. Transactions are imported into the reconciliation workflow for review.
+
+**A dedicated login is not automatically an API connection.** The application should **not** collect or store the banking username, password, or MFA codes, impersonate the user through browser automation, or bypass bank restrictions. If the bank only allows manual statement exports, an authorized employee can export a CSV for a future secure import workflow.
+
+### Option 3: Connect through Plaid
+
+The project already includes **server-side Plaid API methods** for a future bank integration.
+
+1. The business opens an authorized **Plaid Link** connection screen.
+2. The account holder selects their bank and completes the bank's required authorization steps.
+3. Plaid gives the application's secure backend an access token for approved transaction-data access.
+4. The backend retrieves available transactions and sends normalized records to the reconciliation engine.
+5. The system suggests matching bookkeeping entries and holds unclear transactions for review.
+
+Plaid is not the same as receiving a read-only API key directly from a bank. Its permissions depend on the authorized products, consent, bank support, and connection configuration.
+
+**Current implementation status:** The project includes methods for creating Plaid Link tokens, exchanging public tokens, and retrieving transaction updates. A live Plaid Link screen, secure credential vault, persistent transaction sync, and a connection to an actual bank **have not yet been built or configured**. No account is currently connected.
+
+[Read the technical bank connection guide](../docs/plaid-bank-reconciliation.md).
+
+## What automatic reconciliation looks like
+
+Imagine a business has the following fictional records:
+
+| Bank activity | Bookkeeping entry | Result |
 | --- | --- | --- |
-| **Accounts receivable (AR)** | Calculates open balances from billed-minus-paid amounts, groups them by due-date aging (current, 1–30, 31–60, 61–90, 90+ days), flags payments exceeding invoices and balances overdue more than 30 days, and checks CRM job references | AR totals, aging chart, exceptions, proposed collections follow-up **draft task**; does not contact customers |
-| **Accounts payable (AP)** | Reviews vendor bills, detects duplicate vendor/invoice identifiers, excludes such duplicates from the illustrative AP outstanding total, and cross-checks purchase-order links | Outstanding AP estimate and flagged duplicate/mismatched invoices; no bill approval or payment |
-| **Invoice-to-purchase-order matching** | Matches invoice PO reference, vendor identity, and exact amount against the sample PO list; flags missing POs, vendor mismatches, and amount variances | Explainable matching audit and suggested manual investigation; no OCR, three-way receipt matching, or posting |
-| **Bank reconciliation (original finance view)** | Compares fictional bank and ledger entries by account, reference, and amount; flags unmatched, ambiguous, or discrepant entries | Proposed reconciliation checks; not a completed bank statement reconciliation |
-| **Bank-to-ledger reconciliation (new module)** | Normalizes Plaid transaction sign convention, maps bank account IDs to ledger accounts, and proposes one-to-one matches with **exact mapped account, posting date, and amount**; holds pending, duplicate, unmapped, malformed, missing-counterpart, and ambiguous entries | Proposed matches with source transaction/ledger IDs and review-only exceptions; never marks entries reconciled |
-| **Optional Plaid bank-data adapter** | Includes server-side methods for Link-token creation, public-token exchange, and paginated transaction change retrieval through Plaid | API integration building blocks; **not** a working user-facing bank connection, encrypted token vault, transaction database, or automatically connected dashboard |
-| **Basic payroll and time checks** | Compares fictional employee-entered hours with approved hours, checks associated job IDs, and computes a simple illustrative straight-time gross-pay total | Flags hours beyond approved amounts and unknown job IDs; **not** production payroll calculation |
-| **Shift-level timekeeping** | Validates time-zone-aware clock-in/out times, shift identifiers, employee IDs, CRM job IDs, break durations, missing named approvals, overlapping shifts, and unusually long shifts/days | Exception reports, audit decisions, and CSV containing only exception-free, recorded-approved hours; no timeclock integration or actual supervisor approval |
-| **CRM / job visibility** | Displays fictional customer/job records and validates their IDs when referenced in AR and time workflows | Missing job reference flags; no CRM API connection |
-| **Exception monitoring** | Assigns reason, severity, source record, and recommended human action for deterministic finance-engine exceptions; provides a proposed work queue | Review-only recommendations, not agent-executed resolutions |
-| **Reporting & scheduled-style runs** | Provides Streamlit tables/charts, audit JSON downloads, and a Python command-line validation runner | Local JSON snapshot and run log for synthetic finance-engine checks; no live-source scheduler or automated external notifications |
+| $425 supplier payment | $425 supplier payment on the same date/account | **Suggested match** |
+| $1,200 customer deposit | $1,200 deposit on the same date/account | **Suggested match** |
+| $72 payment | Two possible $72 entries | **Flag for review** |
+| Pending $39 bank charge | No finalized entry | **Hold for review** |
 
-### What is automated vs. what requires a person
+The matching engine works conservatively. It proposes a match only when the mapped account, date, and amount agree and there is exactly **one** candidate on each side. It preserves source IDs and explains why other records were held.
+
+An accountant still needs to verify proposed matches and confirm statement balances and period completeness. This does **not** automatically finalize a bank reconciliation inside QuickBooks or another accounting platform.
+
+### The intended workflow
 
 ```text
-Fictional records / separately authorized future data adapters
-                      |
-           Deterministic validation
-                      |
-       Matching + discrepancy detection
-                      |
-          Proposed match / exception
-                      |
-              Human review
-                      |
-       Reporting and review-only exports
+Bank data (authorized read-only access)
+                 +
+Bookkeeping records (authorized access)
+                 |
+        Automatic comparison
+                 |
+         Suggested matches
+            /         \
+   Clear candidates   Missing / uncertain entries
+            \         /
+          Human review
+                 |
+      Approved accounting action
+       (future integration only)
 ```
 
-The code **does** calculate summaries, detect predefined anomalies, generate proposed matches, and build review artifacts. It **does not** automatically authorize or post invoices, update the general ledger, initiate payments, send collections emails, reconcile bank accounts in accounting software, modify timesheets, or submit payroll.
+## How timekeeping works
 
-The label *built for OpenClaw AI agents* refers to the framework's modular skills and integration architecture. **The finance implementation currently uses deterministic Python rules, not a connected large-language-model agent.**
+The timekeeping tool reviews structured employee shift records and checks whether the recorded times make sense.
 
-## Explore the dashboard
+For example, it can flag a shift that overlaps another shift for the same employee, has no clock-out time, has an invalid break length, uses an unknown job number, or has no named recorded approval.
 
-Run from the repository root:
+It can also generate a **CSV of recorded-approved hours that have no unresolved validation flags**, giving a payroll employee a starting point for review.
+
+This is **not** a replacement for a payroll system. The tool does not calculate payroll taxes, employee deductions, wage compliance, or jurisdiction-specific overtime and meal/rest rules. Its break and long-shift flags are general review prompts, not legal determinations.
+
+[View the timekeeping skill](../skills/timekeeping-review/SKILL.md).
+
+## The dashboard
+
+Run the finance demo locally from the repository's main folder:
 
 ```bash
 python3 -m pip install -r dashboard/requirements.txt
 streamlit run finance/dashboard.py
 ```
 
-The dashboard includes **12 tabs**:
+The dashboard shows:
 
-1. **Overview** — AR/AP/payroll illustration, aging and exception distribution.
-2. **Accounts Receivable** — customer invoice balances and aging.
-3. **Accounts Payable** — vendor bill records and outstanding amount.
-4. **Invoice Matching** — PO reference verification and discrepancy review.
-5. **Bank Reconciliation** — original fictional bank-versus-ledger comparison.
-6. **Bank Connection Demo** — separate synthetic Plaid-style reconciliation example; proposed matches, exceptions, JSON download.
-7. **Payroll & Time** — hours, approval-hour mismatches, straight-time illustration.
-8. **Timekeeping Review** — synthetic shift checks, audit results and approved-hours **review CSV**.
-9. **CRM / Jobs** — illustrative job links.
-10. **Exceptions & Agent Queue** — rule-triggered issues and suggested actions.
-11. **Integrations** — readiness notes, not active connection status.
-12. **Audit Log** — validation decisions and finance-engine JSON download.
+- **Overview:** Outstanding receivables and payables, illustrative payroll, and exception counts.
+- **Receivables, payables, and invoice matching:** Records, checks, and discrepancies.
+- **Bank reconciliation and bank connection demo:** Sample bank records, suggested matches, and unmatched items.
+- **Payroll and timekeeping:** Hours, shift checks, and an approved-hours review CSV.
+- **CRM/jobs:** Sample jobs associated with financial and time records.
+- **Exceptions, integrations, and audit log:** Review tasks, future connector information, and downloadable JSON reports.
 
-**Dashboard behavior:** The initial data is generated locally, and the `Run finance validation` button enables display of the proposed task queue. The tab analyses are based on deterministic processing of fictional data; the button does not launch an external AI agent or a remote job.
+The dashboard has a button to reveal the proposed finance work queue. It does not start a real banking sync or send financial instructions to another service.
 
-## Bank connection: precise implementation status
-
-**Implemented code:** [`plaid_connector.py`](plaid_connector.py) provides a configurable Plaid sandbox/development/production HTTP client with methods to:
-
-- Request a Link token for an authenticated user ID.
-- Exchange an authorized Link public token for an access token and item ID.
-- Retrieve paginated added, modified, and removed transaction events and return a next cursor.
-
-**Not implemented:** Plaid Link frontend, authenticated deployment endpoints, credential encryption/storage, per-customer access separation, durable transaction sync/cursor persistence, webhook handling, live ledger adapter, account mapping UI, scheduled bank sync, and signed-off posting. **No bank account is connected in the demonstration.** The dashboard never asks for account credentials.
-
-The separate [`bank_reconciliation.py`](bank_reconciliation.py) engine can process appropriately normalized bank and ledger records supplied by an authorized backend. It is deliberately conservative: a single exact-date, exact-amount match is a *proposal*, not proof that a transaction is properly reconciled or classified. It does not verify statement opening/closing balances, posting-date tolerances, fees, currency differences, or settled-period completeness.
-
-See [Bank connection and security deployment guide](../docs/plaid-bank-reconciliation.md).
-
-## Timekeeping and payroll-preparation details
-
-[The timekeeping engine](timekeeping.py) currently accepts structured shift records rather than raw timeclock API responses. It checks:
-
-- Timestamp presence and UTC offsets; chronological start/end and break-duration validity.
-- Missing/duplicate shift IDs and missing employee identifiers.
-- Job ID association with a provided CRM job list.
-- Named approval markers in the input data.
-- Overlapping intervals for the same employee.
-- Review heuristics for shifts longer than 16 hours, daily recorded hours over 12, and shifts of 6+ elapsed hours with no recorded break.
-
-These are **review heuristics only** and do not encode California or other jurisdiction's overtime, meal/rest, prevailing-wage, or labor-compliance requirements. The engine computes recorded hours after entered break minutes; it does **not** determine which breaks are paid or unpaid. Hours lacking any required review check are excluded from its approved-hours CSV.
-
-A named approval value in fictional input data is not verified authentication or proof of actual supervisor authorization. The downloaded CSV is **for payroll-team review**, not direct payroll submission.
-
-See [OpenClaw timekeeping skill](../skills/timekeeping-review/SKILL.md).
-
-## Running a local finance validation report
+## Run the local automation report
 
 ```bash
 python3 -m finance.automation_runner --source synthetic --output-dir ./var/finance
 ```
 
-This command executes the **original finance-engine synthetic checks**, then writes:
+This creates a local JSON summary and audit/run history based on the **original sample finance dataset**. It does not currently run the separate detailed bank reconciliation or shift-level timekeeping engines as part of this scheduled-style report. Live-source mode is intentionally disabled.
 
-- `var/finance/latest.json` — latest finance summary, exceptions, audit records and suggested review tasks.
-- `var/finance/runs.jsonl` — local run metadata and output hash.
+## What's ready and what still needs setup?
 
-It uses a file lock and restrictive local output permissions. It does **not** currently include the separate bank-reconciliation and shift-level timekeeping modules in its scheduled snapshot. Passing `--source live` is intentionally rejected until a production adapter is developed. Scheduling is a deployment step; the command is not itself an always-on service.
-
-## Offline usage and tests
-
-```bash
-python3 -m unittest discover -s tests -p 'test_finance_engine.py' -v
-python3 -m unittest discover -s tests -p 'test_timekeeping.py' -v
-python3 -m unittest discover -s tests -p 'test_bank_reconciliation.py' -v
-```
-
-Tests are included in the repository. **Do not interpret their presence as proof of production readiness; the new bank and timekeeping tests have not yet been verified in this session.**
-
-The bank reconciliation module can also be used independently:
-
-```python
-from finance.bank_reconciliation import synthetic_example, reconcile
-
-bank, ledger, account_mapping = synthetic_example()
-review = reconcile(bank, ledger, account_mapping)
-print(review["summary"])
-print(review["exceptions"])
-```
-
-## Implementation status by system
-
-| System | Current status |
+| Component | Status |
 | --- | --- |
-| Built-in synthetic accounting dataset | **Implemented** |
-| Streamlit finance dashboard | **Implemented** (synthetic demonstration) |
-| AR/AP, invoice matching and finance-engine checks | **Implemented** (offline deterministic rules) |
-| Timekeeping checks and reviewed-hours CSV | **Implemented** (structured fictional records) |
-| Bank-to-ledger proposed matching | **Implemented** (structured records) |
-| Plaid API client methods | **Implemented as backend building blocks**; authorization UI and live operational flow are not connected |
-| QuickBooks Online integration | **Not implemented** |
-| Bank account actually linked in the dashboard | **Not implemented** |
-| CRM / job platform integration | **Not implemented** |
-| Timeclock / HRIS / payroll provider integration | **Not implemented** |
-| Authenticated supervisor approvals, persisted exceptions | **Not implemented** |
-| Automated accounting or payroll writes | **Not implemented; intentionally blocked** |
-| LLM-powered finance agent execution | **Not implemented** |
+| Sample AR/AP and invoice checks | **Implemented** |
+| Finance dashboard and sample reports | **Implemented** |
+| Bank-to-ledger matching suggestions | **Implemented for structured records** |
+| Plaid API client methods | **Implemented; not connected to a bank** |
+| Timekeeping checks and reviewed-hours CSV | **Implemented for structured records** |
+| Live bank authorization and transaction synchronization | **Requires secure setup and additional development** |
+| Direct bank-issued API key support | **Bank-specific; not implemented as a general connector** |
+| Dedicated bank user integration | **Bank-specific; not implemented** |
+| QuickBooks, CRM, and payroll integrations | **Not connected** |
+| Verified live approvals or automatic posting | **Not implemented** |
 
-## Production deployment requirements
+## What it takes to use this in a real business
 
-Before a business can safely use real financial or employee records, implementation would require documented authorization, isolated server-side credentials, role-based permissions, encrypted storage, persistent transaction cursors, secure data ingestion, idempotent matching, audit retention, reviewer identity and signoff, independent reconciliation, payroll compliance review, logging/alerts, and controlled integration testing.
+A secure business deployment would involve identifying the accounting and banking systems already in use, securing **read-only access** where available, mapping accounts and transactions, protecting tokens and employee data, testing matching accuracy, and setting up employee approval and audit records.
 
-A production workflow should begin **read-only** and run in parallel with existing accounting procedures before any narrowly authorized write operation is considered.
+The first production stage should compare records **without changing anything**. Only after successful testing and clear authorization should the business consider allowing narrowly controlled accounting updates.
 
-## Files and OpenClaw integration
+## Project files
 
-| File | Purpose |
-| --- | --- |
-| [`dashboard.py`](dashboard.py) | Unified Streamlit finance prototype |
-| [`engine.py`](engine.py) | AR/AP/PO/ledger/time synthetic analysis and review queue |
-| [`bank_reconciliation.py`](bank_reconciliation.py) | Strict bank-to-ledger proposed matches and exceptions |
-| [`plaid_connector.py`](plaid_connector.py) | Optional Plaid server-side API client |
-| [`timekeeping.py`](timekeeping.py) | Shift-level time validation and reviewed-hours selection |
-| [`automation_runner.py`](automation_runner.py) | Local finance-engine report generation |
-| [Finance operations skill](../skills/finance-operations/SKILL.md) | OpenClaw usage and execution boundaries |
-| [Bank reconciliation skill](../skills/bank-reconciliation-review/SKILL.md) | Review-only reconciliation workflow |
-| [Timekeeping skill](../skills/timekeeping-review/SKILL.md) | Review-only timekeeping workflow |
+- [Finance dashboard](dashboard.py)
+- [Accounts receivable, payable, and invoice validation](engine.py)
+- [Bank reconciliation matching](bank_reconciliation.py)
+- [Plaid connection adapter](plaid_connector.py)
+- [Employee timekeeping](timekeeping.py)
+- [Local automation runner](automation_runner.py)
+- [Finance OpenClaw skill](../skills/finance-operations/SKILL.md)
+- [Bank reconciliation OpenClaw skill](../skills/bank-reconciliation-review/SKILL.md)
 
 ---
 
-**Created by Tomas Corza** · [Portfolio](https://tomascorza.me) · [Full GitHub repository](https://github.com/Tomas-Corza/marketing-openclaw-ai)
+**Built by Tomas Corza** · [Portfolio](https://tomascorza.me) · [Marketing OpenClaw AI on GitHub](https://github.com/Tomas-Corza/marketing-openclaw-ai)
 
-*This repository is a public, synthetic demonstration of practical financial workflow automation. All financial and employee records in the included examples are fictional. Actual integrations, legal compliance, accounting controls and deployment security depend on the specific business environment.*
+*This is a public demonstration using fictional data. Actual banking, accounting, payroll, and CRM integrations require the organization's permission, secure configuration, and production testing.*
