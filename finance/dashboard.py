@@ -5,11 +5,23 @@ Run: streamlit run finance/dashboard.py
 from pathlib import Path
 import sys
 import json
+import csv
+import io
 import streamlit as st
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0,str(ROOT))
 from finance.engine import seed_data, analyze, suggest_actions
+from finance.timekeeping import analyze_shifts, demo_shifts
+from finance.bank_reconciliation import reconcile, synthetic_example
+
+def make_hours_csv(rows):
+    buffer = io.StringIO()
+    columns = ["shift_id", "employee_id", "job_id", "work_date", "approved_hours", "approved_by"]
+    writer = csv.DictWriter(buffer, fieldnames=columns)
+    writer.writeheader()
+    writer.writerows(rows)
+    return buffer.getvalue()
 
 st.set_page_config(page_title="OpenClaw | Finance Operations", page_icon="🧾", layout="wide")
 st.title("Finance Automation Control Center")
@@ -17,6 +29,8 @@ st.caption("Marketing OpenClaw AI · Accounting workflow prototype")
 st.warning("SYNTHETIC DEMO ONLY · No bank, QuickBooks, Salesforce, payroll, or AI model connection. Rule-based workflows; no financial writes.")
 if "finance_data" not in st.session_state:
     st.session_state.finance_data=seed_data()
+if "timekeeping_shifts" not in st.session_state:
+    st.session_state.timekeeping_shifts = demo_shifts()
 if "finance_run" not in st.session_state:
     st.session_state.finance_run=False
 
@@ -27,6 +41,7 @@ with st.sidebar:
         st.session_state.finance_run=True
     if st.button("Reset synthetic dataset",width="stretch"):
         st.session_state.finance_data=seed_data()
+        st.session_state.timekeeping_shifts=demo_shifts()
         st.session_state.finance_run=False
     st.divider()
     st.markdown("**Safety controls**")
@@ -43,7 +58,7 @@ c.metric("Illustrative payroll",f"${summary['payroll_gross_illustrative']:,.2f}"
 d.metric("Exceptions",summary["exception_count"])
 e.metric("High priority",summary["high_severity"])
 st.caption("¹ AP excludes duplicate vendor/invoice IDs from the total. Figures are fictional and not accounting statements.")
-tabs=st.tabs(["Overview","Accounts Receivable","Accounts Payable","Invoice Matching","Bank Reconciliation","Payroll & Time","CRM / Jobs","Exceptions & Agent Queue","Integrations","Audit Log"])
+tabs=st.tabs(["Overview","Accounts Receivable","Accounts Payable","Invoice Matching","Bank Reconciliation","Bank Connection Demo","Payroll & Time","Timekeeping Review","CRM / Jobs","Exceptions & Agent Queue","Integrations","Audit Log"])
 with tabs[0]:
     st.subheader("Finance operations snapshot")
     left,right=st.columns(2)
@@ -81,15 +96,64 @@ with tabs[4]:
         st.dataframe(data["ledger"],hide_index=True,width="stretch")
     st.dataframe([x for x in result["exceptions"] if x["area"]=="Reconciliation"],hide_index=True,width="stretch")
 with tabs[5]:
+    st.subheader("Read-only bank connection and reconciliation demonstration")
+    st.info("This public interface uses fictional records. A real Plaid connection requires a secure, separately authenticated deployment and Plaid Link authorization.")
+    demo_bank, demo_ledger, demo_mapping = synthetic_example()
+    bank_review = reconcile(demo_bank, demo_ledger, demo_mapping)
+    p, q = st.columns(2)
+    p.metric("Suggested matches", bank_review["summary"]["proposed_matches"])
+    q.metric("Held exceptions", bank_review["summary"]["exceptions"])
+    st.markdown("**Fictional bank transactions**")
+    st.dataframe(demo_bank, hide_index=True, width="stretch")
+    st.markdown("**Fictional accounting ledger**")
+    st.dataframe(demo_ledger, hide_index=True, width="stretch")
+    st.markdown("**Proposed matches — approval required**")
+    st.dataframe(bank_review["proposed_matches"], hide_index=True, width="stretch")
+    st.markdown("**Exceptions / unmatched records**")
+    st.dataframe(bank_review["exceptions"], hide_index=True, width="stretch")
+    st.download_button("Download reconciliation review JSON",
+                       data=json.dumps(bank_review, indent=2),
+                       file_name="synthetic-bank-reconciliation-review.json",
+                       mime="application/json")
+    st.caption("Plaid adapter is server-side code only; this dashboard does not initiate Plaid Link, access tokens, connect a bank, or write to an accounting system.")
+with tabs[6]:
     st.subheader("Hours, approval exceptions and estimated gross pay")
     st.dataframe(data["timesheets"],hide_index=True,width="stretch")
     st.dataframe([x for x in result["exceptions"] if x["area"]=="Payroll / Time"],hide_index=True,width="stretch")
     st.caption("Straight-time estimation only. Not a payroll calculator; excludes overtime rules, withholding, taxes and benefits.")
-with tabs[6]:
+with tabs[7]:
+    st.subheader("Timekeeping exception review and payroll preparation")
+    st.caption("Fictional shift data only. Deterministic validation, not real-time attendance monitoring or payroll processing.")
+    st.dataframe(st.session_state.timekeeping_shifts, hide_index=True, width="stretch")
+    time_results = analyze_shifts(
+        st.session_state.timekeeping_shifts,
+        {j["job_id"] for j in data["jobs"]},
+    )
+    k1, k2, k3 = st.columns(3)
+    k1.metric("Recorded shifts", time_results["summary"]["shift_count"])
+    k2.metric("Held shifts", time_results["summary"]["flagged_shifts"])
+    k3.metric("Approved hours ready", time_results["summary"]["approved_hours_ready"])
+    st.markdown("**Exceptions requiring human review**")
+    if time_results["exceptions"]:
+        st.dataframe(time_results["exceptions"], hide_index=True, width="stretch")
+    else:
+        st.success("No deterministic exceptions identified in this dataset.")
+    st.markdown("**Review-only payroll hours export**")
+    st.dataframe(time_results["payroll_ready"], hide_index=True, width="stretch")
+    st.download_button(
+        "Download reviewed hours (CSV)",
+        data=make_hours_csv(time_results["payroll_ready"]),
+        file_name="synthetic-approved-hours-review.csv", mime="text/csv",
+        disabled=not bool(time_results["payroll_ready"]),
+    )
+    with st.expander("Timekeeping audit decisions"):
+        st.dataframe(time_results["audit"], hide_index=True, width="stretch")
+    st.warning("No overtime, meal/rest compliance, wages, deductions, taxes, or payroll submission calculated. Export requires further payroll-team verification.")
+with tabs[8]:
     st.subheader("CRM job matching")
     st.dataframe(data["jobs"],hide_index=True,width="stretch")
     st.caption("Job IDs are fictional and demonstrate proposed CRM-to-finance mapping.")
-with tabs[7]:
+with tabs[9]:
     st.subheader("Exception monitoring")
     st.dataframe(result["exceptions"],hide_index=True,width="stretch")
     st.markdown("**Proposed agent work queue (rules-based)**")
@@ -98,12 +162,12 @@ with tabs[7]:
         st.success("Validation run complete; proposed tasks are review-only.")
     else:
         st.info("Click 'Run finance validation' in the sidebar to generate the proposed work queue.")
-with tabs[8]:
+with tabs[10]:
     st.subheader("Integration readiness")
     st.dataframe(data["integrations"],hide_index=True,width="stretch")
     st.warning("All connectors are proposed, not implemented. No API keys or OAuth tokens are requested or stored.")
     st.markdown("**Production rollout:** OAuth/read-only discovery → data mapping → idempotent matching → audit logs → supervisor approval → narrowly scoped writes → retries, monitoring and rollback.")
-with tabs[9]:
+with tabs[11]:
     st.subheader("Deterministic rule audit trail")
     st.dataframe(result["audit"],hide_index=True,width="stretch")
     st.download_button("Download audit + exception JSON",data=json.dumps(result,indent=2),file_name="synthetic-finance-audit.json",mime="application/json")
