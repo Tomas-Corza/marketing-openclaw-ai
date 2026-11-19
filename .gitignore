@@ -23,3 +23,6 @@ __pycache__/
 # Unreviewed original workspace code
 tools-review/
 *.log
+
+# Local finance scheduler output (may contain sensitive records)
+var/
