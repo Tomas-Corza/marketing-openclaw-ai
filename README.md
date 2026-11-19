@@ -1,150 +1,92 @@
 # Marketing OpenClaw AI
 
-**A customizable AI-powered marketing assistant built on the OpenClaw ecosystem.**
+**AI agents for marketing, e-commerce, finance, and business operations.**
 
-**Developed by Tomas Corza | Growth Marketing & Analytics**
+Marketing OpenClaw AI is a modular Python-based framework **built for OpenClaw AI agents**. It combines reusable agent skills, analytics tools, and approval-controlled workflows to help businesses reduce repetitive tasks, identify actionable insights, and improve operational consistency.
 
-## Current prototype setup and repository maintenance
+**Created by Tomas Corza** · [Portfolio](https://tomascorza.me) · [Other GitHub projects](https://github.com/Tomas-Corza)
 
-- [Local finance prototype: installation, validation, demonstration, and API-readiness](docs/local-finance-prototype-guide.md)
-- [Branch inventory and synchronization audit](docs/branch-inventory-audit.md) — 30 branches reviewed; diverged histories are preserved for review rather than overwritten.
+> **Explore the work:** This is a public-facing portfolio and development repository with working offline tools, example workflows, and synthetic demonstrations. Some integrations require authorized setup and end-to-end testing before use with real business systems.
 
-## Scheduled Finance Automation (synthetic, read-only)
+## The business value
 
-The finance module includes a cron-compatible Python runner with atomic report output, a single-run lock and JSONL execution records. It runs existing deterministic finance checks on fictional data without requiring Streamlit.
+Businesses often lose time moving data across systems, auditing product catalogs, reconciling reports, preparing responses, and reviewing exceptions. Marketing OpenClaw AI demonstrates how these workflows can become more repeatable and inspectable while retaining human oversight.
 
-```bash
-python3 -m finance.automation_runner --source synthetic --output-dir ./var/finance
-python3 -m unittest discover -s tests -p 'test_finance_runner.py' -v
-```
+- **Reduce manual work** in reporting, merchandising, customer operations, and financial reviews.
+- **Improve visibility** with consistent data validation, dashboards, and exception reporting.
+- **Support better decisions** with marketing analytics, attribution models, and Jobs-to-be-Done analysis.
+- **Protect important workflows** through explicit approval requirements before consequential actions.
+- **Adapt to different organizations** using modular OpenClaw skills and Python automation tools.
 
-See the [cron installation and deployment guide](docs/finance-scheduling-setup.md) and [planned production integration architecture](docs/production-integration-architecture.md). Live data adapters, Bitwarden runtime access, LLM-driven finance analysis and production scheduling are **not configured**. The runner refuses live mode until authorized integrations are separately implemented.
+## Business applications
 
-## Finance Automation Control Center (synthetic prototype)
-
-A separate [Streamlit finance dashboard](finance/dashboard.py) and [finance-operations OpenClaw skill](skills/finance-operations/SKILL.md) extend this repository with sample accounts receivable, accounts payable, purchase-order invoice matching, bank/ledger reconciliation, CRM job references, time/payroll review, exception routing, audit logs and a proposed integration inventory.
-
-```bash
-python3 -m pip install -r dashboard/requirements.txt
-streamlit run finance/dashboard.py
-python3 -m unittest discover -s tests -p 'test_finance_engine.py' -v
-```
-
-**Demo scope:** Fictional records, deterministic rules and human-review recommendations only. No actual QuickBooks, Salesforce, banking, payroll, n8n or Make connection; no model-driven agent calls; no production financial writes. See [demo scope and production roadmap](docs/finance-automation-demo.md).
-
-## Seven-Channel Attribution Dashboard Demo and API Setup
-
-The public Streamlit dashboard's **Ad Attribution** tab now models seven fictional marketing acquisition channels, with GA4 event data matched against Shopify orders:
-
-| Example channel | Synthetic input | Live API status |
+| Area | Example capabilities | Potential business benefit |
 | --- | --- | --- |
-| Meta Ads | Paid social visits | No live API connection |
-| Google Ads | Paid search visits | No live API connection |
-| Microsoft Ads (Bing) | Paid search visits | No live API connection |
-| Etsy Referral | Referral traffic to Shopify | No Etsy orders or API connection |
-| Amazon Referral | Referral traffic to Shopify | No Amazon orders or API connection |
-| ChatGPT Referral | Observable referrals to Shopify | No ChatGPT account or user-level API connection |
-| Google Organic | Organic Google search visits | No Search Console or direct API connection |
+| **E-commerce** | Shopify product drafts, catalog optimization, feed generation and diagnostics | More efficient merchandising and fewer preventable catalog issues |
+| **Marketing analytics** | Email and social analysis, observed-journey attribution, JTBD messaging analysis | Faster reporting and more informed optimization |
+| **Customer operations** | Inquiry classification, customer-reply drafts, return-policy reviews | More consistent handoffs and less repetitive triage |
+| **Finance and accounting** | AR/AP reviews, invoice matching, reconciliation checks, payroll/time review, exception monitoring | Streamlined reviews and clearer visibility into discrepancies |
 
-**GA4 supplies fictional consented visit/purchase events; Shopify supplies fictional orders.** Only accurately matched GA4 purchase IDs and Shopify order IDs contribute conversion credit. This demonstration does not claim to ingest Meta/Google/Microsoft/Amazon/Etsy ad platform reporting or reconstruct user journeys from those platform APIs.
+The listed capabilities do not imply that live third-party accounts are connected. Available functionality and integration requirements are described below.
 
-**[Full channel setup, API credentials and add/remove instructions](docs/example-attribution-channels-and-credentials.md)** explains each source, which services require OAuth, and how to maintain, revoke or remove credentials **when an authorized connector is separately implemented**. The current attribution code accepts CSVs, not ad-platform API keys. Adding an API key alone does not enable a channel.
+## Featured: Finance Automation Control Center
 
-To run the seven-channel demo locally:
+The [Finance Automation Control Center](finance/dashboard.py) explores how OpenClaw-based workflows can support accounting teams through a unified operational view. Its synthetic prototype includes:
 
-```bash
-python3 -m pip install -r dashboard/requirements.txt
-streamlit run dashboard/app.py
-# Open the "Ad Attribution" tab; synthetic data is included.
-```
+- Accounts receivable and payable review
+- Invoice and purchase-order verification
+- Bank and ledger reconciliation checks
+- CRM job references and time/payroll review
+- Exception routing, audit records, and reporting
+- A scheduled Python runner for deterministic checks
 
-To add/remove a **synthetic** channel without API credentials, edit `examples/dashboard/attribution_events.csv` and follow the guide. For actual supported inputs, start with `tools/shopify_ga4_pipeline.py` and the [GA4 + Shopify implementation guide](docs/shopify-ga4-bigquery-pipeline.md). No real data is sent to a third-party service by the dashboard.
+This demonstration processes **fictional financial records**. It does not connect to live QuickBooks, banks, payroll, or CRM accounts, execute model-driven financial agents, or perform production financial writes. These would require separately authorized implementation and testing.
 
-## Customer-Journey Multi-Touch Attribution (New: Offline, Rule-Based)
+**Explore:** [Dashboard code](finance/dashboard.py) · [OpenClaw finance skill](skills/finance-operations/SKILL.md) · [Finance demonstration overview](docs/finance-automation-demo.md) · [Production integration architecture](docs/production-integration-architecture.md)
 
-**This repository now includes a working deterministic attribution engine** for *observed, identity-linked customer journeys*, separate from the previously documented cross-platform reporting and revenue-reconciliation case study.
+## Featured: AI E-Commerce Operations Dashboard
 
-- **Models:** first-touch, last-touch, linear, position-based (40/20/40), and configurable time decay.
-- **Output:** per-conversion touchpoint credit and attributed revenue, channel summaries, and explicit unmatched conversions.
-- **Safeguards:** conversion ID uniqueness, timezone checks, lookback windows, reproducible attribution rules, and revenue-preserving cent rounding.
-- **Scope:** offline calculation on authorized input CSVs. It does **not** automatically retrieve Shopify/Meta/Google/Klaviyo customer journeys or turn aggregated platform reports into genuine multi-touch data. It is not incrementality measurement.
+The [Streamlit operations dashboard](dashboard/README.md) makes automation workflows easier to explore through views for product optimization, catalog health, Merchant Center feed diagnostics, AI content recommendations, and marketing attribution examples.
 
-### Required data inputs
+The public showcase uses **synthetic data only**; it does not upload customer files or access live stores, advertising accounts, or the agent's command-line tools.
 
-| Input | Required fields | Why |
-| --- | --- | --- |
-| Customer touchpoints CSV | `touchpoint_id`, `customer_id`, `channel`, `occurred_at` | Individually observed, time-stamped interactions with a consistent pseudonymous identifier |
-| Conversions CSV | `conversion_id`, `customer_id`, `converted_at`, `revenue` | Unique order/conversion tied to the *same* pseudonymous identifier and a monetary amount |
+**Explore:** [Dashboard source](dashboard/) · [Public demonstration entry point](dashboard/public_app.py) · [Deployment guide](docs/streamlit-community-cloud-deployment.md)
 
-**For genuinely defensible attribution**, upstream systems must capture and lawfully link the customer-level interactions to the order (via consented first-party identity/login mappings or another authorized method); maintain consistent event timestamps, IDs, channel taxonomy and conversion definitions; handle duplicates, refunds, privacy choices and missing/cross-device touchpoints; and document the lookback window and credit model. All timestamps must include a timezone. Revenue uses two-decimal amounts and one reporting currency. **Aggregated Google Ads, Meta Ads, Klaviyo, and Shopify campaign reports alone are insufficient to construct customer-level multi-touch journeys.** Do not commit customer PII or private datasets.
+## Featured: Marketing analytics and attribution
 
-```bash
-python3 tools/multi_touch_attribution.py \
-  --touchpoints examples/attribution_touchpoints.csv \
-  --conversions examples/attribution_conversions.csv \
-  --model linear --lookback-days 30 \
-  --output /tmp/multi_touch_report.json
+The repository includes tools for **observed, identity-linked customer journeys**, with first-touch, last-touch, linear, position-based, and time-decay models. A Shopify + GA4 pipeline can match suitably collected GA4 event exports to Shopify orders when consent, identifiers, and timestamps permit.
 
-python3 -m unittest discover -s tests -p 'test_multi_touch_attribution.py' -v
-```
+The dashboard also illustrates seven **fictional** acquisition channels: Meta Ads, Google Ads, Microsoft Ads, Etsy referral, Amazon referral, ChatGPT referral, and Google organic. These are examples, **not seven live platform integrations**. Aggregate ad reports cannot by themselves establish customer-level multi-touch journeys, and attribution is not proof of incrementality.
 
-The sample inputs are **synthetic**. Read the [full attribution input schema, models, validation, and limitations](docs/multi-touch-attribution.md) and [source code](tools/multi_touch_attribution.py). This module is not evidence that live integrations already supply complete customer journeys.
+**Explore:** [Attribution engine](tools/multi_touch_attribution.py) · [Shopify + GA4 pipeline guide](docs/shopify-ga4-bigquery-pipeline.md) · [Attribution limitations](docs/multi-touch-attribution.md)
 
-### Shopify + GA4 BigQuery observed-journey pipeline (new)
+**Related case study:** [AI Marketing Analytics and Attribution](docs/ai-marketing-attribution-case-study.md) describes a cross-channel reporting implementation and its business application. The complete four-platform case-study integration is not published as runnable code in this repository.
 
-The project now includes an offline bridge between **consented GA4 event-level BigQuery exports** and **Shopify order exports**, feeding the rule-based multi-touch attribution engine. Unlike comparing aggregated ad reports, it requires an actual event-level GA4 `purchase` with a `transaction_id` matching the Shopify order ID and a consistent GA4 browser identifier connecting earlier touchpoints.
+## Built for OpenClaw AI agents
 
-**Required inputs**
-- **GA4 event CSV (from BigQuery):** `event_id`, `user_pseudo_id`, `event_name`, `occurred_at`, `channel`, `transaction_id`, `analytics_storage`.
-- **Shopify order CSV:** `order_id`, `converted_at`, `revenue`, `currency`.
-- **Prerequisites:** Authorized store/GA4/BigQuery access; verified matching GA4 purchase and Shopify order identifiers; event collection and consent setup; appropriately captured marketing source/medium data; consistent timestamps, currency and order revenue rules; secure export handling.
+Each reusable skill defines a business task and its operating boundaries. Python tools perform structured analysis and processing; authorized integrations and human checkpoints can be added where appropriate.
 
-```bash
-python3 tools/shopify_ga4_pipeline.py \
-  --ga4-events examples/ga4_bigquery_events.csv \
-  --shopify-orders examples/shopify_attribution_orders.csv \
-  --model linear --lookback-days 30 \
-  --output /tmp/shopify-ga4-attribution.json
-python3 -m unittest discover -s tests -p 'test_shopify_ga4_pipeline.py' -v
-```
+| OpenClaw skill | Application |
+| --- | --- |
+| [Shopify product-page automation](skills/shopify-product-page-automation/SKILL.md) | Review and create unpublished product drafts; audit content |
+| [Shopify bulk optimization](skills/shopify-bulk-optimization/SKILL.md) | Identify catalog-wide improvements and prepare reviewed updates |
+| [AI product copy generation](skills/shopify-ai-copy-generation/SKILL.md) | Generate review-only product descriptions and SEO drafts |
+| [Product feed builder](skills/shopify-product-feed-builder/SKILL.md) | Convert Shopify CSV exports into validated feed formats |
+| [Shopify feed synchronization](skills/shopify-feed-sync/SKILL.md) | Optional authorized catalog extraction and feed generation |
+| [Merchant feed diagnostics](skills/merchant-feed-diagnostics/SKILL.md) | Detect feed issues and recommend local corrections |
+| [Customer inquiry assistant](skills/customer-inquiry-assistant/SKILL.md) | Classify questions and prepare factual draft responses |
+| [Gmail inquiry drafts](skills/gmail-customer-inquiry-drafts/SKILL.md) | Prepare unsent replies to selected authorized messages |
+| [Shopify return processing](skills/shopify-return-processing/SKILL.md) | Screen verified requests and prepare proposals for review |
+| [JTBD analysis](skills/jtbd-analysis/SKILL.md) | Analyze messaging against customer motivations |
+| [Email analytics](skills/email-analytics/SKILL.md) | Summarize campaign engagement, orders, and revenue |
+| [Social behavior monitor](skills/social-behavior-monitor/SKILL.md) | Analyze structured engagement data |
+| [Finance operations](skills/finance-operations/SKILL.md) | Demonstrate accounting checks, reviews, and exception workflows |
 
-See [Shopify + GA4 pipeline setup and limitations](docs/shopify-ga4-bigquery-pipeline.md), [BigQuery SQL export template](docs/ga4_bigquery_export.sql), and [pipeline implementation](tools/shopify_ga4_pipeline.py). The fixtures are synthetic. **This is not an out-of-the-box live connection or comprehensive cross-device attribution system**: orders without a reliable, consented GA4 purchase match are reported as unmatched, not assigned invented credit. This provides rule-based attribution for observed journeys, not causal proof of advertising effectiveness.
+## Try the project
 
-## Featured case study: AI-powered marketing attribution
+### Install the OpenClaw skills on macOS
 
-I used Marketing OpenClaw AI to centralize data from Meta Ads, Google Ads, Klaviyo, and Shopify and automate cross-channel attribution reporting. Read the [AI Marketing Analytics case study](docs/ai-marketing-attribution-case-study.md) for the problem, approach, and business value.
-
-**Scope note:** The case study documents an implementation; the complete four-platform reporting pipeline is not published in this repository. Existing code and integrations have their own readiness limitations described below.
-
-## About This Project
-
-**Marketing OpenClaw AI** is a modular, Python-based marketing automation and analytics framework with **dedicated OpenClaw skills for Shopify e-commerce operations, AI product-content optimization, and Google Merchant Center feed management**, alongside Jobs-to-be-Done (JTBD), email analytics and social engagement analysis.
-
-Its current e-commerce toolkit includes:
-
-- **AI marketing analytics & attribution reporting (case study):** Built an OpenClaw-driven workflow integrating Meta Ads, Google Ads, Klaviyo, and Shopify data to automate cross-channel attribution reports and reconcile platform-reported revenue with store transactions. [Read the case study](docs/ai-marketing-attribution-case-study.md). The complete integration is not included in this public repository.
-- **Shopify product-page automation:** Approval-controlled creation of unpublished Shopify product drafts, including bulk CSV imports with SKUs, prices and variants, plus single-product SEO/content audits and edits through the Shopify Admin GraphQL API.
-- **Shopify bulk optimization:** CSV catalog audits, metadata recommendations, and approval-gated batch update manifests.
-- **AI product copy generation:** Review-only titles, HTML descriptions, SEO metadata and JTBD messaging hypotheses via the OpenAI Responses API.
-- **Product feed builder:** Shopify CSV to Merchant Center-style TSV/RSS feeds, with inventory, pricing and identifier validation.
-- **Automated Shopify feed synchronization:** GraphQL catalog extraction, opt-in daily feed generation, and optional GitHub Pages hosting.
-- **Merchant Center diagnostics:** Offline feed checks, read-only Merchant API issue analysis, AI remediation suggestions and approval-controlled local feed fixes.
-- **Streamlit e-commerce operations dashboard:** Visual catalog health, feed diagnostics, AI recommendations, local approval queues and synthetic demonstration data.
-- **AI customer inquiry assistant:** Review-only classification of product questions, order requests, quote inquiries and returns, with approved knowledge grounding, optional opt-in AI drafting and human escalation.
-- **Gmail customer inquiry drafts:** Optional authorized Gmail API integration to retrieve one selected customer email, prepare a grounded reply, and create an unsent, human-approved Gmail draft.
-- **Shopify return processing:** Offline, approval-first screening of merchant-verified return requests against policy windows, excluded tags and item condition; prepares a return request manifest and draft customer response without submitting returns or refunds.
-
-**Explore the code:** [OpenClaw skills](skills/) · [E-Commerce Operations Dashboard](dashboard/) · [Synthetic dashboard demo setup](docs/streamlit-community-cloud-deployment.md)
-
-The architecture is adapted from an AI-assisted marketing implementation previously used in practice and is published as a reusable portfolio and development project. **Capabilities differ in readiness:** offline analysis and synthetic demonstrations are available in source; integrations require authorized credentials, configuration and end-to-end testing. No live merchant account, scheduled deployment or hosted Streamlit URL is enabled by simply cloning this repository.
-
-## Fresh Mac Mini Installation & Deployment
-
-Marketing OpenClaw AI now includes a **fresh-machine deployment kit**. It can install the official OpenClaw CLI (with your confirmation), then copy this repository's custom skills and shared Python tools into an OpenClaw workspace. This is a repeatable setup workflow, **not** a fully configured production agent or a substitute for OpenClaw onboarding.
-
-### Start from a new Mac
-
-**Prerequisites:** macOS, Git, Python 3.10+, internet access, and authorization to install software. If Git or Python is missing, install those prerequisites first. Review the installation script and the official [OpenClaw setup instructions](https://docs.openclaw.ai/start/getting-started) before running an external installer.
+Requirements: **macOS, Git, Python 3.10+**, and permission to install software. Review the installation script and the [official OpenClaw getting-started guide](https://docs.openclaw.ai/start/getting-started) first.
 
 ```bash
 git clone https://github.com/Tomas-Corza/marketing-openclaw-ai.git
@@ -152,419 +94,65 @@ cd marketing-openclaw-ai
 bash install.sh
 ```
 
-The installer:
+The script checks the environment, requests confirmation before downloading the official OpenClaw installer when needed, and copies project skills and shared tools into the workspace without silently overwriting conflicting files.
 
-1. Checks macOS, Python and file conflicts **before copying workspace files**.
-2. Detects an existing OpenClaw CLI. If one is not found, asks before downloading and executing the [official OpenClaw installer](https://openclaw.ai/install.sh).
-3. Copies **12 OpenClaw skill folders** and shared `tools/`, `docs/`, and `examples/` into `~/.openclaw/workspace`: nine e-commerce/customer-operations skills plus JTBD analysis, email analytics and social behavior monitoring.
-4. Runs read-only checks for skill files, representative Python tools and OpenClaw CLI availability.
-
-**Already have OpenClaw?** Install only the project files:
+Already using OpenClaw?
 
 ```bash
 bash install.sh --skip-openclaw
 ```
 
-For an OpenClaw agent configured with a different workspace, supply `--workspace=/absolute/path`. The destination must match the agent's actual workspace.
+You still need to complete OpenClaw onboarding and configure any optional services separately. [Installation and troubleshooting guide](docs/fresh-mac-install.md).
 
-### Installation files
+### Explore the synthetic dashboards
 
-| File | What it does |
+```bash
+python3 -m pip install -r dashboard/requirements.txt
+
+# E-commerce dashboard
+streamlit run dashboard/public_app.py
+
+# Finance prototype (run separately)
+streamlit run finance/dashboard.py
+```
+
+### Run a scheduled-style finance check
+
+```bash
+python3 -m finance.automation_runner --source synthetic --output-dir ./var/finance
+```
+
+These examples are for evaluation, not production financial processing. See the [finance setup guide](docs/local-finance-prototype-guide.md) and [runner deployment guide](docs/finance-scheduling-setup.md).
+
+## Implementation approach
+
+A real business deployment starts by identifying repetitive tasks and selecting appropriate automation boundaries. From there, the process involves integrating only authorized systems, normalizing data, adding validation and exceptions, testing with representative records, and documenting human review and escalation points.
+
+**Available in this repository:** Offline Python analysis and validation, reusable skill definitions, dashboards, synthetic example data, approval-gated workflow components, and selected optional API-capable tools.
+
+**Requires separate configuration or development:** Live third-party integrations, credentials and permissions, financial-system adapters, operational schedules, secure production deployment, and end-to-end validation. Installing this repository does not automatically send customer messages, issue refunds, publish products, or change accounting records.
+
+## Repository guide
+
+| Location | Contents |
 | --- | --- |
-| [`install.sh`](install.sh) | Interactive macOS bootstrap; invokes the official OpenClaw installer only after confirmation |
-| [`setup_skills.py`](setup_skills.py) | Copies skill definitions and shared Python tools without overwriting differing existing files |
-| [`verify_installation.py`](verify_installation.py) | Checks deployed skill files, key tools and optional OpenClaw CLI presence |
-| [`requirements.txt`](requirements.txt) | Documents core Python standard-library requirements; the Streamlit dashboard has separate dependencies |
-| [`.env.example`](.env.example) | Lists optional integration variable names without supplying credentials |
-| [`tests/test_fresh_install.py`](tests/test_fresh_install.py) | Offline tests for dry runs, repeat installation, collisions and skill discovery |
-| [Fresh Mac installation guide](docs/fresh-mac-install.md) | Prerequisites, onboarding, verification, troubleshooting and security considerations |
+| [`skills/`](skills/) | Reusable OpenClaw skill instructions |
+| [`tools/`](tools/) | Python analytics and automation tools |
+| [`finance/`](finance/) | Finance automation prototype |
+| [`dashboard/`](dashboard/) | E-commerce dashboard |
+| [`examples/`](examples/) | Fictional sample inputs |
+| [`docs/`](docs/) | Setup, architecture, and integration guides |
+| [`tests/`](tests/) | Validation and offline tests |
+| [`install.sh`](install.sh) | macOS installer |
 
-Run a read-only installation check or the deployment tests from the cloned repository:
+Agent configuration files such as `IDENTITY.md`, `SOUL.md`, `AGENTS.md`, and `TOOLS.md` describe identity, behavior, and tool usage conventions.
 
-```bash
-python3 verify_installation.py
-python3 -m unittest discover -s tests -p 'test_fresh_install.py' -v
-```
+## About the creator
 
-### After the files are installed
+**Tomas Corza** is an e-commerce, AI automation, and growth marketing specialist who combines Shopify operations, Python, SQL, marketing analytics, and practical AI implementation. Marketing OpenClaw AI demonstrates how business workflows can be translated into modular agent capabilities backed by structured tools.
 
-Complete **OpenClaw model-provider onboarding and Gateway setup**, verify that OpenClaw discovers the skills, and test each intended workflow with authorized sample or development-account data. Business access is separate: Shopify credentials and scopes, Gmail OAuth, AI API keys and any approved external data processing must be configured individually. No automatic refunds, customer email sending, scheduled jobs or live merchant access are enabled by this installation.
-
-The deployment script does **not** overwrite agent identity/configuration files, credentials, sessions or memories. It stops rather than replacing differing existing skill/tool files. The skills generally expect their shared Python scripts to be run from the **workspace root**; the installer does not install them as global Python packages.
-
-**Verification status:** GitHub Actions validated the deployment scripts and skill metadata using offline tests. A clean-install trial on a physical Mac mini and end-to-end testing with authorized business accounts are still required before claiming production readiness.
-
-## Capabilities
-
-### OpenClaw Skill Directory
-
-Each e-commerce capability has its own discoverable `skills/<name>/SKILL.md` entry. Skill files describe when and how to run tools; reusable Python implementations remain in `tools/`. Other skills cover JTBD analysis, email analytics and social behavior monitoring.
-
-| Skill | Primary responsibility |
-| --- | --- |
-| [shopify-product-page-automation](skills/shopify-product-page-automation/SKILL.md) | Create approved unpublished products individually from JSON or in CSV batches with SKUs, prices and variants; audit and update existing product-page content |
-| [shopify-bulk-optimization](skills/shopify-bulk-optimization/SKILL.md) | Catalog-wide content audits and reviewed batch updates |
-| [shopify-ai-copy-generation](skills/shopify-ai-copy-generation/SKILL.md) | Review-only AI copy drafts and JTBD hypotheses |
-| [shopify-product-feed-builder](skills/shopify-product-feed-builder/SKILL.md) | Offline Shopify CSV to Merchant Center TSV/RSS |
-| [shopify-feed-sync](skills/shopify-feed-sync/SKILL.md) | Read-only Shopify API feed creation and opt-in scheduling |
-| [merchant-feed-diagnostics](skills/merchant-feed-diagnostics/SKILL.md) | Feed diagnostics, Merchant API status review and local fix approval |
-| [customer-inquiry-assistant](skills/customer-inquiry-assistant/SKILL.md) | Classify inquiries and draft factual, unapproved, unsent customer responses from approved product/policy facts |
-| [gmail-customer-inquiry-drafts](skills/gmail-customer-inquiry-drafts/SKILL.md) | Read one explicitly selected authorized Gmail message and create an unsent reply draft only after human approval |
-| [shopify-return-processing](skills/shopify-return-processing/SKILL.md) | Offline return policy screening and employee-reviewed case/response proposals; no Shopify return submission or refunds |
-
-Skills do not automatically activate credentials, scheduled jobs, model API access or live store writes. Set up and test each integration separately.
-
-**Additional marketing skills:** [JTBD Analysis](skills/jtbd-analysis/SKILL.md) · [Email Analytics](skills/email-analytics/SKILL.md) · [Social Behavior Monitor](skills/social-behavior-monitor/SKILL.md).
-
-**Featured application:** [AI E-Commerce Operations Dashboard](dashboard/README.md) — the public demonstration entrypoint is `dashboard/public_app.py`, using synthetic data without uploads or live API connections.
-
-### AI E-Commerce Operations Dashboard (Streamlit)
-
-A local-first Streamlit control center combining existing Shopify catalog analysis, Google Merchant product-feed diagnostics, synthetic demonstrations, previously generated AI content drafts, approval-controlled **local** feed corrections, and session-only activity history.
-
-- Six views: Overview, Product Optimization, Merchant Feed Health, **Ad Attribution**, Approval Queue, Activity.
-- Reuses existing `tools.shopify_bulk_feed` and `tools.merchant_feed_diagnostics` functions rather than duplicating calculation rules.
-- Read-only imports for merchant catalog and AI reports; hash-verified, human-approved downloadable feed changes.
-- Synthetic fixtures allow a portfolio demo without credentials or external API calls.
-- No automatic Shopify writes, live Merchant Center changes, job execution or hosted deployment.
-
-**Included:** `dashboard/app.py`, `dashboard/logic.py`, `dashboard/requirements.txt`, `dashboard/README.md`, synthetic examples and offline tests.
-
-```bash
-python -m pip install -r dashboard/requirements.txt
-streamlit run dashboard/app.py
-```
-
-See [Dashboard setup and safety](dashboard/README.md) and [Streamlit Community Cloud public demo deployment](docs/streamlit-community-cloud-deployment.md). The public demo entrypoint is `dashboard/public_app.py` (synthetic-only; no uploads); deployment requires the owner's Streamlit account.
-
-### AI Customer Inquiry Assistant (review-only)
-
-Prepare grounded customer-service reply drafts for product questions, order status, B2B quote requests, returns and general inquiries. Uses approved local product and policy knowledge, classifies the message and flags certain sensitive topics for employee review. Optional OpenAI Responses API drafting is **opt-in** and requires authorization to share inquiry data externally.
-
-- Offline template mode requires no API keys or internet connection.
-- Outputs proposed reply, evidence IDs, missing information, category and review/escalation flags.
-- Always records `approved: false` and `sent: false`; **no automatic email, SMS, Shopify lookup, CRM connection, or customer messaging** is implemented.
-- Customer data and private drafts must not be committed to the public repository.
-
-**Included:** [Skill instructions](skills/customer-inquiry-assistant/SKILL.md), [Python implementation](tools/customer_inquiry_assistant.py), [setup guide](docs/customer-inquiry-assistant.md), fictional fixtures and mocked offline tests.
-
-```bash
-python3 -m tools.customer_inquiry_assistant --inquiry examples/customer_inquiry_sample.json --knowledge examples/customer_inquiry_knowledge_sample.json --output /tmp/customer-inquiry-draft.json
-```
-
-See [Customer Inquiry Assistant setup](docs/customer-inquiry-assistant.md). Real inbox/Shopify integrations and sending workflows require separate authorization, development, security review and testing.
-
-### Gmail Customer Inquiry Draft Integration (API-ready)
-
-Extend the [AI Customer Inquiry Assistant](skills/customer-inquiry-assistant/SKILL.md) to process **one authorized Gmail message at a time** and prepare a reply inside the original email thread. The connector classifies the selected question, uses a separately approved product/policy knowledge JSON and generates a review-only reply. A matching SHA-256 fingerprint and explicit confirmation are required before creating a **Gmail draft**.
-
-- Uses Gmail API `users.messages.get` for a selected message and `users.drafts.create` for approved replies. **Never sends email.**
-- Supports offline template replies or optional OpenAI drafting only with permission to share the inquiry externally.
-- Excludes certain automated/list emails, spam and sensitive inquiries.
-- Requires a merchant-authorized OAuth token with suitable Gmail read and compose scopes; no credentials or live mailbox are provided by the repository.
-- No inbox monitoring, auto-sending, live order lookup, recurring polling or multi-message processing. Production use requires privacy review and authorized end-to-end testing.
-
-**Included:** [OpenClaw skill](skills/gmail-customer-inquiry-drafts/SKILL.md), [Python Gmail connector](tools/gmail_inquiry_drafts.py), [setup guide](docs/gmail-customer-inquiry-drafts.md), and mocked tests.
-
-```bash
-# With authorized GMAIL_ACCESS_TOKEN configured privately:
-python3 -m tools.gmail_inquiry_drafts preview --message-id GMAIL_MESSAGE_ID --knowledge /private/approved-knowledge.json
-
-# Only after human approval of the exact recipient and reply:
-python3 -m tools.gmail_inquiry_drafts create --message-id GMAIL_MESSAGE_ID --knowledge /private/approved-knowledge.json --approve-sha256 APPROVED_PREVIEW_HASH --confirm
-```
-
-See [Gmail inquiry draft guide](docs/gmail-customer-inquiry-drafts.md) for configuration, privacy limitations and safeguards.
-
-### Shopify Return Processing (review only)
-
-Screen merchant-verified Shopify return requests against an approved return policy, checking requested quantities, delivery windows, excluded product tags, and unopened condition. Outputs an assessment, review findings, request manifest, and a draft response for staff.
-
-- Produces an SHA-256 review fingerprint and private JSON proposal; `approved`, `return_submitted`, `refund_issued` and `customer_notified` remain `false`.
-- **Does not connect to Shopify, authorize returns, issue refunds, create shipping labels, restock products, or contact customers.** Verify real order data, consumer rights and exceptions manually.
-
-**Included:** [OpenClaw skill](skills/shopify-return-processing/SKILL.md), [Python tool](tools/shopify_return_processing.py), [setup guide](docs/shopify-return-processing.md), fictional examples and offline tests.
-
-```bash
-python3 tools/shopify_return_processing.py --case examples/return_case_sample.json --policy examples/return_policy_sample.json --output /tmp/return-review-example.json
-```
-
-See [Return Processing setup](docs/shopify-return-processing.md).
-
-### Jobs-to-be-Done (JTBD) Marketing Analysis
-
-Analyze marketing messages based on the customer motivations they address.
-
-- Compare messaging variants across different customer jobs.
-- Calculate and rank email click-through rates.
-- Identify the highest-performing observed messaging approach.
-- Support value proposition development and marketing experimentation.
-- Distinguish observed performance differences from statistically validated conclusions.
-
-**Included:** `jtbd/analyze.py` and `skills/jtbd-analysis/SKILL.md`
-
-### Email Marketing Analytics
-
-Analyze email campaign performance using structured campaign data.
-
-- Measure campaign engagement and click-through rates.
-- Calculate revenue per email sent.
-- Compare campaign performance.
-- Report orders and revenue.
-- Summarize findings in accessible, nontechnical language.
-
-**Included:** `tools/email_analytics.py` and `skills/email-analytics/SKILL.md`
-
-### Social Media Behavior Monitor (API-ready)
-
-Analyze authorized social media content-level engagement across platforms through a normalized data model.
-
-- Summarize likes, comments, shares, saves, clicks, and impressions (when available).
-- Compare topics and content formats within each platform.
-- Handle missing metrics and show metric coverage, rather than assume zero.
-- Produce machine-readable JSON analysis for reports and downstream AI interpretation.
-- Start offline with a synthetic CSV example; add authorized platform adapters later.
-
-**Included:** `skills/social-behavior-monitor/SKILL.md`, `tools/social_behavior_monitor.py`, `tools/social_behavior_connector.py`, `docs/social-behavior-monitor.md`.
-
-**Status:** Offline analytics implemented. No live API connections, monitoring schedule, or scraping configured.
-
-### Shopify Product Page Automation & Draft Creation (API-ready)
-
-Create new unpublished Shopify product drafts individually from verified JSON or in reviewed CSV batches with SKUs, prices and variants. The skill also audits existing product pages, previews proposed changes, and applies explicitly approved title, HTML description and SEO metadata updates.
-
-- New product draft creation: validate merchant-verified title, HTML description, vendor, type, SEO metadata, tags and HTTPS image URLs; approve exact preview before writing a Shopify DRAFT.
-- Bulk CSV creation: group variant rows by product, validate SKUs/prices/options, require fingerprint-matched merchant review, create DRAFT products in bounded batches and write a private per-product journal.
-- Offline audit with synthetic product JSON.
-- Authorized Shopify read and write integration with environment-provided credentials.
-- Read-before-write preview; explicit confirmation required to update.
-- OpenClaw skill instructions for fact-checked, JTBD-informed content proposals.
-- No live Shopify credentials, autonomous text generation, or scheduled publishing included.
-
-**Included:** `tools/shopify_product_pages.py`, `tools/shopify_product_create.py`, `tools/shopify_bulk_product_create.py`, `skills/shopify-product-page-automation/SKILL.md`, setup guides, mocked offline tests and synthetic examples.
-
-#### Preview Shopify product creation (no credentials required)
-
-**Single product from JSON:**
-
-```bash
-python3 -m tools.shopify_product_create preview --input examples/shopify_new_product_sample.json
-```
-
-**Multiple products and variants from CSV:**
-
-```bash
-python3 -m tools.shopify_bulk_product_create preview --input examples/shopify_bulk_product_create_sample.csv
-```
-
-The bulk CSV accepts product handles, names, descriptions, SEO fields, SKUs, prices, tags and up to three named variant options (such as size, finish or color). Rows sharing a handle are grouped into one product. A preview validates the file and displays a SHA-256 fingerprint identifying the exact data being reviewed.
-
-#### Create drafts with merchant approval
-
-After configuring an authorized Shopify app and obtaining explicit merchant approval for the exact content and target store:
-
-```bash
-# One approved unpublished draft:
-python3 -m tools.shopify_product_create create --input /private/new-product.json --approve-sha256 APPROVED_PREVIEW_SHA --confirm
-
-# A reviewed CSV batch (defaults to at most 10 products per run):
-python3 -m tools.shopify_bulk_product_create create --input /private/catalog.csv --approve-sha256 APPROVED_PREVIEW_SHA --confirm --journal /private/new-import-log.jsonl --max-products 10
-```
-
-- Both workflows create **DRAFT** products and do not publish them.
-- Bulk imports check existing product handles and stop rather than updating an existing product; they record attempted and successful creations in a private journal.
-- Bulk SKU uniqueness is checked **within the CSV**, not against all existing store SKUs. Bulk import batches are limited to 25 products per approved run.
-- The single-product JSON workflow supports image URLs, but the bulk CSV workflow **does not** import images.
-- The bulk importer does not set inventory quantities, tax/shipping settings, or publish products. Review those separately in Shopify.
-- Shopify API permissions, authorized credentials and end-to-end tests with a development store are required before production use. Offline mocked tests alone do not verify live-store behavior.
-
-**Existing product content audit:**
-
-```bash
-python3 tools/shopify_product_pages.py audit --input examples/shopify_product_sample.json
-```
-
-See [single-product setup](docs/shopify-product-page-automation.md), [bulk CSV creation guide](docs/shopify-bulk-product-create.md), and [Skill #1 instructions](skills/shopify-product-page-automation/SKILL.md) for complete steps, permissions and safeguards.
-
-### Shopify Bulk Feed Optimization (API-ready)
-
-Extend the Shopify product-page skill across a product catalog with a Shopify CSV export.
-
-- Group Shopify variant rows into unique products.
-- Audit titles, descriptions and custom SEO fields at catalog scale.
-- Export machine-readable JSON findings and conservative metadata drafts.
-- Prepare product-ID-mapped, approval-required API update manifests.
-- Apply capped batches with stale-content checks and private JSONL audit logs.
-- No AI-written copy or unattended product publishing by default.
-
-**Included:** `skills/shopify-bulk-optimization/SKILL.md`, `tools/shopify_bulk_feed.py`, `docs/shopify-bulk-feed-optimization.md`, `tests/test_shopify_bulk_feed.py`, and `examples/shopify_bulk_feed_sample.csv`.
-
-```bash
-python3 tools/shopify_bulk_feed.py analyze --input examples/shopify_bulk_feed_sample.csv --output /tmp/shopify-audit.json
-```
-
-See [Bulk Shopify feed guide](docs/shopify-bulk-feed-optimization.md).
-
-### AI-Powered Shopify Catalog Copy Generation (review-only)
-
-Generate proposed product-page titles, descriptions and SEO metadata at catalog scale using the OpenAI Responses API and verified merchant source fields. The agent produces a Jobs-to-be-Done messaging hypothesis and review notes for each product. API access and merchant authorization are required; these are **drafts only**, not autonomous publishing.
-
-- Strict JSON output, escaped HTML, per-product errors and rate/cost caps.
-- No live Shopify writes: human review and explicit approvals remain mandatory.
-- Generated claims require independent verification against product facts.
-
-**Included:** `skills/shopify-ai-copy-generation/SKILL.md`, `tools/shopify_ai_copy.py`, `tests/test_shopify_ai_copy.py`, `docs/shopify-ai-copy-generation.md`.
-
-```bash
-python3 tools/shopify_ai_copy.py --input examples/shopify_bulk_feed_sample.csv --output /tmp/shopify-ai-review.json --max-products 10
-```
-
-See [AI product copy setup](docs/shopify-ai-copy-generation.md).
-
-### Shopify Product Feed Creation (CSV → Merchant Center TSV / RSS)
-
-Generate Google Merchant Center-style product feeds offline from authorized Shopify CSV exports.
-
-- Convert variant-level catalog rows to stable SKU-based feed item IDs.
-- Export tab-delimited TSV or RSS XML with title, description, price, inventory availability, image, product URL and identifiers.
-- Reject incomplete products and export a separate machine-readable validation report.
-- Support repeatable generation from fresh exports (an automated Shopify export and hosted feed are separate deployment tasks).
-
-**Included:** `skills/shopify-product-feed-builder/SKILL.md`, `tools/shopify_feed_builder.py`, `docs/shopify-product-feed-builder.md`, `examples/shopify_merchant_feed_sample.csv`, and offline tests.
-
-```bash
-python3 tools/shopify_feed_builder.py --input examples/shopify_merchant_feed_sample.csv --store-url https://example.com --output /tmp/merchant-feed.tsv --rejects /tmp/merchant-feed-errors.json
-```
-
-See [Feed creation guide](docs/shopify-product-feed-builder.md).
-
-### Scheduled Shopify API Feed Sync (opt-in)
-
-Generate Google Merchant Center-style RSS/TSV feeds directly from Shopify GraphQL product and variant data, without manual CSV exports. A GitHub Actions workflow can regenerate the feed daily and optionally deploy approved public catalog information to GitHub Pages.
-
-- Shopify Admin GraphQL cursor pagination and variant-aware catalog extraction.
-- Validation of publication status, identifiers, prices, inventory, product assets, and feed fields.
-- Strict rejection of invalid feed entries by default; private error reports.
-- Repository secrets for store credentials; **scheduled sync and public Pages publishing remain disabled until explicitly enabled**.
-- No Shopify product edits or automatic Google Merchant Center submissions.
-
-**Included:** `skills/shopify-feed-sync/SKILL.md`, `tools/shopify_live_feed_sync.py`, `docs/shopify-live-feed-sync.md`, `.github/workflows/shopify-live-feed.yml`, and offline unit tests.
-
-See [Live Shopify feed setup](docs/shopify-live-feed-sync.md).
-
-### AI Product Feed Diagnostics & Optimization Agent (API-ready)
-
-Inspect Merchant Center-style TSV/RSS catalog feeds, compare offline issues with authorized Google Merchant API processed-product issues, and prioritize corrections.
-
-- Offline validation for required feed attributes, GTIN checksums, IDs, prices, availability and URLs.
-- Read-only Google Merchant API v1 `accounts.products.list` adapter for item issues and disapproval statuses.
-- Optional AI-based issue explanations and prioritized remediation tasks (OpenAI Responses API).
-- Explicitly approved, SHA-256 snapshot-checked **local-only** correction exports; no Shopify or Merchant API writes.
-- Synthetic test fixtures, mocked tests and GitHub Actions CI.
-
-**Included:** `tools/merchant_feed_diagnostics.py`, `tools/merchant_api_connector.py`, `tools/merchant_feed_ai_triage.py`, `skills/merchant-feed-diagnostics/SKILL.md`, `docs/merchant-feed-diagnostics.md`.
-
-```bash
-python3 tools/merchant_feed_diagnostics.py audit --feed /private/merchant-feed.tsv --output /private/merchant-diagnostics.json
-```
-
-See [Merchant feed diagnostics guide](docs/merchant-feed-diagnostics.md). No account connection is active by default.
-
-### AI Agent Architecture
-
-The project includes an OpenClaw-style configuration structure for guiding an AI assistant's behavior, analytical workflows, tool usage, and operational boundaries.
-
-| File | Purpose |
-|---|---|
-| `IDENTITY.md` | Defines the assistant's identity and marketing expertise |
-| `SOUL.md` | Establishes communication principles and analytical behavior |
-| `AGENTS.md` | Documents operating instructions and safety constraints |
-| `TOOLS.md` | Describes supported tool interfaces and potential integrations |
-| `HEARTBEAT.md` | Provides a template for recurring monitoring and automation |
-| `skills/` | Contains reusable marketing skill instructions |
-| `jtbd/` | Contains Jobs-to-be-Done analysis tools |
-| `tools/` | Contains additional marketing analysis scripts |
-
-## Potential Integrations
-
-The framework can be extended to work with marketing and reporting platforms, including:
-
-- Shopify — e-commerce performance and sales analysis
-- Klaviyo — email marketing performance
-- Google Sheets — reporting and data exports
-- Google Ads and Meta Ads — campaign performance analysis
-- Public competitor research — market monitoring and competitive intelligence
-
-These integrations require separate configuration, authorized API access, and any necessary implementation work. They are not enabled by default in this repository.
-
-## Running the Included Analysis Tools
-
-The included Python scripts can run independently of an OpenClaw installation.
-
-**JTBD analysis**
-
-```bash
-python3 jtbd/analyze.py jtbd/example.csv
-```
-
-**Social media behavior analysis**
-
-```bash
-python3 tools/social_behavior_monitor.py --input examples/social_behavior_sample.csv
-python3 -m unittest discover -s tests
-```
-
-**Email marketing analysis**
-
-```bash
-python3 tools/email_analytics.py tools/example_email.csv
-```
-
-The example CSV files contain synthetic demonstration data, not actual business performance results.
-
-## Deployment and Adaptation
-
-Marketing OpenClaw AI is derived from a previously used marketing AI assistant implementation. The public version is intended to serve as a configurable foundation for new marketing applications.
-
-Before deploying the framework in a new environment, users should:
-
-1. Adapt the agent instructions and skills to the intended business and marketing objectives.
-2. Configure the required integrations and access permissions.
-3. Test compatibility with the target OpenClaw environment.
-4. Validate analytical outputs against trusted data sources.
-5. Review security, privacy, and data-handling requirements.
-
-**Previous practical use does not guarantee compatibility with every new application. Configuration and testing are required before deployment.**
-
-## Privacy and Security
-
-This public repository is intended to contain reusable configuration patterns, original or independently adapted analysis code, and synthetic demonstration data.
-
-It does not include live credentials, customer information, private business reports, or original company datasets.
-
-Users should avoid committing sensitive information and should review authorization and data-retention requirements before connecting external systems.
-
-## Development History
-
-The Jobs-to-be-Done AI methodology underlying this project builds on my independently developed **JTBDGPT** initiative, publicly documented in September 2024 in [*JTBDGPT: A Jobs to Be Done AI Innovation Expert*](https://www.linkedin.com/pulse/jtbdgpt-jobs-done-ai-innovation-expert-tomas-corza-ueckc/). That earlier work was subsequently adapted into broader AI-assisted marketing workflows. The 2024 article documents the JTBD AI initiative, not the creation date of this entire OpenClaw framework.
-
-## Project Purpose
-
-Marketing OpenClaw AI demonstrates how AI agent architecture, marketing analytics, Python automation, and Jobs-to-be-Done methodology can be combined to support data-driven marketing workflows.
-
-The project also serves as a foundation for adapting AI-assisted marketing processes to new business requirements.
+**[Portfolio and case studies](https://tomascorza.me)** · **[GitHub](https://github.com/Tomas-Corza)**
 
 ---
 
-**Developed by Tomas Corza**
-
-Growth Marketing & Analytics
-
-[Website](https://tomascorza.me) | [GitHub](https://github.com/Tomas-Corza)
-
-
-## Portable, company-neutral setup
-
-This repository is designed for evaluation using fictional fixtures. The checked-in dashboard examples do not require access to any merchant account. For a different authorized organization, configure its own credentials outside Git, review each integration's required scopes, and validate the source schema before processing data. Do not reuse credentials, exports, store domains, or internal operating procedures from another organization. Live integrations must be independently authorized and tested; the public demonstration does not establish production readiness.
-
-**Review boundary:** Generalizing names and examples does not determine ownership of pre-existing code. Retain development records and review any applicable third-party or employment rights before reuse or commercial deployment.
+*This public project uses synthetic examples and does not publish live merchant credentials, private customer records, or confidential business datasets. Third-party access and production deployment require appropriate permissions, security review, and testing. Code reuse should respect applicable ownership and licensing obligations.*
