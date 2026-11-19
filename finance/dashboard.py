@@ -23,9 +23,9 @@ if "finance_run" not in st.session_state:
 with st.sidebar:
     st.header("Automation controls")
     st.write("Mode: offline synthetic data")
-    if st.button("▶ Run finance validation",type="primary",use_container_width=True):
+    if st.button("▶ Run finance validation",type="primary",width="stretch"):
         st.session_state.finance_run=True
-    if st.button("Reset synthetic dataset",use_container_width=True):
+    if st.button("Reset synthetic dataset",width="stretch"):
         st.session_state.finance_data=seed_data()
         st.session_state.finance_run=False
     st.divider()
@@ -59,51 +59,51 @@ with tabs[0]:
     st.info("Workflow: synthetic inputs → deterministic matching/validation → exception queue → human approval. Future authenticated APIs could replace the inputs.")
 with tabs[1]:
     st.subheader("Customer invoicing, collections and aging")
-    st.dataframe(data["receivables"],use_container_width=True,hide_index=True)
+    st.dataframe(data["receivables"],width="stretch",hide_index=True)
     st.markdown("**Aging summary (open balances)**")
-    st.dataframe([{"bucket":k,"balance_usd":v} for k,v in summary["aging"].items()],hide_index=True,use_container_width=True)
+    st.dataframe([{"bucket":k,"balance_usd":v} for k,v in summary["aging"].items()],hide_index=True,width="stretch")
 with tabs[2]:
     st.subheader("Vendor bills and payment review")
-    st.dataframe(data["payables"],use_container_width=True,hide_index=True)
+    st.dataframe(data["payables"],width="stretch",hide_index=True)
     st.caption("Vendor payments are not initiated or approved.")
 with tabs[3]:
     st.subheader("Invoice verification against purchase orders")
-    st.dataframe(data["purchase_orders"],hide_index=True,use_container_width=True)
-    st.dataframe([x for x in result["exceptions"] if x["area"] in ("Invoice Matching","Accounts Payable")],hide_index=True,use_container_width=True)
+    st.dataframe(data["purchase_orders"],hide_index=True,width="stretch")
+    st.dataframe([x for x in result["exceptions"] if x["area"] in ("Invoice Matching","Accounts Payable")],hide_index=True,width="stretch")
 with tabs[4]:
     st.subheader("Bank ↔ ledger reconciliation")
     left,right=st.columns(2)
     with left:
         st.markdown("**Bank feed**")
-        st.dataframe(data["bank"],hide_index=True,use_container_width=True)
+        st.dataframe(data["bank"],hide_index=True,width="stretch")
     with right:
         st.markdown("**Accounting ledger**")
-        st.dataframe(data["ledger"],hide_index=True,use_container_width=True)
-    st.dataframe([x for x in result["exceptions"] if x["area"]=="Reconciliation"],hide_index=True,use_container_width=True)
+        st.dataframe(data["ledger"],hide_index=True,width="stretch")
+    st.dataframe([x for x in result["exceptions"] if x["area"]=="Reconciliation"],hide_index=True,width="stretch")
 with tabs[5]:
     st.subheader("Hours, approval exceptions and estimated gross pay")
-    st.dataframe(data["timesheets"],hide_index=True,use_container_width=True)
-    st.dataframe([x for x in result["exceptions"] if x["area"]=="Payroll / Time"],hide_index=True,use_container_width=True)
+    st.dataframe(data["timesheets"],hide_index=True,width="stretch")
+    st.dataframe([x for x in result["exceptions"] if x["area"]=="Payroll / Time"],hide_index=True,width="stretch")
     st.caption("Straight-time estimation only. Not a payroll calculator; excludes overtime rules, withholding, taxes and benefits.")
 with tabs[6]:
     st.subheader("CRM job matching")
-    st.dataframe(data["jobs"],hide_index=True,use_container_width=True)
+    st.dataframe(data["jobs"],hide_index=True,width="stretch")
     st.caption("Job IDs are fictional and demonstrate proposed CRM-to-finance mapping.")
 with tabs[7]:
     st.subheader("Exception monitoring")
-    st.dataframe(result["exceptions"],hide_index=True,use_container_width=True)
+    st.dataframe(result["exceptions"],hide_index=True,width="stretch")
     st.markdown("**Proposed agent work queue (rules-based)**")
     if st.session_state.finance_run:
-        st.dataframe(suggest_actions(result),hide_index=True,use_container_width=True)
+        st.dataframe(suggest_actions(result),hide_index=True,width="stretch")
         st.success("Validation run complete; proposed tasks are review-only.")
     else:
         st.info("Click 'Run finance validation' in the sidebar to generate the proposed work queue.")
 with tabs[8]:
     st.subheader("Integration readiness")
-    st.dataframe(data["integrations"],hide_index=True,use_container_width=True)
+    st.dataframe(data["integrations"],hide_index=True,width="stretch")
     st.warning("All connectors are proposed, not implemented. No API keys or OAuth tokens are requested or stored.")
     st.markdown("**Production rollout:** OAuth/read-only discovery → data mapping → idempotent matching → audit logs → supervisor approval → narrowly scoped writes → retries, monitoring and rollback.")
 with tabs[9]:
     st.subheader("Deterministic rule audit trail")
-    st.dataframe(result["audit"],hide_index=True,use_container_width=True)
+    st.dataframe(result["audit"],hide_index=True,width="stretch")
     st.download_button("Download audit + exception JSON",data=json.dumps(result,indent=2),file_name="synthetic-finance-audit.json",mime="application/json")
