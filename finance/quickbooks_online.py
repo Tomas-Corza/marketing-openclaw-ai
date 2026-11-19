@@ -93,7 +93,7 @@ def summarize_qbo_time_activities(activities):
             exceptions.append({"record": activity_id, "reason": "Missing or duplicate TimeActivity ID"})
             continue
         seen.add(activity_id)
-        if not employee_id or not re.fullmatch(r"\\d{4}-\\d{2}-\\d{2}", day):
+        if not employee_id or not re.fullmatch(r"\d{4}-\d{2}-\d{2}", day):
             exceptions.append({"record": activity_id, "reason": "Missing employee reference or date"})
             continue
         hours, minutes = a.get("Hours", 0), a.get("Minutes", 0)
