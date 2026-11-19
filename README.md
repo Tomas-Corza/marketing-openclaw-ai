@@ -4,6 +4,18 @@
 
 **Developed by Tomas Corza | Growth Marketing & Analytics**
 
+## Finance Automation Control Center (synthetic prototype)
+
+A separate [Streamlit finance dashboard](finance/dashboard.py) and [finance-operations OpenClaw skill](skills/finance-operations/SKILL.md) extend this repository with sample accounts receivable, accounts payable, purchase-order invoice matching, bank/ledger reconciliation, CRM job references, time/payroll review, exception routing, audit logs and a proposed integration inventory.
+
+```bash
+python3 -m pip install -r dashboard/requirements.txt
+streamlit run finance/dashboard.py
+python3 -m unittest discover -s tests -p 'test_finance_engine.py' -v
+```
+
+**Demo scope:** Fictional records, deterministic rules and human-review recommendations only. No actual QuickBooks, Salesforce, banking, payroll, n8n or Make connection; no model-driven agent calls; no production financial writes. See [demo scope and production roadmap](docs/finance-automation-demo.md).
+
 ## Seven-Channel Attribution Dashboard Demo and API Setup
 
 The public Streamlit dashboard's **Ad Attribution** tab now models seven fictional marketing acquisition channels, with GA4 event data matched against Shopify orders:
