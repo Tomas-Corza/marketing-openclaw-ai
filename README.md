@@ -40,6 +40,7 @@ The [Finance Automation Control Center](finance/dashboard.py) explores how OpenC
 - Bank and ledger reconciliation checks
 - An optional server-side Plaid transaction adapter (requires separate authorized setup) and synthetic bank-to-ledger reconciliation review
 - CRM job references and time/payroll review
+- QuickBooks Online read-only employee/TimeActivity API client and review-only payroll preparation (requires separate OAuth setup)
 - Shift-level timekeeping checks (clock-in/out, breaks, overlapping entries, duplicate IDs, approval checks) with an exception-gated CSV of reviewed hours
 - Exception routing, audit records, and reporting
 - A scheduled Python runner for deterministic checks
@@ -87,6 +88,7 @@ Each reusable skill defines a business task and its operating boundaries. Python
 | [Social behavior monitor](skills/social-behavior-monitor/SKILL.md) | Analyze structured engagement data |
 | [Finance operations](skills/finance-operations/SKILL.md) | Demonstrate accounting checks, reviews, and exception workflows |
 | [Timekeeping review](skills/timekeeping-review/SKILL.md) | Review fictional shift records, flag invalid or overlapping time, and prepare approved-hours CSV exports |
+| [QuickBooks Online payroll review](skills/quickbooks-online-payroll-review/SKILL.md) | Prepare employee/time-activity reviews from permitted read-only API data; no payroll writes |
 | [Bank reconciliation review](skills/bank-reconciliation-review/SKILL.md) | Propose bank-to-ledger matches and flag exceptions; optional server-side Plaid adapter |
 
 ## Try the project
