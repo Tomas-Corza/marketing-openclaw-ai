@@ -4,6 +4,17 @@
 
 **Developed by Tomas Corza | Growth Marketing & Analytics**
 
+## Scheduled Finance Automation (synthetic, read-only)
+
+The finance module includes a cron-compatible Python runner with atomic report output, a single-run lock and JSONL execution records. It runs existing deterministic finance checks on fictional data without requiring Streamlit.
+
+```bash
+python3 -m finance.automation_runner --source synthetic --output-dir ./var/finance
+python3 -m unittest discover -s tests -p 'test_finance_runner.py' -v
+```
+
+See the [cron installation and deployment guide](docs/finance-scheduling-setup.md) and [planned production integration architecture](docs/production-integration-architecture.md). Live data adapters, Bitwarden runtime access, LLM-driven finance analysis and production scheduling are **not configured**. The runner refuses live mode until authorized integrations are separately implemented.
+
 ## Finance Automation Control Center (synthetic prototype)
 
 A separate [Streamlit finance dashboard](finance/dashboard.py) and [finance-operations OpenClaw skill](skills/finance-operations/SKILL.md) extend this repository with sample accounts receivable, accounts payable, purchase-order invoice matching, bank/ledger reconciliation, CRM job references, time/payroll review, exception routing, audit logs and a proposed integration inventory.
