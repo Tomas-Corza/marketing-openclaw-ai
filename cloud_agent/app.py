@@ -45,7 +45,12 @@ SYSTEM = (
 )
 
 def get_response(question: str, dataset: dict, history: list[dict]) -> str:
-    api_key = os.getenv("OPENAI_API_KEY", "").strip()\n    if not api_key:\n        try:\n            api_key = str(st.secrets.get("OPENAI_API_KEY", "")).strip()\n        except (FileNotFoundError, KeyError):\n            api_key = ""
+    api_key = os.getenv("OPENAI_API_KEY", "").strip()
+    if not api_key:
+        try:
+            api_key = str(st.secrets.get("OPENAI_API_KEY", "")).strip()
+        except (FileNotFoundError, KeyError):
+            api_key = ""
     if not api_key:
         return ("No model API key is configured. The synthetic dataset is available below. "
                 "To enable AI responses, add OPENAI_API_KEY as a secret in your hosting platform.")
